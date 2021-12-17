@@ -1,5 +1,23 @@
 ## Hardware specification
 
+Sony multi terminal USB is a custom USB connector with Sony defined pins based on a micro USB connector.
+
+Micro USB part is same as the standard micro USB pin definition. Note that A5 is the GND.
+
+Sony pin part's definition is here:
+
+(Look from the connector side) from right to left is 1-10:
+- 1: Power on/off (triggerd by shorting to ground)
+- 2: GND (without circuit it's NC)
+- 3: Video out
+- 4: Audio L out
+- 5: Audio R out
+- 6: Select (for remote use case there should be a 100k resistor against to GND)
+- 7: UART_TX
+- 8: UART_RX
+- 9: NC
+- 10: 3V3
+
 UART with:
 - 9600 baud rate
 - 8 bits per byte
