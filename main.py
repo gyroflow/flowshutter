@@ -1,11 +1,13 @@
 from machine import Pin, UART, Timer
 import crsf, oled, target
+import uasyncio as asyncio
 from time import sleep
 
 oled1 = oled.oled_init()
 
 uart1, uart2, _, button1 = target.init_pins()
 fc_arm_packet, fc_disarm_packet = crsf.init_packet()
+
 
 def change_arm_flag():
     global arm_flag
@@ -46,6 +48,23 @@ timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)
 cam_press_frame = '#7100*' #ASCII is needed here
 cam_release_frame = '#7110*'
 test_button_flag = 0
+
+async def sender():
+    swriter = asyncio.StreamWriter(uart2, {})
+    while True:
+        await swriter.awrite('Hello uart\n')
+        await asyncio.sleep(2)
+
+async def receiver():
+    sreader = asyncio.StreamReader(uart2)
+    while True:
+        res = await sreader.readline()
+        print('Recieved', res)
+
+loop = asyncio.get_event_loop()
+loop.create_task(sender())
+loop.create_task(receiver())
+loop.run_forever()
 # def test_change_button_flag():
 #     global test_button_flag
 #     if test_button_flag == 0:
@@ -65,17 +84,3 @@ test_button_flag = 0
 #         else:
 #             press_count = 0
 #             test_change_button_flag()
-
-
-
-while(1):
-    
-    # test_check_button()
-
-
-    # check_cmd()
-
-    # send_cam_frame()
-    # send_fc_frame(arm_flag)
-
-    sleep(0.005)
