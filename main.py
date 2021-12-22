@@ -5,8 +5,32 @@ from time import sleep
 oled1 = oled.oled_init()
 
 uart1, uart2, _, button1 = target.init_pins()
-
 fc_arm_frame, fc_disarm_frame = crsf.create_frames()
+
+def change_arm_flag():
+    global arm_flag
+    if arm_flag == 0:
+        arm_flag = 1
+        oled.show_arm_info(oled1)
+    else:
+        arm_flag = 0
+        oled.show_disarm_info(oled1)
+
+press_count = 0
+def check_cmd(t):
+    global press_count
+    if button1.value() == 0:
+        if press_count <=100:
+            press_count += 1
+        else:
+            press_count = 0
+            change_arm_flag()
+    else:
+        press_count = 0
+
+timer0 = Timer(0)
+timer0.init(period=5, mode=Timer.PERIODIC, callback=check_cmd)
+
 arm_flag=0
 def send_crsf_packet(t):
     global arm_flag
@@ -18,28 +42,6 @@ def send_crsf_packet(t):
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)
 
-press_count = 0
-
-
-def change_arm_flag():
-    global arm_flag
-    if arm_flag == 0:
-        arm_flag = 1
-        oled.show_arm_info(oled1)
-    else:
-        arm_flag = 0
-        oled.show_disarm_info(oled1)
-
-def check_cmd():
-    global press_count
-    if button1.value() == 0:
-        if press_count <=100:
-            press_count += 1
-        else:
-            press_count = 0
-            change_arm_flag()
-    else:
-        press_count = 0
 
 cam_press_frame = '#7100*' #ASCII is needed here
 cam_release_frame = '#7110*'
@@ -71,7 +73,7 @@ while(1):
     # test_check_button()
 
 
-    check_cmd()
+    # check_cmd()
 
     # send_cam_frame()
     # send_fc_frame(arm_flag)
