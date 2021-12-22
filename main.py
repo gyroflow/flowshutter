@@ -1,12 +1,10 @@
 from machine import Pin, UART, Timer
-import crsf, oled
+import crsf, oled, target
 from time import sleep
 
 oled1 = oled.oled_init()
 
-uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 33, rx = 32)
-uart2 = UART(2, baudrate = 9600, bits = 8, parity = 0,    stop = 1, tx = 25, rx = 26)
-p19 = Pin(19, Pin.IN, Pin.PULL_UP)
+uart1, uart2, _, button1 = target.init_pins()
 
 fc_arm_frame, fc_disarm_frame = crsf.create_frames()
 arm_flag=0
@@ -34,7 +32,7 @@ def change_arm_flag():
 
 def check_cmd():
     global press_count
-    if p19.value() == 0:
+    if button1.value() == 0:
         if press_count <=100:
             press_count += 1
         else:

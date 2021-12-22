@@ -1,8 +1,8 @@
 from machine import Pin, I2C
-import ssd1306, time
+import ssd1306, time, target
 
 def oled_init():
-    i2c = I2C(-1, scl=Pin(22), sda=Pin(21)) #For ESP32: pin initializing
+    _,_,i2c,_ = target.init_pins()
     display = ssd1306.SSD1306_I2C(128, 32, i2c)
     display.fill(0)
     # we need to replace flowshutter logo later
@@ -17,7 +17,6 @@ def oled_init():
     display.text('Powered by', 40, 12, 1)
     display.text('DusKing 1.4', 40, 24, 1)
     display.show()
-    time.sleep(1)
     return display
 
 def show_arm_info(display):
