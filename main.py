@@ -5,7 +5,7 @@ from time import sleep
 oled1 = oled.oled_init()
 
 uart1, uart2, _, button1 = target.init_pins()
-fc_arm_frame, fc_disarm_frame = crsf.create_frames()
+fc_arm_packet, fc_disarm_packet = crsf.init_packet()
 
 def change_arm_flag():
     global arm_flag
@@ -35,9 +35,9 @@ arm_flag=0
 def send_crsf_packet(t):
     global arm_flag
     if arm_flag == 1:
-        uart1.write(fc_arm_frame)
+        uart1.write(fc_arm_packet)
     else:
-        uart1.write(fc_disarm_frame)
+        uart1.write(fc_disarm_packet)
 
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)

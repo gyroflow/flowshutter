@@ -1,4 +1,4 @@
-def create_frames():
+def init_packet():
 
     # 420000 baud rate
     # 8 bit per byte
