@@ -130,7 +130,7 @@ def oled_init():
 
     display.text('FlowShutter', 40, 0, 1)
     display.text('Powered by', 40, 12, 1)
-    display.text('DusKing 1.5', 40, 24, 1)
+    display.text('DusKing 0.2', 40, 24, 1)
     display.show()
     return display
 

@@ -1,5 +1,5 @@
 from machine import Pin, UART, Timer
-import crsf, oled, target
+import crsf, oled, target, sony_multiport
 import uasyncio as asyncio
 from time import sleep
 
@@ -7,8 +7,8 @@ oled1 = oled.oled_init()
 
 uart1, uart2, _, button1 = target.init_pins()
 fc_arm_packet, fc_disarm_packet = crsf.init_packet()
-
-
+record_press_packet, record_release_packet, camera_verify_packet, camera_verify_packet_ack, camera_recording_packet, camrea_recording_packet_ack = sony_multiport.init_multiport_packet()
+# this part should be fixed in future, too ugly :(
 def change_arm_flag():
     global arm_flag
     if arm_flag == 0:
@@ -52,14 +52,22 @@ test_button_flag = 0
 async def sender():
     swriter = asyncio.StreamWriter(uart2, {})
     while True:
-        await swriter.awrite('Hello uart\n')
-        await asyncio.sleep(2)
+        await swriter.awrite('hhhh')
+        await asyncio.sleep_ms(40)
+        # never mind this, it's just for test, will be deleted soon
 
 async def receiver():
+    swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
     while True:
-        res = await sreader.readline()
-        print('Recieved', res)
+        res = await sreader.read(n=-1)
+        print('Cam sent:', res)
+        if res == b'%000*':
+            await asyncio.sleep_ms(10)
+            await swriter.awrite(camera_verify_packet_ack)
+        elif res == b'%7614*':
+            await asyncio.sleep_ms(10)# I don't know if this timing is good, should look into it later
+            await swriter.awrite(camrea_recording_packet_ack)
 
 loop = asyncio.get_event_loop()
 loop.create_task(sender())
