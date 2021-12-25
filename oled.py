@@ -130,9 +130,17 @@ def oled_init():
 
     display.text('FlowShutter', 40, 0, 1)
     display.text('Powered by', 40, 12, 1)
-    display.text('DusKing 0.2', 40, 24, 1)
+    display.text('DusKing 0.3', 40, 24, 1)
     display.show()
     return display
+
+def show_idle_info(display):
+    display.fill(0)
+    draw_logo_idle(display)
+    display.text('FlowShutter', 40, 0, 1)
+    display.text('Powered by', 40, 12, 1)
+    display.text('DusKing 0.3', 40, 24, 1)
+    display.show()
 
 def show_arm_info(display):
     display.fill(0)
@@ -150,12 +158,18 @@ def show_disarm_info(display):
     display.text('Sony stop', 40, 24, 1)
     display.show()
 
-def show_cam_press_info(display):
+def show_starting_info(display):
     display.fill(0)
-    display.text('Cam Pressed', 0, 0, 1)
+    draw_logo_recording(display)
+    display.text('Starting', 40, 0, 1)
+    display.text('FC Disarmed', 40, 12, 1)
+    display.text('Sony start', 40, 24, 1)
     display.show()
 
-def show_cam_release_info(display):
+def show_stopping_info(display):
     display.fill(0)
-    display.text('Cam Released', 0, 0, 1)
+    draw_logo_idle(display)
+    display.text('Stopping', 40, 0, 1)
+    display.text('FC Armed', 40, 12, 1)
+    display.text('Sony ending', 40, 24, 1)
     display.show()

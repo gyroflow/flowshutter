@@ -7,50 +7,31 @@ oled1 = oled.oled_init()
 
 uart1, uart2, _, button1, button2 = target.init_pins()
 fc_arm_packet, fc_disarm_packet = crsf.init_packet()
-rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_hb, cm_rcd_hb_ack = sony_multiport.init_multiport_packet()
-# this part should be fixed in future, too ugly :(
-
-button1_flag = 0
-button2_flag = 0
-
-def change_button1_flag():
-    global button1_flag
-    if button1_flag == 0:
-        button1_flag = 1
-        print('button1 tiggered')
-    else:
-        button1_flag = 0
-
-def change_button2_flag():
-    global button2_flag
-    if button2_flag == 0:
-        button2_flag = 1
-        print('button2 tiggered')
-    else:
-        button2_flag = 0
-
-
-def change_arm_flag():
-    global arm_flag
-    if arm_flag == 0:
-        arm_flag = 1
-        oled.show_arm_info(oled1)
-    else:
-        arm_flag = 0
-        oled.show_disarm_info(oled1)
+rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_start, cm_rcd_start_ack, cm_rcd_stop, cm_rcd_stop_ack = sony_multiport.init_multiport_packet()
+state = ['idle', 'starting', 'recording', 'stopping', 'stopped']
 
 button1_press_count = 0
+button1_trigger = 0
 button2_press_count = 0
-def check_cmd(t):
+button2_trigger = 0
+arm_flag=0
+switching_flag = 0
+def check_button(t):
     global button1_press_count
+    global button1_trigger
     global button2_press_count
+    global button2_trigger
+    global switching_flag
     if button1.value() == 0:
         if button1_press_count <=100:
             button1_press_count += 1
         else:
             button1_press_count = 0
-            change_button1_flag()
-            # change_arm_flag()
+            button1_trigger = 1
+            if current_state == state[0]:
+                switching_flag = 1
+            print('button1 tiggered', button1_trigger)
+            print('switching_flag', switching_flag)
     else:
         button1_press_count = 0
     if button2.value() == 0:
@@ -58,30 +39,87 @@ def check_cmd(t):
             button2_press_count += 1
         else:
             button2_press_count = 0
-            change_button2_flag()
+            button2_trigger = 1
 
 timer0 = Timer(0)
-timer0.init(period=5, mode=Timer.PERIODIC, callback=check_cmd)
+timer0.init(period=5, mode=Timer.PERIODIC, callback=check_button)
 
-arm_flag=0
-def send_crsf_packet(t):
+current_state = state[0]
+
+async def check_state():
+    global current_state
+    global button1_trigger
+    global button2_trigger
     global arm_flag
-    if arm_flag == 1:
-        uart1.write(fc_arm_packet)
-    else:
-        uart1.write(fc_disarm_packet)
-
-timer1 = Timer(1)
-timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)
-
-async def sender():
+    global switching_flag
     swriter = asyncio.StreamWriter(uart2, {})
-    while True:
-        await swriter.awrite('hhhh')
-        await asyncio.sleep_ms(40)
-        # never mind this, it's just for test, will be deleted soon
+    while switching_flag == 1:
+        if current_state == state[0]: # idle
+            current_state = state[1] # next is starting
+            oled.show_starting_info(oled1)
+        if current_state == state[1]: # starting
+            await swriter.awrite(rcd_prs)
+            print('rcd_prs sent')
+            await asyncio.sleep_ms(40)
+            await swriter.awrite(rcd_rls)
+            print('rcd_rls sent')
+        if current_state == state[2]: # recording
+            current_state = state[3]  # next is stopping
+        if current_state == state[3]: # stopping
+            await swriter.awrite(rcd_prs)
+            await asyncio.sleep_ms(40)
+            await swriter.awrite(rcd_rls)
+        if current_state == state[4]: # stopped
+            await asyncio.sleep_ms(1000)
+            current_state = state[0]  # next is idle
 
-async def receiver():
+        # if current_state == state[0]: # idle state
+        #     switching_flag = 0
+        #     arm_flag = 0
+        #     print('idle')
+        #     oled.show_idle_info(oled1)
+        #     if button1_trigger == 1:
+        #         switching_flag = 1
+        #         current_state = state[1]
+        # elif current_state == state[1]: # starting state
+        #     button1_trigger = 0
+        #     switching_flag = 0
+        #     print('starting')
+        #     oled.show_starting_info(oled1)
+        #     await swriter.awrite(rcd_prs)
+        #     await asyncio.sleep_ms(40)
+        #     await swriter.awrite(rcd_rls)
+        #     current_state = state[2]
+        # elif current_state == state[2]: # recording state
+        #     arm_flag = 1
+        #     switching_flag = 0
+        #     # print('recording')
+        #     oled.show_arm_info(oled1)
+        #     if button1_trigger == 1:
+        #         switching_flag = 1
+        #         current_state = state[3]
+        # elif current_state == state[3]: # stopping state      
+        #     button1_trigger = 0
+        #     switching_flag = 0
+        #     print('stopping')
+        #     oled.show_stopping_info(oled1)
+        #     await swriter.awrite(rcd_prs)
+        #     await asyncio.sleep_ms(40)
+        #     await swriter.awrite(rcd_rls)
+        #     current_state = state[4]
+        # elif current_state == state[4]: # stopped state
+        #     arm_flag = 0
+        #     switching_flag = 0
+        #     print('stopped')
+        #     oled.show_disarm_info(oled1)
+        #     await asyncio.sleep_ms(1000)
+        #     current_state = state[0] # back to idle state
+        #     switching_flag = 1
+
+
+async def receive_and_response():
+    global switching_flag
+    global arm_flag
     swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
     while True:
@@ -90,33 +128,34 @@ async def receiver():
         if res == cm_hdsk:
             await asyncio.sleep_ms(10)
             await swriter.awrite(cm_hdsk_ack)
-        elif res == b'%7610*':
+        elif res == cm_rcd_start:
             await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
-            await swriter.awrite(b'&76100*')
-        elif res == b'%7600*':
+            switching_flag = 0
+            arm_flag = 1
+            await swriter.awrite(cm_rcd_start_ack)
+            print('camera is recording')
+            oled.show_arm_info(oled1)
+        elif res == cm_rcd_stop:
             await asyncio.sleep_ms(10)
-            await swriter.awrite(b'&76000*')
+            switching_flag = 0
+            arm_flag = 0
+            await swriter.awrite(cm_rcd_stop_ack)
+            print('camera is stopped')
+            oled.show_disarm_info(oled1)
+
+def send_crsf_packet(t):
+    global arm_flag
+    if arm_flag == 1:
+        uart1.write(fc_arm_packet)
+    else:
+        uart1.write(fc_disarm_packet)
+timer1 = Timer(1)
+timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)
+
+
 
 loop = asyncio.get_event_loop()
-loop.create_task(sender())
-loop.create_task(receiver())
+# loop.create_task(sender())
+loop.create_task(check_state())
+loop.create_task(receive_and_response())
 loop.run_forever()
-# def test_change_button_flag():
-#     global test_button_flag
-#     if test_button_flag == 0:
-#         test_button_flag = 1
-#         uart2.write(cam_press_frame)
-#         oled.show_cam_press_info(oled1)
-#     else:
-#         test_button_flag = 0
-#         uart2.write(cam_release_frame)
-#         oled.show_cam_release_info(oled1)
-
-# def test_check_button():
-#     global press_count
-#     if p19.value() == 0:
-#         if press_count <=100:
-#             press_count += 1
-#         else:
-#             press_count = 0
-#             test_change_button_flag()

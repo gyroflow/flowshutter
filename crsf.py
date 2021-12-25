@@ -30,4 +30,4 @@ def init_packet():
 
     fc_disarm_frame = header + l_payload + l_crc
     fc_arm_frame = header + h_payload + h_crc
-    return fc_disarm_frame, fc_arm_frame
+    return fc_arm_frame, fc_disarm_frame
