@@ -10,7 +10,7 @@ UART with:
 
 ## Frame structure
 
-Each frame has a sam structure:
+Each frame has a same structure:
 ```
 <Device address> <Length> <Type> <Payload> <CRC>
 ```
