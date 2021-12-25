@@ -5,10 +5,31 @@ from time import sleep
 
 oled1 = oled.oled_init()
 
-uart1, uart2, _, button1 = target.init_pins()
+uart1, uart2, _, button1, button2 = target.init_pins()
 fc_arm_packet, fc_disarm_packet = crsf.init_packet()
-record_press_packet, record_release_packet, camera_verify_packet, camera_verify_packet_ack, camera_recording_packet, camrea_recording_packet_ack = sony_multiport.init_multiport_packet()
+rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_hb, cm_rcd_hb_ack = sony_multiport.init_multiport_packet()
 # this part should be fixed in future, too ugly :(
+
+button1_flag = 0
+button2_flag = 0
+
+def change_button1_flag():
+    global button1_flag
+    if button1_flag == 0:
+        button1_flag = 1
+        print('button1 tiggered')
+    else:
+        button1_flag = 0
+
+def change_button2_flag():
+    global button2_flag
+    if button2_flag == 0:
+        button2_flag = 1
+        print('button2 tiggered')
+    else:
+        button2_flag = 0
+
+
 def change_arm_flag():
     global arm_flag
     if arm_flag == 0:
@@ -18,17 +39,26 @@ def change_arm_flag():
         arm_flag = 0
         oled.show_disarm_info(oled1)
 
-press_count = 0
+button1_press_count = 0
+button2_press_count = 0
 def check_cmd(t):
-    global press_count
+    global button1_press_count
+    global button2_press_count
     if button1.value() == 0:
-        if press_count <=100:
-            press_count += 1
+        if button1_press_count <=100:
+            button1_press_count += 1
         else:
-            press_count = 0
-            change_arm_flag()
+            button1_press_count = 0
+            change_button1_flag()
+            # change_arm_flag()
     else:
-        press_count = 0
+        button1_press_count = 0
+    if button2.value() == 0:
+        if button2_press_count <=100:
+            button2_press_count += 1
+        else:
+            button2_press_count = 0
+            change_button2_flag()
 
 timer0 = Timer(0)
 timer0.init(period=5, mode=Timer.PERIODIC, callback=check_cmd)
@@ -44,11 +74,6 @@ def send_crsf_packet(t):
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)
 
-
-cam_press_frame = '#7100*' #ASCII is needed here
-cam_release_frame = '#7110*'
-test_button_flag = 0
-
 async def sender():
     swriter = asyncio.StreamWriter(uart2, {})
     while True:
@@ -62,12 +87,15 @@ async def receiver():
     while True:
         res = await sreader.read(n=-1)
         print('Cam sent:', res)
-        if res == b'%000*':
+        if res == cm_hdsk:
             await asyncio.sleep_ms(10)
-            await swriter.awrite(camera_verify_packet_ack)
-        elif res == b'%7614*':
-            await asyncio.sleep_ms(10)# I don't know if this timing is good, should look into it later
-            await swriter.awrite(camrea_recording_packet_ack)
+            await swriter.awrite(cm_hdsk_ack)
+        elif res == b'%7610*':
+            await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
+            await swriter.awrite(b'&76100*')
+        elif res == b'%7600*':
+            await asyncio.sleep_ms(10)
+            await swriter.awrite(b'&76000*')
 
 loop = asyncio.get_event_loop()
 loop.create_task(sender())
