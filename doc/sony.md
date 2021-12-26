@@ -46,7 +46,7 @@ When the remote board was plugged in, the voltage on UART lines will be pulled t
 - (10ms)
 - Remote: ``&00080*``
 
-### Heartbeat (?)
+### Handshake
 
 Same as above, camera send ``%000*`` command to remote board. The remote board should send a ``&00080*`` confirmation back to the camera 10ms after receiving the ``%000*`` command.
 
@@ -56,31 +56,39 @@ Same as above, camera send ``%000*`` command to remote board. The remote board s
 
 ### Record
 
-(Press video record button)
-- Remote: ``#7100*``
-- (no delay)
-- Camera: ``&71000*``
+Start recording from remote:
 
-(Release video record button)
-- Remote: ``#7110*``
-- (no delay)
-- Camera: ``&71100*``
+- remote: ``#7100*`` (button pressed)
+- camera: ``$71000*``
+- remote: ``#7110*`` (button released)
+- camera: ``$71100*``
+- 10ms
+- camera: ``%7610*`` (recording)
+- 10ms
+- remote: ``&76100*`` (recording ack)
 
-During recording, the camera will firstly send an ``%000*`` to the remote (I guess for querying? ) , then remote need to send a ``&00080*`` confirmation back to the camera 10ms after receiving the ``%000*`` command. The camera then will send a ``%7610*`` immediately, followed with ``%7611*``, ``%7612*``, ``%7613*`` and ``%7614*``, around [I forget] ms after receiving the ``%7614*``, the camera will send a ``&76140*`` command to the remote board.
+during recording
 
-- Camera: ``%000*``
-- (10ms)
-- Remote: ``&00080*``
-- Camera: ``%7610*``
-- (I forget this timing)
-- Camera: ``%7611*``
-- (I forget this timing)
-- Camera: ``%7612*``
-- (I forget this timing)
-- Camera: ``%7613*``
-- (I forget this timing)
-- Camera: ``%7614*``
-- (I forget this timing)
-- Remote: ``&76140*``
+- camera: ``%7610*`` (recording)
+- remote: ``&76100*`` (recording ack)
 
-Sometimes it is quite difficult to stop recording, I'm currently digging into it.
+Stop recording from remote:
+
+- remote: ``#7100*`` (button pressed)
+- camera: ``$71000*``
+- remote: ``#7110*`` (button released)
+- camera: ``$71100*``
+- 10ms
+- camera: ``%7600*`` (stopped)
+- 9ms (I don't know why)
+- remote: ``&76000*`` (stopped ack)
+
+If start recording from the camera, which means you press the "record" button on the camera, the camera will send two message to the remote board:
+
+- camera: ``%7610*`` (recording)
+- 10ms
+- remote: ``&76100*`` (recording ack)
+
+- camera: ``%7600*`` (stopped)
+- 9ms (I don't know why)
+- remote: ``&76000*`` (stopped ack)
