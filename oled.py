@@ -126,7 +126,7 @@ def draw_logo_recording(display):
     draw_cam(display)
     # change the "status"
     display.fill_rect(26,12,3,3,1)
-    # now the "shutter"
+    # now "open" the "shutter"
     display.hline(12,15,7,1)
     display.hline(11,16,9,1)
     display.hline(10,17,11,1)
