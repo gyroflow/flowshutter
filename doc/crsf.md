@@ -18,7 +18,7 @@ Each frame has a same structure:
 - Length: the length of (``<type> + <Payload> + <CRC>``). 1 byte.
 - Type: the type of the frame. 1 byte.
 - Payload: length depends on the frame type.
-- CRC: the CRC of the frame. 2 bytes.
+- CRC: the CRC of the frame. 1 byte.
 
 For RX => FC:
 - Device address: 0xC8 (FLIGHT_CONTROLLER)
