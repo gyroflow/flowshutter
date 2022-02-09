@@ -8,7 +8,7 @@ It was designed to be used with gyroflow software to provide you the best open s
 
 ## Hardware
 
-Community version can be found on [here](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban)
+Community version can be found on [here](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban). Checkout our [Build Video](https://www.youtube.com/watch?v=ELaQPYE9ncA)!
 
 ## Supported camera
 
