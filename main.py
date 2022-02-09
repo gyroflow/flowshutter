@@ -22,20 +22,11 @@ oled1 = oled.oled_init()
 
 uart1, _, _, button1, button2 = target.init_pins()
 fc_arm_packet, fc_disarm_packet = crsf.init_packet()
-state = ['idle', 'starting', 'recording', 'stopping', 'stopped']
 
-arm_state = "disarm"
 button1_press_count = 0
 button1_trigger = 0
 button2_press_count = 0
 button2_trigger = 0
-
-def change_arm(state):
-    if state == "arm":
-        state = "disarm"
-    elif state == "disarm":
-        state = "arm"
-    return state
 
 def check_button(t):
     global button1_press_count
@@ -44,13 +35,12 @@ def check_button(t):
     global button2_trigger
     global arm_state
     if button1.value() == 0:
-        if button1_press_count <=100:
+        if button1_press_count <=100:   # dead time is 100*5 = 500ms = 0.5s
             button1_press_count += 1
         else:
             button1_press_count = 0
             button1_trigger = 1
             print('button1 tiggered', button1_trigger)
-            arm_state = change_arm(arm_state)
     else:
         button1_press_count = 0
     if button2.value() == 0:
@@ -65,7 +55,6 @@ timer0 = Timer(0)
 timer0.init(period=5, mode=Timer.PERIODIC, callback=check_button)
 
 def send_crsf_packet(t):
-    #print(arm_state)
     if vars.arm_state == "arm":
         uart1.write(fc_arm_packet)
     elif vars.arm_state == "disarm":

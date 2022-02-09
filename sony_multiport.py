@@ -16,8 +16,8 @@
 import uasyncio as asyncio
 import vars,target,oled
 def init_multiport_packet():
-    rcd_prs = b'#7100*'
-    rcd_rls = b'#7110*'
+    rcd_prs = b'#7100*'     # record button pressed
+    rcd_rls = b'#7110*'     # record button released
 
     cm_hdsk = b'%000*'
     cm_hdsk_ack = b'&00080*'
@@ -46,18 +46,18 @@ async def uart_handler():
 
         elif res == cm_rcd_start:                   # receive record start
             await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
-            vars.arm_state = "arm"                       # Arm the FC
-            print(vars.arm_state)
+            vars.arm_state = "arm"                  # Arm the FC
+            vars.shutter_state = "recording"        # now in recording state
             await swriter.awrite(cm_rcd_start_ack)  # send record start ack to camera
-            print('camera is recording')
             oled.show_arm_info(oled1)
 
         elif res == cm_rcd_stop:                    # receive record stop
             await asyncio.sleep_ms(9)
-            vars.arm_state = "disarm"                    # disarm the FC
-            print(vars.arm_state)
+            vars.arm_state = "disarm"               # disarm the FC
+            vars.shutter_state = "stoping"          # now in stoping state
             await swriter.awrite(cm_rcd_stop_ack)   # send record stop ack to camera
-            print('camera is stopped')
             oled.show_disarm_info(oled1)
+
             await asyncio.sleep_ms(3000)
-            oled.show_idle_info(oled1)              # back to idle info
+            vars.shutter_state = "idle"             # back to idle state
+            oled.show_idle_info(oled1)              # and show idle info
