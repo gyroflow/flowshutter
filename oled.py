@@ -233,13 +233,13 @@ def display_battery(display):
     display.pixel(90,26,0)
     display.pixel(71,26,0)
 
-    display.fill_rect(93,5,20,22,1) # 100% battery
-    display.pixel(93,5,0)
-    display.pixel(112,5,0)
-    display.pixel(112,26,0)
-    display.pixel(93,26,0)
+    # display.fill_rect(93,5,20,22,1) # 100% battery
+    # display.pixel(93,5,0)
+    # display.pixel(112,5,0)
+    # display.pixel(112,26,0)
+    # display.pixel(93,26,0)
 
-    info = '3.8V' ## later this should be turn to some ADC values
+    info = '4.0V' ## later this should be turn to some ADC values
 
     for i in range(5):
         for j in range(5):

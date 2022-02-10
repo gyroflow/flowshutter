@@ -24,8 +24,8 @@ def init_oled_i2c():
     return i2c
 
 def init_buttons():
-    button1 = Pin(19, Pin.IN, Pin.PULL_UP)
-    button2 = Pin(18, Pin.IN, Pin.PULL_UP)
+    button1 = Pin(15, Pin.IN, Pin.PULL_UP)
+    button2 = Pin(27, Pin.IN, Pin.PULL_UP)
     return button1, button2
 
 def init_uart2():
