@@ -23,4 +23,6 @@ shutter_state = "idle"
 # "recording"
 # "stoping"
 
+button1_trigger = "no"
+button2_trigger = "no"
 ## Other settings is coming soon!
