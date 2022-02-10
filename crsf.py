@@ -13,7 +13,8 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-def init_packet():
+import target, vars
+def init():
 
     # 420000 baud rate
     # 8 bit per byte
@@ -45,4 +46,12 @@ def init_packet():
 
     fc_disarm_frame = header + l_payload + l_crc
     fc_arm_frame = header + h_payload + h_crc
-    return fc_arm_frame, fc_disarm_frame
+    uart1 = target.init_crsf_uart()
+    return fc_arm_frame, fc_disarm_frame, uart1
+
+fc_arm_packet, fc_disarm_packet, uart1 = init()
+def send_packet(t):
+    if vars.arm_state == "arm":
+        uart1.write(fc_arm_packet)
+    elif vars.arm_state == "disarm":
+        uart1.write(fc_disarm_packet)
