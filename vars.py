@@ -15,5 +15,12 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 ## ARM and DISARM global flag
 arm_state = "disarm"
+# "arm"
+
+## flowshutter working state
+shutter_state = "idle"
+# "starting"
+# "recording"
+# "stoping"
 
 ## Other settings is coming soon!
