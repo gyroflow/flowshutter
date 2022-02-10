@@ -26,6 +26,23 @@ timer0.init(period=5, mode=Timer.PERIODIC, callback=buttons.check)
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
 
+def menu_battery(t):
+    if vars.shutter_state == "idle":
+        if vars.button1_trigger == "yes":
+            vars.button1_trigger = "no"
+            oled.display_battery(oled1)
+            vars.shutter_state = "menu_battery"
+            print("show battery")
+    if vars.shutter_state == "menu_battery":
+        if vars.button1_trigger == "yes":
+            vars.button1_trigger = "no"
+            oled.show_idle_info(oled1)
+            vars.shutter_state = "idle"
+            print("show idle")
+
+timer2 = Timer(2)
+timer2.init(period=5, mode=Timer.PERIODIC, callback=menu_battery)
+
 camera_uart_handler = sony_multiport.uart_handler()
 
 loop = asyncio.get_event_loop()

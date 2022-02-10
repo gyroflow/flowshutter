@@ -188,3 +188,66 @@ def show_stopping_info(display):
     display.text('FC Armed', 40, 12, 1)
     display.text('Sony ending', 40, 24, 1)
     display.show()
+
+def display_battery(display):
+    display.fill(0)
+
+    display.rect(0,0,118,32,1)# battery's out border
+    display.pixel(0,0,0)
+    display.pixel(0,31,0)
+    display.pixel(117,31,0)
+    display.pixel(117,0,0) # four outer corners
+
+    display.rect(1,1,116,30,1) # battery's inner border
+    display.rect(2,2,114,28,1)
+    display.pixel(3,3,1)
+    display.pixel(114,3,1)
+    display.pixel(114,28,1)
+    display.pixel(3,28,1) # four inner corners
+
+    display.fill_rect(118,7,10,18,1) # battery's top
+    display.pixel(127,7,0)
+    display.pixel(127,24,0)
+
+    display.fill_rect(5,5,20,22,1) # 20% battery
+    display.pixel(5,5,0)
+    display.pixel(24,5,0)
+    display.pixel(24,26,0)
+    display.pixel(5,26,0)
+
+    display.fill_rect(27,5,20,22,1) # 40% battery
+    display.pixel(27,5,0)
+    display.pixel(46,5,0)
+    display.pixel(46,26,0)
+    display.pixel(27,26,0)
+
+    display.fill_rect(49,5,20,22,1) # 60% battery
+    display.pixel(49,5,0)
+    display.pixel(68,5,0)
+    display.pixel(68,26,0)
+    display.pixel(49,26,0)
+
+    display.fill_rect(71,5,20,22,1) # 80% battery
+    display.pixel(71,5,0)
+    display.pixel(90,5,0)
+    display.pixel(90,26,0)
+    display.pixel(71,26,0)
+
+    display.fill_rect(93,5,20,22,1) # 100% battery
+    display.pixel(93,5,0)
+    display.pixel(112,5,0)
+    display.pixel(112,26,0)
+    display.pixel(93,26,0)
+
+    info = '3.8V' ## later this should be turn to some ADC values
+
+    for i in range(5):
+        for j in range(5):
+            display.text(info,42+i, 11+j,0)
+
+
+    display.text(info,44,13,1)
+
+
+    # display.fill_rect(5,5,108,22,1)
+    display.show()
