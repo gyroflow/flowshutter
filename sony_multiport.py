@@ -32,7 +32,7 @@ def init_multiport_packet():
 
 async def uart_handler():
     rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_start, cm_rcd_start_ack, cm_rcd_stop, cm_rcd_stop_ack = init_multiport_packet()
-    _, uart2, _, _, _ = target.init_pins()
+    uart2 = target.init_uart2()
     oled1 = oled.oled_init()
     swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
@@ -52,7 +52,7 @@ async def uart_handler():
             oled.show_arm_info(oled1)
 
         elif res == cm_rcd_stop:                    # receive record stop
-            await asyncio.sleep_ms(9)
+            await asyncio.sleep_ms(8)
             vars.arm_state = "disarm"               # disarm the FC
             vars.shutter_state = "stoping"          # now in stoping state
             await swriter.awrite(cm_rcd_stop_ack)   # send record stop ack to camera

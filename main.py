@@ -13,15 +13,14 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import Pin, UART, Timer
+from machine import Pin, Timer
 import crsf, vars, oled, target, sony_multiport
 import uasyncio as asyncio
 from time import sleep
 
 oled1 = oled.oled_init()
 
-uart1, _, _, button1, button2 = target.init_pins()
-fc_arm_packet, fc_disarm_packet = crsf.init_packet()
+button1, button2 = target.init_buttons()
 
 button1_press_count = 0
 button1_trigger = 0
@@ -54,13 +53,8 @@ def check_button(t):
 timer0 = Timer(0)
 timer0.init(period=5, mode=Timer.PERIODIC, callback=check_button)
 
-def send_crsf_packet(t):
-    if vars.arm_state == "arm":
-        uart1.write(fc_arm_packet)
-    elif vars.arm_state == "disarm":
-        uart1.write(fc_disarm_packet)
 timer1 = Timer(1)
-timer1.init(period=4, mode=Timer.PERIODIC, callback=send_crsf_packet)
+timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
 
 camera_uart_handler = sony_multiport.uart_handler()
 
