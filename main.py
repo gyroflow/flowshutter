@@ -14,44 +14,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import Pin, Timer
-import crsf, vars, oled, target, sony_multiport
+import buttons, crsf, vars, oled, sony_multiport
 import uasyncio as asyncio
 from time import sleep
 
-oled1 = oled.oled_init()
-
-button1, button2 = target.init_buttons()
-
-button1_press_count = 0
-button1_trigger = 0
-button2_press_count = 0
-button2_trigger = 0
-
-def check_button(t):
-    global button1_press_count
-    global button1_trigger
-    global button2_press_count
-    global button2_trigger
-    global arm_state
-    if button1.value() == 0:
-        if button1_press_count <=100:   # dead time is 100*5 = 500ms = 0.5s
-            button1_press_count += 1
-        else:
-            button1_press_count = 0
-            button1_trigger = 1
-            print('button1 tiggered', button1_trigger)
-    else:
-        button1_press_count = 0
-    if button2.value() == 0:
-        if button2_press_count <=100:
-            button2_press_count += 1
-        else:
-            button2_press_count = 0
-            button2_trigger = 1
-            print('button2 triggered', button2_trigger)
+oled1 = oled.init()
 
 timer0 = Timer(0)
-timer0.init(period=5, mode=Timer.PERIODIC, callback=check_button)
+timer0.init(period=5, mode=Timer.PERIODIC, callback=buttons.check)
 
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)

@@ -33,7 +33,7 @@ def init_multiport_packet():
 async def uart_handler():
     rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_start, cm_rcd_start_ack, cm_rcd_stop, cm_rcd_stop_ack = init_multiport_packet()
     uart2 = target.init_uart2()
-    oled1 = oled.oled_init()
+    oled1 = oled.init()
     swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
     while True:

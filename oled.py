@@ -135,7 +135,7 @@ def draw_logo_recording(display):
     display.hline(11,24,9,1)
     display.hline(12,25,7,1)
 
-def oled_init():
+def init():
     i2c = target.init_oled_i2c()
     display = ssd1306.SSD1306_I2C(128, 32, i2c)
     display.fill(0)
