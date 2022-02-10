@@ -54,7 +54,7 @@ async def uart_handler():
         elif res == cm_rcd_stop:                    # receive record stop
             await asyncio.sleep_ms(8)
             vars.arm_state = "disarm"               # disarm the FC
-            vars.shutter_state = "stoping"          # now in stoping state
+            vars.shutter_state = "stopping"         # now in stopping state
             await swriter.awrite(cm_rcd_stop_ack)   # send record stop ack to camera
             oled.show_disarm_info(oled1)
 
