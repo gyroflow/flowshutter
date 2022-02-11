@@ -149,7 +149,7 @@ def init():
     display.show()
     return display
 
-def show_idle_info(display):
+def display_idle_info(display):
     display.fill(0)
     draw_logo_idle(display)
     display.text('FlowShutter', 40, 0, 1)
@@ -157,7 +157,7 @@ def show_idle_info(display):
     display.text('DusKing 0.3', 40, 24, 1)
     display.show()
 
-def show_arm_info(display):
+def display_arm_info(display):
     display.fill(0)
     draw_logo_recording(display)
     display.text('FlowShutter', 40, 0, 1)
@@ -165,7 +165,7 @@ def show_arm_info(display):
     display.text('Sony recording', 40, 24, 1)
     display.show()
 
-def show_disarm_info(display):
+def display_disarm_info(display):
     display.fill(0)
     draw_logo_idle(display)
     display.text('FlowShutter', 40, 0, 1)
@@ -173,7 +173,7 @@ def show_disarm_info(display):
     display.text('Sony stop', 40, 24, 1)
     display.show()
 
-def show_starting_info(display):
+def display_starting_info(display):
     display.fill(0)
     draw_logo_recording(display)
     display.text('Starting', 40, 0, 1)
@@ -181,7 +181,7 @@ def show_starting_info(display):
     display.text('Sony start', 40, 24, 1)
     display.show()
 
-def show_stopping_info(display):
+def display_stopping_info(display):
     display.fill(0)
     draw_logo_idle(display)
     display.text('Stopping', 40, 0, 1)
@@ -189,7 +189,7 @@ def show_stopping_info(display):
     display.text('Sony ending', 40, 24, 1)
     display.show()
 
-def display_battery(display):
+def draw_battery(display):
     display.fill(0)
 
     display.rect(0,0,118,32,1)# battery's out border
@@ -233,21 +233,29 @@ def display_battery(display):
     display.pixel(90,26,0)
     display.pixel(71,26,0)
 
-    # display.fill_rect(93,5,20,22,1) # 100% battery
-    # display.pixel(93,5,0)
-    # display.pixel(112,5,0)
-    # display.pixel(112,26,0)
-    # display.pixel(93,26,0)
+    display.fill_rect(93,5,20,22,1) # 100% battery
+    display.pixel(93,5,0)
+    display.pixel(112,5,0)
+    display.pixel(112,26,0)
+    display.pixel(93,26,0)
 
-    info = '4.0V' ## later this should be turn to some ADC values
+def display_menu_battery(display):
+    draw_battery(display)
 
+    voltage = '4.0V' # later this should be turn to some ADC values
     for i in range(5):
         for j in range(5):
-            display.text(info,42+i, 11+j,0)
+            display.text(voltage,42+i, 11+j,0)
+    display.text(voltage,44,13,1)
 
+    # also here should be some math to calculate the battery recct
 
-    display.text(info,44,13,1)
-
-
-    # display.fill_rect(5,5,108,22,1)
     display.show()
+
+def display_menu_test(display):
+    draw_logo_idle(display)
+    display.text('Test Menu', 40, 0, 1)
+    display.text('button2', 40, 12, 1)
+    display.text('increase set', 40, 24, 1)
+    display.show()
+

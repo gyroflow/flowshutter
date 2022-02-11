@@ -20,12 +20,21 @@ def update(t):
     if vars.shutter_state == "idle":
         if vars.button1_trigger == "yes":
             vars.button1_trigger = "no"
-            oled.display_battery(oled1)
+            oled.display_menu_battery(oled1)
             vars.shutter_state = "menu_battery"
             print("show battery")
     elif vars.shutter_state == "menu_battery":
         if vars.button1_trigger == "yes":
             vars.button1_trigger = "no"
-            oled.show_idle_info(oled1)
+            oled.display_menu_settings(oled1)
+            vars.shutter_state = "menu_test"
+    elif vars.shutter_state == "menu_test":
+        if vars.button2_trigger == "yes":
+            vars.button2_trigger = "no"
+
+
+        if vars.button1_trigger == "yes":
+            vars.button1_trigger = "no"
+            oled.display_idle_info(oled1)
             vars.shutter_state = "idle"
             print("show idle")

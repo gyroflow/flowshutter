@@ -18,6 +18,8 @@ import buttons, crsf, vars, sony_multiport,menu
 import uasyncio as asyncio
 from time import sleep
 
+import json
+
 timer0 = Timer(0)
 timer0.init(period=5, mode=Timer.PERIODIC, callback=buttons.check)
 
