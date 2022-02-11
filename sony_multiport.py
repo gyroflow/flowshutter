@@ -49,15 +49,15 @@ async def uart_handler():
             vars.arm_state = "arm"                  # Arm the FC
             vars.shutter_state = "recording"        # now in recording state
             await swriter.awrite(cm_rcd_start_ack)  # send record start ack to camera
-            oled.show_arm_info(oled1)
+            oled.display_arm_info(oled1)
 
         elif res == cm_rcd_stop:                    # receive record stop
             await asyncio.sleep_ms(8)
             vars.arm_state = "disarm"               # disarm the FC
             vars.shutter_state = "stopping"         # now in stopping state
             await swriter.awrite(cm_rcd_stop_ack)   # send record stop ack to camera
-            oled.show_disarm_info(oled1)
+            oled.display_disarm_info(oled1)
 
             await asyncio.sleep_ms(3000)
             vars.shutter_state = "idle"             # back to idle state
-            oled.show_idle_info(oled1)              # and show idle info
+            oled.display_idle_info(oled1)              # and show idle info
