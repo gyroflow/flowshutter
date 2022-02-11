@@ -14,27 +14,28 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import vars, target
-button1, button2 = target.init_buttons()
+button_page, button_enter = target.init_buttons()
 
-button1_press_count = 0
-button2_press_count = 0
+button_page_press_count = 0
+button_enter_press_count = 0
 
 def check(t):
-    global button1_press_count
-    global button2_press_count
-    if button1.value() == 0:
-        if button1_press_count <=100:   # dead time is 100*5 = 500ms = 0.5s
-            button1_press_count += 1
+    global button_page_press_count
+    global button_enter_press_count
+    if button_page.value() == 0:
+        if button_page_press_count <=20:   # dead time is 20*5 = 100ms = 0.1s
+            button_page_press_count += 1
         else:
-            button1_press_count = 0
-            vars.button1_trigger = "yes"
-            print('button1 tiggered', vars.button1_trigger)
+            button_page_press_count = 0
+            vars.button_page = "pressed"
+            print('button_page tiggered', vars.button_page)
+            
     else:
-        button1_press_count = 0
-    if button2.value() == 0:
-        if button2_press_count <=100:
-            button2_press_count += 1
+        button_page_press_count = 0
+    if button_enter.value() == 0:
+        if button_enter_press_count <=50:
+            button_enter_press_count += 1
         else:
-            button2_press_count = 0
-            vars.button2_trigger = "yes"
-            print('button2 triggered', vars.button2_trigger)
+            button_enter_press_count = 0
+            vars.button_enter = "pressed"
+            print('button_enter triggered', vars.button_enter)

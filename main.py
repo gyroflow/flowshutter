@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import Pin, Timer
-import buttons, crsf, vars, sony_multiport,menu
+import buttons, crsf, vars, sony_multiport,menu,settings
 import uasyncio as asyncio
 from time import sleep
 
-import json
+settings.read()
 
 timer0 = Timer(0)
 timer0.init(period=5, mode=Timer.PERIODIC, callback=buttons.check)
