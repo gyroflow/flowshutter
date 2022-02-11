@@ -23,8 +23,11 @@ shutter_state = "idle"
 # "recording"
 # "stopping"
 
-button1_trigger = "no"
-button2_trigger = "no"
+button_page = "released"
+button_enter = "released"
 ## Other settings is coming soon!
 
-somesetting = 1
+# user_settings:
+device_mode = "slave",
+inject_mode = "off",
+camera_protocol = "mtp"

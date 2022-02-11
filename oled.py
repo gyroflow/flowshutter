@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import Pin, I2C
-import ssd1306, time, target
+import vars, ssd1306, time, target
 
 def draw_cam(display):
     # start flowshutter logo
@@ -252,10 +252,26 @@ def display_menu_battery(display):
 
     display.show()
 
-def display_menu_test(display):
+def display_menu_device_mode(display):
+    display.fill(0)
     draw_logo_idle(display)
-    display.text('Test Menu', 40, 0, 1)
-    display.text('button2', 40, 12, 1)
-    display.text('increase set', 40, 24, 1)
+    display.text('Device Mode', 40, 0, 1)
+    display.text("".join(tuple(vars.device_mode)), 40, 12, 1)
+    display.text('Next Marker', 40, 24, 1)
     display.show()
 
+def display_menu_inject_mode(display):
+    display.fill(0)
+    draw_logo_idle(display)
+    display.text('Marker Inj', 40, 0, 1)
+    display.text("".join(tuple(vars.inject_mode)), 40, 12, 1)
+    display.text('Next cam', 40, 24, 1)
+    display.show()
+
+def display_menu_camera_protocol(display):
+    display.fill(0)
+    draw_logo_idle(display)
+    display.text('Camera Protocol', 40, 0, 1)
+    display.text(''.join(tuple(vars.camera_protocol)), 40, 12, 1)
+    display.text('PAGE to save', 40, 24, 1)
+    display.show()
