@@ -145,7 +145,7 @@ def init():
 
     display.text('FlowShutter', 40, 0, 1)
     display.text('Powered by', 40, 12, 1)
-    display.text('DusKing 0.3', 40, 24, 1)
+    display.text('DusKing 0.4', 40, 24, 1)
     display.show()
     return display
 
@@ -154,7 +154,7 @@ def display_idle_info(display):
     draw_logo_idle(display)
     display.text('FlowShutter', 40, 0, 1)
     display.text('Powered by', 40, 12, 1)
-    display.text('DusKing 0.3', 40, 24, 1)
+    display.text('DusKing 0.4', 40, 24, 1)
     display.show()
 
 def display_arm_info(display):
