@@ -13,29 +13,32 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
+import json, os
+import vars
+
+def _load_():
+    with open("settings.json", "r") as f:
+        settings = json.load(f)
+        vars.device_mode = settings["device_mode"]
+        vars.inject_mode = settings["inject_mode"]
+        vars.camera_protocol = settings["camera_protocol"]
+        print("settings.json loaded")
+        test = f.read()
+        f.close()
+
+def _write_default_():
+    with open("settings.json", "w") as f:
+        settings = {"device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
+        json.dump(settings, f)
+        f.close()
+    _load_()
 
 def read():
-    import os
-    import json
-    import vars
     try:
-        os.stat("settings.json")
-        with open("settings.json", "r") as f:
-            settings = json.load(f)
-            vars.device_mode = settings["device_mode"]
-            vars.inject_mode = settings["inject_mode"]
-            vars.camera_protocol = settings["camera_protocol"]
-            # print("settings loaded, value", vars.test)
-    except KeyError:
-        with open("settings.json", "w") as f:
-            settings = {
-                "device_mode": "slave",
-                "inject_mode": "off",
-                "camera_protocol": "mtp"
-                }
-            json.dump(settings, f)
-    except OSError:
-        with open("settings.json", "w") as f:
-            settings = {"device_mode":"slave","inject_mode":"off","camera_protocol":"mtp"}
-            # IDK what makes such difference here, but if I use the code above, then first two settings will be blocked.
-            json.dump(settings, f)
+        _load_()
+    except KeyError: # settings.json has new member(s)
+        print("overwrite default settings")
+        _write_default_()
+    except OSError: # settings.json does not exist
+        print("create default settings")
+        _write_default_()

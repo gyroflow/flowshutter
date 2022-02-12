@@ -28,6 +28,6 @@ button_enter = "released"
 ## Other settings is coming soon!
 
 # user_settings:
-device_mode = "slave",
-inject_mode = "off",
-camera_protocol = "mtp"
+device_mode = "SLAVE",
+inject_mode = "OFF",
+camera_protocol = "Sony MTP"
