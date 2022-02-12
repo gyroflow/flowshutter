@@ -37,10 +37,10 @@ def update(t):
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
 
-            if vars.device_mode == "slave":
-                vars.device_mode = "master"
-            elif vars.device_mode == "master":
-                vars.device_mode = "slave"
+            if vars.device_mode == "SLAVE":
+                vars.device_mode = "MASTER/SLAVE"
+            elif vars.device_mode == "MASTER/SLAVE":
+                vars.device_mode = "SLAVE"
             oled.display_menu_device_mode(oled1)
 
         ## device mode ==> inject mode
@@ -53,10 +53,10 @@ def update(t):
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
 
-            if vars.inject_mode == "off":
-                vars.inject_mode = "on"
-            elif vars.inject_mode == "on":
-                vars.inject_mode = "off"
+            if vars.inject_mode == "OFF":
+                vars.inject_mode = "ON"
+            elif vars.inject_mode == "ON":
+                vars.inject_mode = "OFF"
             oled.display_menu_inject_mode(oled1)
 
         ## inject mode ==> camera protocol
@@ -69,10 +69,10 @@ def update(t):
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
 
-            if vars.camera_protocol == "mtp":
-                vars.camera_protocol = "usb"
-            elif vars.camera_protocol == "usb":
-                vars.camera_protocol = "mtp"
+            if vars.camera_protocol == "Sony MTP":
+                vars.camera_protocol = "new protocol"
+            elif vars.camera_protocol == "new protocol":
+                vars.camera_protocol = "Sony MTP"
             ## this is not correct ATM, need to fix in future
             oled.display_menu_camera_protocol(oled1)
             

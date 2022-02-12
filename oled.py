@@ -255,23 +255,23 @@ def display_menu_battery(display):
 def display_menu_device_mode(display):
     display.fill(0)
     draw_logo_idle(display)
-    display.text('Device Mode', 40, 0, 1)
-    display.text("".join(tuple(vars.device_mode)), 40, 12, 1)
-    display.text('Next Marker', 40, 24, 1)
+    display.text('Device Mode', 34, 0, 1)
+    display.text("".join(tuple(vars.device_mode)), 34, 12, 1)
+    display.text('Next Marker', 34, 24, 1)
     display.show()
 
 def display_menu_inject_mode(display):
     display.fill(0)
     draw_logo_idle(display)
-    display.text('Marker Inj', 40, 0, 1)
-    display.text("".join(tuple(vars.inject_mode)), 40, 12, 1)
-    display.text('Next cam', 40, 24, 1)
+    display.text('Injection', 34, 0, 1)
+    display.text("".join(tuple(vars.inject_mode)), 34, 12, 1)
+    display.text('Next Camera', 34, 24, 1)
     display.show()
 
 def display_menu_camera_protocol(display):
     display.fill(0)
     draw_logo_idle(display)
-    display.text('Camera Protocol', 40, 0, 1)
-    display.text(''.join(tuple(vars.camera_protocol)), 40, 12, 1)
-    display.text('PAGE to save', 40, 24, 1)
+    display.text('Cam Protocol', 34, 0, 1)
+    display.text(''.join(tuple(vars.camera_protocol)), 34, 12, 1)
+    display.text('PAGE to save', 34, 24, 1)
     display.show()
