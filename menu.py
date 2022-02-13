@@ -26,6 +26,7 @@ def update(t):
             vars.shutter_state = "menu_battery"
             print("show battery")
     
+
     elif vars.shutter_state == "menu_battery":
         ## battery ==> device mode
         if vars.button_page == "pressed":
@@ -33,14 +34,12 @@ def update(t):
             oled.display_menu_device_mode(oled1)
             vars.shutter_state = "menu_device_mode"
     
+
     elif vars.shutter_state == "menu_device_mode":
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
 
-            if vars.device_mode == "SLAVE":
-                vars.device_mode = "MASTER/SLAVE"
-            elif vars.device_mode == "MASTER/SLAVE":
-                vars.device_mode = "SLAVE"
+            vars.device_mode = vars.next(vars.device_mode_range, vars.device_mode)
             oled.display_menu_device_mode(oled1)
 
         ## device mode ==> inject mode
@@ -49,14 +48,12 @@ def update(t):
             oled.display_menu_inject_mode(oled1)
             vars.shutter_state = "menu_inject_mode"
 
+
     elif vars.shutter_state == "menu_inject_mode":
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
 
-            if vars.inject_mode == "OFF":
-                vars.inject_mode = "ON"
-            elif vars.inject_mode == "ON":
-                vars.inject_mode = "OFF"
+            vars.inject_mode = vars.next(vars.inject_mode_range, vars.inject_mode)
             oled.display_menu_inject_mode(oled1)
 
         ## inject mode ==> camera protocol
@@ -65,22 +62,18 @@ def update(t):
             oled.display_menu_camera_protocol(oled1)
             vars.shutter_state = "menu_camera_protocol"
 
+
     elif vars.shutter_state == "menu_camera_protocol":
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
 
-            if vars.camera_protocol == "Sony MTP":
-                vars.camera_protocol = "new protocol"
-            elif vars.camera_protocol == "new protocol":
-                vars.camera_protocol = "Sony MTP"
-            ## this is not correct ATM, need to fix in future
+            vars.camera_protocol = vars.next(vars.camera_protocol_range, vars.camera_protocol)
             oled.display_menu_camera_protocol(oled1)
             
         if vars.button_page == "pressed":
             vars.button_page = "released"
-            oled.display_idle_info(oled1)
-            vars.shutter_state = "idle"
-            print("show idle")
+
+            print("show idle")##save settings
             with open("settings.json", "w") as f:
                 settings = {
                     "device_mode": vars.device_mode,
@@ -89,3 +82,5 @@ def update(t):
                     }
                 json.dump(settings, f)
                 f.close()
+            oled.display_idle_info(oled1)
+            vars.shutter_state = "idle"

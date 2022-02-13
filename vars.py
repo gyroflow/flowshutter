@@ -28,6 +28,16 @@ button_enter = "released"
 ## Other settings is coming soon!
 
 # user_settings:
-device_mode = "SLAVE",
-inject_mode = "OFF",
-camera_protocol = "Sony MTP"
+device_mode = "NA",
+inject_mode = "NA",
+camera_protocol = "NA"
+
+device_mode_range = ["SLAVE", "MASTER/SLAVE"]
+inject_mode_range = ["OFF", "ON"]
+camera_protocol_range = ["Sony MTP", "New protocol"]
+
+def next(range, current):
+    if current == range[-1]:
+        return range[0]
+    else:
+        return range[range.index(current) + 1]
