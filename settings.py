@@ -26,19 +26,18 @@ def _load_():
         test = f.read()
         f.close()
 
-def _write_default_():
+def write_default():
     with open("settings.json", "w") as f:
         settings = {"device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
         json.dump(settings, f)
         f.close()
     _load_()
-
 def read():
     try:
         _load_()
     except KeyError: # settings.json has new member(s)
         print("overwrite default settings")
-        _write_default_()
+        write_default()
     except OSError: # settings.json does not exist
         print("create default settings")
-        _write_default_()
+        write_default()

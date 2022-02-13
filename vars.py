@@ -37,7 +37,16 @@ inject_mode_range = ["OFF", "ON"]
 camera_protocol_range = ["Sony MTP", "New protocol"]
 
 def next(range, current):
-    if current == range[-1]:
-        return range[0]
-    else:
-        return range[range.index(current) + 1]
+    try:
+        index = range.index(current)
+        if index == len(range) - 1:
+            return range[0]
+        else:
+            return range[index + 1]
+    except ValueError:
+        import settings, oled
+        settings.write_default()
+        print("Error: settings.json is corrupted. Overwritten a new one.")
+        print("Please reboot the device.")
+        ## later there should implenment an error message on the OLED
+        settings.read()
