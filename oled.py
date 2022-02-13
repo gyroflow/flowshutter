@@ -143,50 +143,50 @@ def init():
     draw_logo_idle(display)
     # draw_logo_recording(display)
 
-    display.text('FlowShutter', 40, 0, 1)
-    display.text('Powered by', 40, 12, 1)
-    display.text('DusKing 0.4', 40, 24, 1)
+    display.text('FlowShutter', 34, 0, 1)
+    display.text('Powered by', 34, 12, 1)
+    display.text('DusKing 0.41', 34, 24, 1)
     display.show()
     return display
 
 def display_idle_info(display):
     display.fill(0)
     draw_logo_idle(display)
-    display.text('FlowShutter', 40, 0, 1)
-    display.text('Powered by', 40, 12, 1)
-    display.text('DusKing 0.4', 40, 24, 1)
+    display.text('FlowShutter', 34, 0, 1)
+    display.text('Powered by', 34, 12, 1)
+    display.text('DusKing 0.41', 34, 24, 1)
     display.show()
 
 def display_arm_info(display):
     display.fill(0)
     draw_logo_recording(display)
-    display.text('FlowShutter', 40, 0, 1)
-    display.text('FC Armed', 40, 12, 1)
-    display.text('Sony recording', 40, 24, 1)
+    display.text('FlowShutter', 34, 0, 1)
+    display.text('FC Armed', 34, 12, 1)
+    display.text('Sony recording', 34, 24, 1)
     display.show()
 
 def display_disarm_info(display):
     display.fill(0)
     draw_logo_idle(display)
-    display.text('FlowShutter', 40, 0, 1)
-    display.text('FC Disarmed', 40, 12, 1)
-    display.text('Sony stop', 40, 24, 1)
+    display.text('FlowShutter', 34, 0, 1)
+    display.text('FC Disarmed', 34, 12, 1)
+    display.text('Sony stop', 34, 24, 1)
     display.show()
 
 def display_starting_info(display):
     display.fill(0)
     draw_logo_recording(display)
-    display.text('Starting', 40, 0, 1)
-    display.text('FC Disarmed', 40, 12, 1)
-    display.text('Sony start', 40, 24, 1)
+    display.text('Starting', 34, 0, 1)
+    display.text('FC Disarmed', 34, 12, 1)
+    display.text('Sony start', 34, 24, 1)
     display.show()
 
 def display_stopping_info(display):
     display.fill(0)
     draw_logo_idle(display)
-    display.text('Stopping', 40, 0, 1)
-    display.text('FC Armed', 40, 12, 1)
-    display.text('Sony ending', 40, 24, 1)
+    display.text('Stopping', 34, 0, 1)
+    display.text('FC Armed', 34, 12, 1)
+    display.text('Sony ending', 34, 24, 1)
     display.show()
 
 def draw_battery(display):

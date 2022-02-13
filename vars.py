@@ -28,6 +28,7 @@ button_enter = "released"
 ## Other settings is coming soon!
 
 # user_settings:
+version = "0.41"
 device_mode = "NA",
 inject_mode = "NA",
 camera_protocol = "NA"

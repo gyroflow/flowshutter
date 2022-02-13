@@ -19,6 +19,10 @@ import vars
 def _load_():
     with open("settings.json", "r") as f:
         settings = json.load(f)
+        if vars.version != settings["version"]:
+            print("settings.json is outdated")
+            write_default()
+        vars.version = settings["version"]
         vars.device_mode = settings["device_mode"]
         vars.inject_mode = settings["inject_mode"]
         vars.camera_protocol = settings["camera_protocol"]
@@ -28,7 +32,7 @@ def _load_():
 
 def write_default():
     with open("settings.json", "w") as f:
-        settings = {"device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
+        settings = {"version":"0.41","device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
         json.dump(settings, f)
         f.close()
     _load_()
