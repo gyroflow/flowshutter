@@ -13,14 +13,14 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import UART, Pin, I2C
+from machine import UART, Pin, SoftI2C
 
 def init_crsf_uart():
     uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 33, rx = 32)
     return uart1
 
-def init_oled_i2c():
-    i2c = I2C(-1, scl=Pin(22), sda=Pin(21))
+def init_i2c():
+    i2c = SoftI2C(scl=Pin(22), sda=Pin(21))
     return i2c
 
 def init_buttons():
