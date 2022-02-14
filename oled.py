@@ -145,7 +145,8 @@ def init():
 
     display.text('FlowShutter', 34, 0, 1)
     display.text('Powered by', 34, 12, 1)
-    display.text('DusKing 0.41', 34, 24, 1)
+    display.text('DusKing', 34, 24, 1)
+    display.text("".join(tuple(vars.version)), 98, 24, 1)
     display.show()
     return display
 
@@ -154,7 +155,8 @@ def display_idle_info(display):
     draw_logo_idle(display)
     display.text('FlowShutter', 34, 0, 1)
     display.text('Powered by', 34, 12, 1)
-    display.text('DusKing 0.41', 34, 24, 1)
+    display.text('DusKing', 34, 24, 1)
+    display.text("".join(tuple(vars.version)), 98, 24, 1)
     display.show()
 
 def display_arm_info(display):
@@ -272,6 +274,6 @@ def display_menu_camera_protocol(display):
     display.fill(0)
     draw_logo_idle(display)
     display.text('Cam Protocol', 34, 0, 1)
-    display.text(''.join(tuple(vars.camera_protocol)), 34, 12, 1)
+    display.text("".join(tuple(vars.camera_protocol)), 34, 12, 1)
     display.text('PAGE to save', 34, 24, 1)
     display.show()
