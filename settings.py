@@ -19,12 +19,17 @@ import vars
 def _load_():
     with open("settings.json", "r") as f:
         settings = json.load(f)
+
         if vars.version != settings["version"]:
             print("settings.json is outdated")
+            f.close()
             write_default()
+            print("updated settings.json")
+            f = open("settings.json", "r")
             vars.version = vars.version
         else:
             vars.version = settings["version"]
+
         vars.device_mode = settings["device_mode"]
         vars.inject_mode = settings["inject_mode"]
         vars.camera_protocol = settings["camera_protocol"]
@@ -41,10 +46,18 @@ def read():
     try:
         _load_()
     except KeyError: # settings.json has new member(s)
-        print("overwrite default settings")
+        print("New members. Overwriting default settings")
+        ## test
+        f=open("settings.json", "r")
+        print("".join(f.read()))
+        ## test end
         write_default()
         _load_()
     except OSError: # settings.json does not exist
-        print("create default settings")
+        print("no settings.json was found. Creating default settings")
         write_default()
         _load_()
+    ## test
+    f=open("settings.json", "r")
+    print("".join(f.read()))
+    ## test end

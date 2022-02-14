@@ -76,11 +76,16 @@ def update(t):
             print("show idle")##save settings
             with open("settings.json", "w") as f:
                 settings = {
+                    "version": vars.version,
                     "device_mode": vars.device_mode,
                     "inject_mode": vars.inject_mode,
                     "camera_protocol": vars.camera_protocol
                     }
                 json.dump(settings, f)
                 f.close()
+            ## test
+            f=open("settings.json", "r")
+            print("".join(f.read()))
+            ## test end
             oled.display_idle_info(oled1)
             vars.shutter_state = "idle"
