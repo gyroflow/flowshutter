@@ -28,10 +28,10 @@ button_enter = "released"
 ## Other settings is coming soon!
 
 # user_settings:
-version = "0.41"
-device_mode = "NA",
-inject_mode = "NA",
-camera_protocol = "NA"
+version = "0.42" # this should be update firstly!
+device_mode = "SLAVE"
+inject_mode = "OFF"
+camera_protocol = "Sony MTP"
 
 device_mode_range = ["SLAVE", "MASTER/SLAVE"]
 inject_mode_range = ["OFF", "ON"]
