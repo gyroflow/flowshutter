@@ -2,9 +2,9 @@
 
 Flowshutter is a customize camera remote written in micropython.
 
-It can synchronize vedio recording of the camera and blackbox logging of your motion logger (in most cases betaflight/emuflight controller with flash chip or SD card). 
+It can synchronize video recording of the camera and blackbox logging of your motion logger (in most cases betaflight/emuflight controller with flash chip or SD card).
 
-It was designed to be used with gyroflow software to provide you the best open source video stabilization experience.
+It was designed to be used with [gyroflow](https://github.com/gyroflow/gyroflow) software to provide you the best open source video stabilization experience.
 
 ## Hardware
 
