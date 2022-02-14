@@ -44,9 +44,9 @@ def next(range, current):
             return range[0]
         else:
             return range[index + 1]
-    except ValueError:
+    except ValueError:# current parameter is not in the parameter range
         import settings, oled
-        settings.write_default()
+        settings.update()    # then we write default settings
         print("Error: settings.json is corrupted. Overwritten a new one.")
         print("Please reboot the device.")
         ## later there should implenment an error message on the OLED

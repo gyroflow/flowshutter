@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import oled, vars, json
+import oled, vars, json, settings
 oled1 = oled.init()
 
 def update(t):
@@ -73,16 +73,8 @@ def update(t):
         if vars.button_page == "pressed":
             vars.button_page = "released"
 
-            print("show idle")##save settings
-            with open("settings.json", "w") as f:
-                settings = {
-                    "version": vars.version,
-                    "device_mode": vars.device_mode,
-                    "inject_mode": vars.inject_mode,
-                    "camera_protocol": vars.camera_protocol
-                    }
-                json.dump(settings, f)
-                f.close()
+            print("show idle")  
+            settings.update()   #save settings
             ## test
             f=open("settings.json", "r")
             print("".join(f.read()))
