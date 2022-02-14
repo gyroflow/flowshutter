@@ -23,9 +23,9 @@ def _load_():
         if vars.version != settings["version"]:
             print("settings.json is outdated")
             f.close()
-            write_default()
+            update()        # here we should write the default settings
             print("updated settings.json")
-            f = open("settings.json", "r")
+            f = open("settings.json", "r") # then read again, cuz update() closed the file
             vars.version = vars.version
         else:
             vars.version = settings["version"]
@@ -36,7 +36,7 @@ def _load_():
         print("settings.json loaded")
         f.close()
 
-def write_default():
+def update():
     with open("settings.json", "w") as f:
         settings = {"version":vars.version,"device_mode":vars.device_mode, "inject_mode":vars.inject_mode, "camera_protocol":vars.camera_protocol}
         json.dump(settings, f)
@@ -45,17 +45,17 @@ def write_default():
 def read():
     try:
         _load_()
-    except KeyError: # settings.json has new member(s)
+    except KeyError:    # settings.json has new member(s)
         print("New members. Overwriting default settings")
         ## test
         f=open("settings.json", "r")
         print("".join(f.read()))
         ## test end
-        write_default()
+        update()        # here we should write the default settings
         _load_()
-    except OSError: # settings.json does not exist
+    except OSError:     # settings.json does not exist
         print("no settings.json was found. Creating default settings")
-        write_default()
+        update()        # here we should write the default settings
         _load_()
     ## test
     f=open("settings.json", "r")
