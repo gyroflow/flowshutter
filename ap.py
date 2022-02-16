@@ -13,12 +13,13 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import network, vars
+import network, gc, vars
 
 ap = network.WLAN(network.AP_IF)
 ap.config(essid='Flowshutter', authmode=network.AUTH_WPA_WPA2_PSK, password='ilovehugo')
 
 def up():
+    gc.collect()
     vars.ap_state = "UP"
     ap.active(True)
 

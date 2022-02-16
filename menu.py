@@ -44,7 +44,7 @@ def update(t):
 
         if vars.button_enter == "pressed":
             vars.button_enter = "released"
-            if vars.ap_state == "down":
+            if vars.ap_state == "DOWN":
                 ap.up()
                 oled.display_menu_ap_mode(oled1)
             else:
