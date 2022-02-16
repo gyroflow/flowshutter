@@ -28,7 +28,7 @@ def check(t):
         else:
             button_page_press_count = 0
             vars.button_page = "pressed"
-            print('button_page tiggered', vars.button_page)
+            print('button_page ', vars.button_page)
             
     else:
         button_page_press_count = 0
@@ -38,4 +38,4 @@ def check(t):
         else:
             button_enter_press_count = 0
             vars.button_enter = "pressed"
-            print('button_enter triggered', vars.button_enter)
+            print('button_enter ', vars.button_enter)

@@ -23,9 +23,15 @@ shutter_state = "idle"
 # "recording"
 # "stopping"
 
+## button state
 button_page = "released"
 button_enter = "released"
+
+## WLAN state
+ap_state = "DOWN"
+wifi_state = "disconneted"
 ## Other settings is coming soon!
+
 
 # user_settings:
 version = "0.42" # this should be update firstly!
