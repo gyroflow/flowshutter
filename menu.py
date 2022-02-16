@@ -33,6 +33,31 @@ def update(t):
             vars.button_page = "released"
             oled.display_menu_device_mode(oled1)
             vars.shutter_state = "menu_device_mode"
+        
+        if vars.button_enter == "pressed":
+            vars.button_enter = "released"
+            oled.display_menu_ap_mode(oled1)
+            vars.shutter_state = "menu_ap_mode"
+
+    elif vars.shutter_state == "menu_ap_mode":
+        import ap
+
+        if vars.button_enter == "pressed":
+            vars.button_enter = "released"
+            if vars.ap_state == "down":
+                ap.up()
+                oled.display_menu_ap_mode(oled1)
+            else:
+                ap.down()
+                oled.display_menu_ap_mode(oled1)
+
+
+        ## ap mode ==> battery
+        if vars.button_page == "pressed":
+            vars.button_page = "released"
+            oled.display_menu_battery(oled1)
+            vars.shutter_state = "idle"
+            print("show battery")
     
 
     elif vars.shutter_state == "menu_device_mode":

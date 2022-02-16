@@ -277,3 +277,11 @@ def display_menu_camera_protocol(display):
     display.text("".join(tuple(vars.camera_protocol)), 34, 12, 1)
     display.text('PAGE to save', 34, 24, 1)
     display.show()
+
+def display_menu_ap_mode(display):
+    display.fill(0)
+    draw_logo_idle(display)
+    display.text('Access Point', 34, 0, 1)
+    display.text("".join(tuple(vars.ap_state)), 34, 12, 1)
+    display.text('NEXT Battery', 34, 24, 1)
+    display.show()
