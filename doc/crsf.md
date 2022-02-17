@@ -1,6 +1,7 @@
 ## Hardware specification
 
 UART with:
+- RS232
 - 420000 baud rate
 - 8 bits per byte
 - 1 stop bit
