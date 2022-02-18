@@ -19,6 +19,7 @@ Sony pin part's definition is here:
 - 10: 3V3
 
 UART with:
+- RS232
 - 9600 baud rate
 - 8 bits per byte
 - 1 stop bit
