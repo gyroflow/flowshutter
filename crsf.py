@@ -15,9 +15,9 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import crsf_gen,target, vars
 def init():
-    disarm_packet = crsf_gen.build_rc_packet(  992,992,189,992,189,992,992,992,
+    disarm_packet = crsf_gen.build_rc_packet(   992,992,189,992,189,992,992,992,
                                                 992,992,992,992,992,992,992,992)
-    arm_packet = crsf_gen.build_rc_packet(     992,992,189,992,1800,992,992,992,
+    arm_packet = crsf_gen.build_rc_packet(      992,992,189,992,1800,992,992,992,
                                                 992,992,992,992,992,992,992,992)
 
     uart1 = target.init_crsf_uart()

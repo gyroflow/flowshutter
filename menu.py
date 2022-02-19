@@ -19,6 +19,21 @@ oled1 = oled.init()
 def update(t):
     
     if vars.shutter_state == "idle":
+
+
+        if vars.button_enter == "pressed":
+            vars.button_enter = "released"
+            if vars.device_mode == "MASTER/SLAVE":
+
+                if vars.arm_state == "disarm":
+                    oled.display_arm_info(oled1)
+                    vars.arm_state = "arm"
+                else:
+                    oled.display_disarm_info(oled1)
+                    vars.arm_state = "disarm"
+
+
+
         ## idle ==> battery
         if vars.button_page == "pressed":
             vars.button_page = "released"

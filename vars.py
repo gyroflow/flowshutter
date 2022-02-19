@@ -35,7 +35,7 @@ wifi_state = "disconneted"
 
 
 # user_settings:
-version = "0.42" # this should be update firstly!
+version = "0.42" # when new user settings added, this should be update firstly!
 device_mode = "SLAVE"
 inject_mode = "OFF"
 camera_protocol = "Sony MTP"
