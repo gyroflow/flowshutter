@@ -16,22 +16,22 @@
 import uasyncio as asyncio
 import vars,target,oled
 def init_multiport_packet():
-    rcd_prs = b'#7100*'     # record button pressed
-    rcd_rls = b'#7110*'     # record button released
+    REC_PRESS = b'#7100*'     # record button pressed
+    REC_RELEASE = b'#7110*'     # record button released
 
-    cm_hdsk = b'%000*'
-    cm_hdsk_ack = b'&00080*'
+    HANDSHAKE = b'%000*'
+    HANDSHAKE_ACK = b'&00080*'
 
-    cm_rcd_start = b'%7610*'
-    cm_rcd_start_ack = b'&76100*'
+    REC_START = b'%7610*'
+    REC_START_ACK = b'&76100*'
 
-    cm_rcd_stop  = b'%7600*'
-    cm_rcd_stop_ack = b'&76000*'
+    REC_STOP  = b'%7600*'
+    REC_STOP_ACK = b'&76000*'
 
-    return rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_start, cm_rcd_start_ack, cm_rcd_stop, cm_rcd_stop_ack
+    return REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK
 
 async def uart_handler():
-    rcd_prs, rcd_rls, cm_hdsk, cm_hdsk_ack, cm_rcd_start, cm_rcd_start_ack, cm_rcd_stop, cm_rcd_stop_ack = init_multiport_packet()
+    REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = init_multiport_packet()
     uart2 = target.init_uart2()
     oled1 = oled.init()
     swriter = asyncio.StreamWriter(uart2, {})
@@ -40,22 +40,22 @@ async def uart_handler():
         res = await sreader.read(n=-1)
         print('Cam sent:', res)
 
-        if res == cm_hdsk:                          # receive handshake
+        if res == HANDSHAKE:                          # receive handshake
             await asyncio.sleep_ms(10)
-            await swriter.awrite(cm_hdsk_ack)       # send handshake ack to camera
+            await swriter.awrite(HANDSHAKE_ACK)       # send handshake ack to camera
 
-        elif res == cm_rcd_start:                   # receive record start
+        elif res == REC_START:                   # receive record start
             await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
             vars.arm_state = "arm"                  # Arm the FC
             vars.shutter_state = "recording"        # now in recording state
-            await swriter.awrite(cm_rcd_start_ack)  # send record start ack to camera
+            await swriter.awrite(REC_START_ACK)  # send record start ack to camera
             oled.display_arm_info(oled1)
 
-        elif res == cm_rcd_stop:                    # receive record stop
+        elif res == REC_STOP:                    # receive record stop
             await asyncio.sleep_ms(8)
             vars.arm_state = "disarm"               # disarm the FC
             vars.shutter_state = "stopping"         # now in stopping state
-            await swriter.awrite(cm_rcd_stop_ack)   # send record stop ack to camera
+            await swriter.awrite(REC_STOP_ACK)   # send record stop ack to camera
             oled.display_disarm_info(oled1)
 
             await asyncio.sleep_ms(3000)
