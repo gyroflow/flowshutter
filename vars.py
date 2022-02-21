@@ -56,5 +56,5 @@ def next(range, current):
         settings.update()    # then we write default settings
         print("Error: settings.json is corrupted. Overwritten a new one.")
         print("Please reboot the device.")
-        ## later there should implenment an error message on the OLED
+        ## TODO: later there should implenment an error message on the OLED
         settings.read()
