@@ -42,7 +42,7 @@ with many more features on the way!
 
 Flowshutter haven't worked with any manufacturer yet. So there's no "Ready-to-Use" commercial hardware/product yet.
 
-However you can try to build an official design from us at your own! The community version can be found on [here](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban). Check out our [Build Video](https://www.youtube.com/watch?v=ELaQPYE9ncA)!
+However you can try to build an official design from us at your own! The community [credit card sized design](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban) and [FC sized design](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban_copy_copy) are already open-sourced. Check out our [Build Video](https://www.youtube.com/watch?v=ELaQPYE9ncA)!
 
 [![Build Video](images/diy-your-own-flowshutter.png)](https://www.youtube.com/watch?v=ELaQPYE9ncA)
 
