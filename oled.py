@@ -13,8 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import Pin, I2C
-import vars, ssd1306, time, target
+import vars, ssd1306, target
 
 def draw_cam(display):
     # start flowshutter logo
@@ -159,7 +158,7 @@ def display_idle_info(display):
     display.text("".join(tuple(vars.version)), 98, 24, 1)
     display.show()
 
-def display_arm_info(display):
+def display_recording_info(display):
     display.fill(0)
     draw_logo_recording(display)
     display.text('FlowShutter', 34, 0, 1)
@@ -167,7 +166,7 @@ def display_arm_info(display):
     display.text('Sony recording', 34, 24, 1)
     display.show()
 
-def display_disarm_info(display):
+def display_stopping_info(display):
     display.fill(0)
     draw_logo_idle(display)
     display.text('FlowShutter', 34, 0, 1)
@@ -250,7 +249,7 @@ def display_menu_battery(display):
             display.text(voltage,42+i, 11+j,0)
     display.text(voltage,44,13,1)
 
-    # also here should be some math to calculate the battery recct
+    # TODO: also here should be some math to calculate the battery recct
 
     display.show()
 

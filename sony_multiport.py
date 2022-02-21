@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
-import vars,target,oled
+import vars,target
 def init_multiport_packet():
     REC_PRESS = b'#7100*'     # record button pressed
     REC_RELEASE = b'#7110*'     # record button released
@@ -33,7 +33,6 @@ def init_multiport_packet():
 async def uart_handler():
     REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = init_multiport_packet()
     uart2 = target.init_uart2()
-    oled1 = oled.init()
     swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
     while True:
@@ -49,15 +48,12 @@ async def uart_handler():
             vars.arm_state = "arm"                  # Arm the FC
             vars.shutter_state = "recording"        # now in recording state
             await swriter.awrite(REC_START_ACK)  # send record start ack to camera
-            oled.display_arm_info(oled1)
 
         elif res == REC_STOP:                    # receive record stop
             await asyncio.sleep_ms(8)
             vars.arm_state = "disarm"               # disarm the FC
             vars.shutter_state = "stopping"         # now in stopping state
             await swriter.awrite(REC_STOP_ACK)   # send record stop ack to camera
-            oled.display_disarm_info(oled1)
 
             await asyncio.sleep_ms(3000)
             vars.shutter_state = "idle"             # back to idle state
-            oled.display_idle_info(oled1)              # and show idle info
