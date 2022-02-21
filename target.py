@@ -23,7 +23,7 @@ def init_audio():
     return audio_pin
 
 def init_i2c():
-    i2c = SoftI2C(scl=Pin(22), sda=Pin(21))
+    i2c = SoftI2C(scl=Pin(22), sda=Pin(21),freq = 400000)
     return i2c
 
 def init_buttons():
