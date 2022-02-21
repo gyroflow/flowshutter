@@ -16,6 +16,7 @@
 import vars, target
 button_page, button_enter = target.init_buttons()
 
+# two private variables
 button_page_press_count = 0
 button_enter_press_count = 0
 
