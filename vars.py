@@ -35,14 +35,14 @@ wifi_state = "disconneted"
 
 
 # user_settings:
-version = "0.42" # when new user settings added, this should be update firstly!
+version = "0.40" # when new user settings added, this should be update firstly!
 device_mode = "SLAVE"
 inject_mode = "OFF"
 camera_protocol = "Sony MTP"
 
 device_mode_range = ["SLAVE", "MASTER/SLAVE"]
 inject_mode_range = ["OFF", "ON"]
-camera_protocol_range = ["Sony MTP", "New protocol"]
+camera_protocol_range = ["Sony MTP", "NO"]
 
 def next(range, current):
     try:

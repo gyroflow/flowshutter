@@ -61,3 +61,14 @@ def read():
     f=open("settings.json", "r")
     print("".join(f.read()))
     ## test end
+
+def update_camera_preset():# per camera protocol
+    if vars.camera_protocol == "Sony MTP":
+        vars.device_mode = "SLAVE"
+        vars.device_mode_range = ["SLAVE", "MASTER/SLAVE"]
+    elif vars.camera_protocol == "NO":
+        vars.device_mode = "MASTER"
+        vars.device_mode_range = ["MASTER"]
+
+    print("camera_protocol:", vars.camera_protocol)
+    print("device_mode:", vars.device_mode)
