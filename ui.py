@@ -43,7 +43,7 @@ def idle():
     # enter to start recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
-
+        # TODO: clean this later
         if vars.device_mode == "MASTER/SLAVE":
             oled.display_recording_info(oled1)
             vars.arm_state = "arm"
@@ -61,8 +61,8 @@ def recording():
     # enter to stop recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
+        # TODO: clean this later
         if vars.device_mode == "MASTER/SLAVE":
-            oled.display_stopping_info(oled1)
             vars.arm_state = "disarm"
             vars.shutter_state = "idle"
 
