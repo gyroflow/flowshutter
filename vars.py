@@ -19,6 +19,7 @@ arm_state = "disarm" #the state of the ARM/DISARM
 # "arm"
 
 ## flowshutter working state
+privious_state = "blank"
 shutter_state = "idle"
 # "starting"
 # "recording"

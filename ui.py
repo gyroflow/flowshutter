@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import ap, oled, vars, json, settings
-oled1 = oled.init()
 
 def update(t):
     
@@ -38,26 +37,29 @@ def update(t):
         menu_camera_protocol()
 
 def idle():
-    oled.display_idle_info(oled1)
+    ## update oled
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_idle_info()
 
     # enter to start recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
         # TODO: clean this later
         if vars.device_mode == "MASTER/SLAVE":
-            oled.display_recording_info(oled1)
+            oled.display_recording_info()
             vars.arm_state = "arm"
             vars.shutter_state = "recording"
 
     ## page to battery menu
     if vars.button_page == "pressed":
         vars.button_page = "released"
-        
         vars.shutter_state = "menu_battery"
-        print("show battery")
 
 def recording():
-    oled.display_recording_info(oled1)
+    if vars.privious_state != vars.shutter_state:
+        oled.display_recording_info()
+    
     # enter to stop recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
@@ -67,14 +69,20 @@ def recording():
             vars.shutter_state = "idle"
 
 def starting():
-    oled.display_starting_info(oled1)
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_starting_info()
 
 def stopping():
-    oled.display_stopping_info(oled1)
-
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_stopping_info()
 
 def menu_battery():
-    oled.display_menu_battery(oled1)
+
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_menu_battery()
 
     # page to camera protocol menu
     if vars.button_page == "pressed":
@@ -87,17 +95,20 @@ def menu_battery():
         vars.shutter_state = "menu_ap_mode"
 
 def menu_ap_mode():
-    oled.display_menu_ap_mode(oled1)
+
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_menu_ap_mode()
 
     # enter to set ap
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
         if vars.ap_state == "DOWN":
             ap.up()
-            oled.display_menu_ap_mode(oled1)
+            oled.display_menu_ap_mode()
         else:
             ap.down()
-            oled.display_menu_ap_mode(oled1)
+            oled.display_menu_ap_mode()
 
     ## page to back to battery menu
     if vars.button_page == "pressed":
@@ -107,7 +118,10 @@ def menu_ap_mode():
         print("show battery")
 
 def menu_camera_protocol():
-    oled.display_menu_camera_protocol(oled1)
+
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_menu_camera_protocol()
 
     # enter to set camera protocol
     if vars.button_enter == "pressed":
@@ -115,24 +129,26 @@ def menu_camera_protocol():
 
         vars.camera_protocol = vars.next(vars.camera_protocol_range, vars.camera_protocol)
         settings.update_camera_preset()
-        oled.display_menu_camera_protocol(oled1)
-        print("var", vars.device_mode)
+        oled.display_menu_camera_protocol()
+        settings.update()
     
-    # page to save and to device mode
+    # page to device mode
     if vars.button_page == "pressed":
         vars.button_page = "released"
-        settings.update()
         vars.shutter_state = "menu_device_mode"
 
 def menu_device_mode():
-    oled.display_menu_device_mode(oled1)
+
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_menu_device_mode()
 
     # enter to set device mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
 
         vars.device_mode = vars.next(vars.device_mode_range, vars.device_mode)
-        oled.display_menu_device_mode(oled1)
+        oled.display_menu_device_mode()
 
     # page to inject mode menu
     if vars.button_page == "pressed":
@@ -141,18 +157,22 @@ def menu_device_mode():
         vars.shutter_state = "menu_inject_mode"
 
 def menu_inject_mode():
-    oled.display_menu_inject_mode(oled1)
+
+    if vars.privious_state != vars.shutter_state:
+        vars.privious_state = vars.shutter_state
+        oled.display_menu_inject_mode()
 
     # enter to set inject mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
         
         vars.inject_mode = vars.next(vars.inject_mode_range, vars.inject_mode)
-        oled.display_menu_inject_mode(oled1)
+        oled.display_menu_inject_mode()
 
     ## page to save and back to idle
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        # TODO: if nothing is changed, do not save
         settings.update()
         vars.shutter_state = "idle"
 
