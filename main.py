@@ -29,8 +29,8 @@ timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
 timer2 = Timer(2)
 timer2.init(period=40, mode=Timer.PERIODIC, callback=ui.update)
 
-camera_uart_handler = sony_multiport.uart_handler()
-
-loop = asyncio.get_event_loop()
-loop.create_task(camera_uart_handler)
-loop.run_forever()
+if vars.camera_protocol == "Sony MTP":
+    camera_uart_handler = sony_multiport.uart_handler()
+    loop = asyncio.get_event_loop()
+    loop.create_task(camera_uart_handler)
+    loop.run_forever()

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import crsf_gen,target, vars
-def init():
+def _init_():
     disarm_packet = crsf_gen.build_rc_packet(   992,992,189,992,189,992,992,992,
                                                 992,992,992,992,992,992,992,992)
     arm_packet = crsf_gen.build_rc_packet(      992,992,189,992,1800,992,992,992,
@@ -23,7 +23,7 @@ def init():
     uart1 = target.init_crsf_uart()
     return disarm_packet, arm_packet, uart1
 
-fc_disarm_packet, fc_arm_packet, uart1 = init()
+fc_disarm_packet, fc_arm_packet, uart1 = _init_()
 # audio_pin = target.init_audio()
 
 # def _toggle_():

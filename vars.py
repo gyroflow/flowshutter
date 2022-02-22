@@ -19,11 +19,17 @@ arm_state = "disarm" #the state of the ARM/DISARM
 # "arm"
 
 ## flowshutter working state
-privious_state = "blank"
+previous_state = "blank"
 shutter_state = "idle"
 # "starting"
 # "recording"
 # "stopping"
+# "menu_battery"
+# "menu_ap_mode"
+# "menu_camera_protocol"
+# "menu_device_mode"
+# "menu_inject_mode"
+
 
 ## button state
 button_page = "released"

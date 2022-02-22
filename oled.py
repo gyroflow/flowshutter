@@ -15,14 +15,14 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import vars, ssd1306, target
 
-def init():
+def _init_():
     i2c = target.init_i2c()
     screen = ssd1306.SSD1306_I2C(128, 32, i2c)
     return screen
 
-screen = init()
+screen = _init_()
 
-def draw_cam():
+def _draw_cam_():
     # start flowshutter logo
     # first is the "cam"
     screen.hline(7,0,18,1)
@@ -111,9 +111,9 @@ def draw_cam():
     screen.vline(25,12,3,1)
     screen.vline(29,12,3,1)
 
-def draw_logo_idle():
+def _draw_cam_idle_():
     
-    draw_cam()
+    _draw_cam_()
     # now the "shutter"
     screen.hline(13,15,5,1)
     screen.hline(13,25,5,1)
@@ -127,9 +127,9 @@ def draw_logo_idle():
     screen.line(21,22,18,25,1)
     # end logo
 
-def draw_logo_recording():
+def _draw_cam_recording_():
 
-    draw_cam()
+    _draw_cam_()
     # change the "status"
     screen.fill_rect(26,12,3,3,1)
     # now "open" the "shutter"
@@ -141,49 +141,7 @@ def draw_logo_recording():
     screen.hline(11,24,9,1)
     screen.hline(12,25,7,1)
 
-def display_idle_info():
-    screen.fill(0)
-    draw_logo_idle()
-    screen.text('FlowShutter', 34, 0, 1)
-    screen.text('Powered by', 34, 12, 1)
-    screen.text('DusKing', 34, 24, 1)
-    screen.text("".join(tuple(vars.version)), 98, 24, 1)
-    screen.show()
-    print("display_idle_info called") 
-
-def display_recording_info():
-    screen.fill(0)
-    draw_logo_recording()
-    screen.text('FlowShutter', 34, 0, 1)
-    screen.text('FC Armed', 34, 12, 1)
-    screen.text('Sony recording', 34, 24, 1)
-    screen.show()
-
-def display_stopping_info():
-    screen.fill(0)
-    draw_logo_idle()
-    screen.text('FlowShutter', 34, 0, 1)
-    screen.text('FC Disarmed', 34, 12, 1)
-    screen.text('Sony stop', 34, 24, 1)
-    screen.show()
-
-def display_starting_info():
-    screen.fill(0)
-    draw_logo_recording()
-    screen.text('Starting', 34, 0, 1)
-    screen.text('FC Disarmed', 34, 12, 1)
-    screen.text('Sony start', 34, 24, 1)
-    screen.show()
-
-def display_stopping_info():
-    screen.fill(0)
-    draw_logo_idle()
-    screen.text('Stopping', 34, 0, 1)
-    screen.text('FC Armed', 34, 12, 1)
-    screen.text('Sony ending', 34, 24, 1)
-    screen.show()
-
-def draw_battery():
+def _draw_battery_():
     screen.fill(0)
 
     screen.rect(0,0,118,32,1)# battery's out border
@@ -233,8 +191,41 @@ def draw_battery():
     screen.pixel(112,26,0)
     screen.pixel(93,26,0)
 
-def display_menu_battery():
-    draw_battery()
+def _display_idle_():
+    screen.fill(0)
+    _draw_cam_idle_()
+    screen.text('FlowShutter', 34, 0, 1)
+    screen.text('Powered by', 34, 12, 1)
+    screen.text('DusKing', 34, 24, 1)
+    screen.text("".join(tuple(vars.version)), 98, 24, 1)
+    screen.show()
+
+def _display_starting_():
+    screen.fill(0)
+    _draw_cam_recording_()
+    screen.text('Starting', 34, 0, 1)
+    screen.text('FC Disarmed', 34, 12, 1)
+    screen.text('Sony start', 34, 24, 1)
+    screen.show()
+
+def _display_recording_():
+    screen.fill(0)
+    _draw_cam_recording_()
+    screen.text('FlowShutter', 34, 0, 1)
+    screen.text('FC Armed', 34, 12, 1)
+    screen.text('Sony recording', 34, 24, 1)
+    screen.show()
+
+def _display_stopping_():
+    screen.fill(0)
+    _draw_cam_idle_()
+    screen.text('Stopping', 34, 0, 1)
+    screen.text('FC Armed', 34, 12, 1)
+    screen.text('Sony ending', 34, 24, 1)
+    screen.show()
+
+def _display_menu_battery_():
+    _draw_battery_()
 
     voltage = '4.0V' # later this should be turn to some ADC values
     for i in range(5):
@@ -246,34 +237,59 @@ def display_menu_battery():
 
     screen.show()
 
-def display_menu_device_mode():
+def _display_menu_ap_mode_():
     screen.fill(0)
-    draw_logo_idle()
-    screen.text('Device Mode', 34, 0, 1)
-    screen.text("".join(tuple(vars.device_mode)), 34, 12, 1)
-    screen.text('Next Marker', 34, 24, 1)
+    _draw_cam_idle_()
+    screen.text('Access Point', 34, 0, 1)
+    screen.text("".join(tuple(vars.ap_state)), 34, 12, 1)
+    screen.text('NEXT Battery', 34, 24, 1)
     screen.show()
 
-def display_menu_inject_mode():
+def _display_menu_camera_protocol_():
     screen.fill(0)
-    draw_logo_idle()
-    screen.text('Injection', 34, 0, 1)
-    screen.text("".join(tuple(vars.inject_mode)), 34, 12, 1)
-    screen.text('Next Camera', 34, 24, 1)
-    screen.show()
-
-def display_menu_camera_protocol():
-    screen.fill(0)
-    draw_logo_idle()
+    _draw_cam_idle_()
     screen.text('Cam Protocol', 34, 0, 1)
     screen.text("".join(tuple(vars.camera_protocol)), 34, 12, 1)
     screen.text('PAGE to save', 34, 24, 1)
     screen.show()
 
-def display_menu_ap_mode():
+def _display_menu_device_mode_():
     screen.fill(0)
-    draw_logo_idle()
-    screen.text('Access Point', 34, 0, 1)
-    screen.text("".join(tuple(vars.ap_state)), 34, 12, 1)
-    screen.text('NEXT Battery', 34, 24, 1)
+    _draw_cam_idle_()
+    screen.text('Device Mode', 34, 0, 1)
+    screen.text("".join(tuple(vars.device_mode)), 34, 12, 1)
+    screen.text('Next Marker', 34, 24, 1)
     screen.show()
+
+def _display_menu_inject_mode_():
+    screen.fill(0)
+    _draw_cam_idle_()
+    screen.text('Injection', 34, 0, 1)
+    screen.text("".join(tuple(vars.inject_mode)), 34, 12, 1)
+    screen.text('Next Camera', 34, 24, 1)
+    screen.show()
+
+def update(state):
+    if state == "welcome":
+        #display_welcome()
+        _display_idle_()
+    elif state == "idle":
+        _display_idle_()
+    elif state == "starting":
+        _display_starting_()
+    elif state == "recording":
+        _display_recording_()
+    elif state == "stopping":
+        _display_stopping_()
+    elif state == "menu_battery":
+        _display_menu_battery_()
+    elif state == "menu_camera_protocol":
+        _display_menu_camera_protocol_()
+    elif state == "menu_device_mode":
+        _display_menu_device_mode_()
+    elif state == "menu_inject_mode":
+        _display_menu_inject_mode_()
+    elif state == "menu_ap_mode":
+        _display_menu_ap_mode_()
+    else:
+        print("Unknown state: "+ state)

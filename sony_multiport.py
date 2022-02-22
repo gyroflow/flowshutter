@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
 import vars,target
-def init_multiport_packet():
+def _init_():
     REC_PRESS = b'#7100*'     # record button pressed
     REC_RELEASE = b'#7110*'     # record button released
 
@@ -31,7 +31,7 @@ def init_multiport_packet():
     return REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK
 
 async def uart_handler():
-    REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = init_multiport_packet()
+    REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = _init_()
     uart2 = target.init_uart2()
     swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
