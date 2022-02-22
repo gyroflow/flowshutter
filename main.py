@@ -27,7 +27,7 @@ timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
 
 timer2 = Timer(2)
-timer2.init(period=100, mode=Timer.PERIODIC, callback=ui.update)
+timer2.init(period=40, mode=Timer.PERIODIC, callback=ui.update)
 
 camera_uart_handler = sony_multiport.uart_handler()
 
