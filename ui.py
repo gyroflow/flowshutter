@@ -15,9 +15,12 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import ap, oled, vars, json, settings
 
+welcome_time_count = 0
+
 def update(t):
-    
-    if vars.shutter_state == "idle":
+    if vars.shutter_state == "welcome":
+        _welcome_()
+    elif vars.shutter_state == "idle":
         _idle_()
     elif vars.shutter_state == "starting":
         _starting_()
@@ -40,6 +43,15 @@ def _check_oled_():# check if we need to update the OLED
     if vars.previous_state != vars.shutter_state:
         vars.previous_state = vars.shutter_state
         oled.update(vars.shutter_state)
+
+def _welcome_():
+    global welcome_time_count
+    _check_oled_()
+    # welcome auto switch
+    if welcome_time_count <= 100:
+        welcome_time_count = welcome_time_count + 1
+    else:
+        vars.shutter_state = "idle"
 
 def _idle_():
     _check_oled_()

@@ -24,8 +24,7 @@ screen = _init_()
 
 def update(state):
     if state == "welcome":
-        #display_welcome()
-        _display_idle_()
+        _display_welcome_()
     elif state == "idle":
         _display_idle_()
     elif state == "starting":
@@ -215,6 +214,13 @@ def _draw_battery_():
     screen.pixel(112,5,0)
     screen.pixel(112,26,0)
     screen.pixel(93,26,0)
+
+def _display_welcome_():
+    screen.fill(0)
+    screen.text("Welcome to ",0,0,1)
+    screen.text("Gyroflow",0,10,1)
+    screen.text("Flowshutter",0,20,1)
+    screen.show()
 
 def _display_idle_():
     screen.fill(0)
