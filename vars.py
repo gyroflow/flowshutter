@@ -60,8 +60,6 @@ def next(range, current):
             return range[index + 1]
     except ValueError:# current parameter is not in the parameter range
         import settings, oled
-        settings.update()    # then we write default settings
-        print("Error: settings.json is corrupted. Overwritten a new one.")
-        print("Please reboot the device.")
-        ## TODO: later there should implenment an error message on the OLED
+        settings.dafault()    # then we write default settings
+        oled.display_settings_fault()
         settings.read()
