@@ -22,6 +22,31 @@ def _init_():
 
 screen = _init_()
 
+def update(state):
+    if state == "welcome":
+        #display_welcome()
+        _display_idle_()
+    elif state == "idle":
+        _display_idle_()
+    elif state == "starting":
+        _display_starting_()
+    elif state == "recording":
+        _display_recording_()
+    elif state == "stopping":
+        _display_stopping_()
+    elif state == "menu_battery":
+        _display_menu_battery_()
+    elif state == "menu_ap_mode":
+        _display_menu_ap_mode_()
+    elif state == "menu_camera_protocol":
+        _display_menu_camera_protocol_()
+    elif state == "menu_device_mode":
+        _display_menu_device_mode_()
+    elif state == "menu_inject_mode":
+        _display_menu_inject_mode_()
+    else:
+        print("Unknown state: "+ state)
+
 def _draw_cam_():
     # start flowshutter logo
     # first is the "cam"
@@ -269,27 +294,9 @@ def _display_menu_inject_mode_():
     screen.text('Next Camera', 34, 24, 1)
     screen.show()
 
-def update(state):
-    if state == "welcome":
-        #display_welcome()
-        _display_idle_()
-    elif state == "idle":
-        _display_idle_()
-    elif state == "starting":
-        _display_starting_()
-    elif state == "recording":
-        _display_recording_()
-    elif state == "stopping":
-        _display_stopping_()
-    elif state == "menu_battery":
-        _display_menu_battery_()
-    elif state == "menu_camera_protocol":
-        _display_menu_camera_protocol_()
-    elif state == "menu_device_mode":
-        _display_menu_device_mode_()
-    elif state == "menu_inject_mode":
-        _display_menu_inject_mode_()
-    elif state == "menu_ap_mode":
-        _display_menu_ap_mode_()
-    else:
-        print("Unknown state: "+ state)
+def display_settings_fault():
+    screen.fill_rect(20,5,88,22,1)
+    screen.fill_rect(21,6,86,20,1)
+    screen.text('Settings Fault', 26, 8, 1)
+    screen.text('Please Reboot', 26, 20, 1)
+    screen.show()
