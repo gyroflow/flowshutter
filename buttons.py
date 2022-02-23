@@ -24,17 +24,19 @@ def check(t):
     global button_page_press_count
     global button_enter_press_count
     if button_page.value() == 0:
-        if button_page_press_count <=20:   # dead time is 20*5 = 100ms = 0.1s
+        if button_page_press_count <=20:    # dead time is 20*5 = 100ms = 0.1s
             button_page_press_count += 1
         else:
             button_page_press_count = 0
-            vars.button_page = "pressed"
-            
+            vars.button_page = "pressed"        
     else:
         button_page_press_count = 0
+
     if button_enter.value() == 0:
-        if button_enter_press_count <=50:
+        if button_enter_press_count <=50:   # dead time is 50*5 = 250ms = 0.25s
             button_enter_press_count += 1
         else:
             button_enter_press_count = 0
             vars.button_enter = "pressed"
+    else:
+        button_enter_press_count = 0
