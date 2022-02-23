@@ -36,19 +36,19 @@ def _load_():
         print("settings.json loaded")
         f.close()
 
-def default():
+def default(): #force to set default settings
     with open("settings.json", "w") as f:
         settings = {"version":vars.version,"device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
         json.dump(settings, f)
         f.close()
 
-def update():
+def update(): # update settings.json
     with open("settings.json", "w") as f:
         settings = {"version":vars.version,"device_mode":vars.device_mode, "inject_mode":vars.inject_mode, "camera_protocol":vars.camera_protocol}
         json.dump(settings, f)
         f.close()
 
-def read():
+def read(): # read settings.json and set vars
     try:
         _load_()
     except KeyError:    # settings.json has new member(s)
@@ -57,11 +57,11 @@ def read():
         f=open("settings.json", "r")
         print("".join(f.read()))
         ## test end
-        update()        # here we should write the default settings
+        update()        # write current settings to settings.json
         _load_()
     except OSError:     # settings.json does not exist
         print("no settings.json was found. Creating default settings")
-        update()        # here we should write the default settings
+        update()        # create default settings
         _load_()
     ## test
     f=open("settings.json", "r")
