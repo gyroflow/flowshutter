@@ -235,7 +235,7 @@ def _display_idle_():
     screen.text('FlowShutter', 34, 0, 1)
     screen.text('Powered by', 34, 12, 1)
     screen.text('DusKing', 34, 24, 1)
-    screen.text("".join(tuple(vars.version)), 98, 24, 1)
+    screen.text("".join(tuple(vars.version)), 96, 24, 1)
     screen.show()
 
 def _display_starting_():
@@ -288,7 +288,7 @@ def _display_menu_camera_protocol_():
     _draw_cam_idle_()
     screen.text('Cam Protocol', 34, 0, 1)
     screen.text("".join(tuple(vars.camera_protocol)), 34, 12, 1)
-    screen.text('PAGE to save', 34, 24, 1)
+    screen.text('Next Device', 34, 24, 1)
     screen.show()
 
 def _display_menu_device_mode_():
@@ -304,7 +304,7 @@ def _display_menu_inject_mode_():
     _draw_cam_idle_()
     screen.text('Injection', 34, 0, 1)
     screen.text("".join(tuple(vars.inject_mode)), 34, 12, 1)
-    screen.text('Next Camera', 34, 24, 1)
+    screen.text('Page to MAIN', 34, 24, 1)
     screen.show()
 
 def display_settings_fault():
