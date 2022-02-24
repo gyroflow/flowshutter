@@ -49,7 +49,7 @@ def _welcome_():
     global welcome_time_count
     _check_oled_()
     # welcome auto switch
-    if welcome_time_count <= 100:
+    if welcome_time_count <= 600:
         welcome_time_count = welcome_time_count + 1
     else:
         vars.shutter_state = "idle"
