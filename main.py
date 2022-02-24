@@ -13,21 +13,17 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import Pin, Timer
-import buttons, crsf, vars, sony_multiport,ui,settings
+from machine import Timer
+import crsf, vars, sony_multiport,ui,settings
 import uasyncio as asyncio
-from time import sleep
 
 settings.read()
 
 timer0 = Timer(0)
-timer0.init(period=5, mode=Timer.PERIODIC, callback=buttons.check)
+timer0.init(period=5, mode=Timer.PERIODIC, callback=ui.update)
 
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
-
-timer2 = Timer(2)
-timer2.init(period=40, mode=Timer.PERIODIC, callback=ui.update)
 
 if vars.camera_protocol == "Sony MTP":
     camera_uart_handler = sony_multiport.uart_handler()

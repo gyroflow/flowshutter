@@ -13,11 +13,12 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import ap, oled, vars, json, settings
+import ap, buttons,oled, vars, json, settings
 
 welcome_time_count = 0
 
 def update(t):
+    buttons.check(t)
     if vars.shutter_state == "welcome":
         _welcome_()
     elif vars.shutter_state == "idle":
