@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import ap, buttons,oled, vars, json, settings
+import ap, buttons,oled, vars, json, settings, sony_multiport
 
 welcome_time_count = 0
 
@@ -48,6 +48,15 @@ def _check_oled_():# check if we need to update the OLED
 def _welcome_():
     global welcome_time_count
     _check_oled_()
+
+    # enter do nothing
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+    
+    # page do nothing
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
+
     # welcome auto switch
     if welcome_time_count <= 600:
         welcome_time_count = welcome_time_count + 1
@@ -60,10 +69,7 @@ def _idle_():
     # enter to start recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
-        # TODO: clean this logic later
-        if vars.device_mode == "MASTER/SLAVE":
-            vars.arm_state = "arm"
-            vars.shutter_state = "recording"
+        _rec_enter_()
 
     ## page to battery menu
     if vars.button_page == "pressed":
@@ -73,19 +79,35 @@ def _idle_():
 def _starting_():
     _check_oled_()
 
+    # enter do nonthing
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+    
+    # page do nonthing
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
+
 def _recording_():
     _check_oled_()
     
     # enter to stop recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
-        # TODO: clean this logic later
-        if vars.device_mode == "MASTER/SLAVE":
-            vars.arm_state = "disarm"
-            vars.shutter_state = "idle"
+        _rec_enter_()
+    # page do nothing for now: TODO: let page cicle between rec_battery and recording
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
 
 def _stopping_():
     _check_oled_()
+
+    # enter do nothing
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+    
+    # page do nothing
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
 
 def _menu_battery_():
     _check_oled_()
@@ -163,3 +185,12 @@ def _menu_inject_mode_():
     if vars.button_page == "pressed":
         vars.button_page = "released"
         vars.shutter_state = "idle"
+
+def _rec_enter_():
+    if (vars.camera_protocol == "Sony MTP") & (vars.device_mode == "MASTER/SLAVE"):
+        sony_multiport.uart2.write(sony_multiport.REC_PRESS)
+        sony_multiport.uart2.write(sony_multiport.REC_RELEASE)
+        if vars.shutter_state == "idle":
+            vars.shutter_state = "starting"
+        elif vars.shutter_state == "recording":
+            vars.shutter_state = "stopping"
