@@ -63,23 +63,6 @@ FC is short for flight controller, more specifically with betaflight/emuflight r
 - modern FC with BMI270 gyroscope (recommended)
 - any other FC that support CRSF protocol
 
-## Development Guide
-### Flash micropython firmware
-
-The micropython firmware we used is [v1.18](https://micropython.org/resources/firmware/esp32-20220117-v1.18.bin), You can find a copy in the `/tools` directory. Also, a `uPyCraft` windows version is also provided in the `/tools` directory. You can try to use that to flash your ESP32 without the help of ESP-idf.
-
-### Set up environment
-
-`Visual Studio Code` with `Pymakr` extension is recommended.
-
-1. Install `Visual Studio Code`
-2. Install `node`
-3. Install `Pymakr` extension in `Visual Studio Code`
-4. Edit `Pymakr`'s global settings that add `"wch.cn",` to `"autoconnect_comport_manufacturers"`
-5. Modify content of `"address"` to `"address": "",`
-6. Pull flowshutter code from `https://github.com/gyroflow/flowshutter`
-7. Then you can connect and upload the flowshutter code
-
 ## License
 
 - documents under ``/doc`` are licensed under MIT

@@ -14,29 +14,19 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import vars, target
-button_page, button_enter = target.init_buttons()
+button_start = target.init_buttons()
 
-# two private variables
-button_page_press_count = 0
-button_enter_press_count = 0
+#private variable
+button_start_press_count = 0
+
 
 def check(t):
-    global button_page_press_count
-    global button_enter_press_count
-    if button_page.value() == 0:
-        if button_page_press_count <=20:    # dead time is 20*5 = 100ms = 0.1s
-            button_page_press_count += 1
+    global button_start_press_count
+        
+    if button_start.value() == 0:
+        if button_start_press_count <=50:
+            button_start_press_count += 1
         else:
-            button_page_press_count = 0
-            vars.button_page = "pressed"        
-    else:
-        button_page_press_count = 0
-
-    if button_enter.value() == 0:
-        if button_enter_press_count <=50:   # dead time is 50*5 = 250ms = 0.25s
-            button_enter_press_count += 1
-        else:
-            button_enter_press_count = 0
-            vars.button_enter = "pressed"
-    else:
-        button_enter_press_count = 0
+            button_start_press_count = 0
+            vars.button_start = "pressed"
+            print('button_start ', vars.button_start)
