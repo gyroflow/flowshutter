@@ -36,19 +36,13 @@ def _load_():
         print("settings.json loaded")
         f.close()
 
-def default(): #force to set default settings
-    with open("settings.json", "w") as f:
-        settings = {"version":vars.version,"device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
-        json.dump(settings, f)
-        f.close()
-
-def update(): # update settings.json
+def update():
     with open("settings.json", "w") as f:
         settings = {"version":vars.version,"device_mode":vars.device_mode, "inject_mode":vars.inject_mode, "camera_protocol":vars.camera_protocol}
         json.dump(settings, f)
         f.close()
 
-def read(): # read settings.json and set vars
+def read():
     try:
         _load_()
     except KeyError:    # settings.json has new member(s)
@@ -57,11 +51,11 @@ def read(): # read settings.json and set vars
         f=open("settings.json", "r")
         print("".join(f.read()))
         ## test end
-        update()        # write current settings to settings.json
+        update()        # here we should write the default settings
         _load_()
     except OSError:     # settings.json does not exist
         print("no settings.json was found. Creating default settings")
-        update()        # create default settings
+        update()        # here we should write the default settings
         _load_()
     ## test
     f=open("settings.json", "r")
@@ -75,3 +69,6 @@ def update_camera_preset():# per camera protocol
     elif vars.camera_protocol == "NO":
         vars.device_mode = "MASTER"
         vars.device_mode_range = ["MASTER"]
+
+    print("camera_protocol:", vars.camera_protocol)
+    print("device_mode:", vars.device_mode)

@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
 import vars,target
-def _init_():
+def init_multiport_packet():
     REC_PRESS = b'#7100*'     # record button pressed
     REC_RELEASE = b'#7110*'     # record button released
 
@@ -30,29 +30,30 @@ def _init_():
 
     return REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK
 
-REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = _init_()
-
-uart2 = target.init_uart2()
-
 async def uart_handler():
+    REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = init_multiport_packet()
+    uart2 = target.init_uart2()
     swriter = asyncio.StreamWriter(uart2, {})
     sreader = asyncio.StreamReader(uart2)
     while True:
         res = await sreader.read(n=-1)
         print('Cam sent:', res)
 
-        if res == HANDSHAKE:                    # receive handshake
+        if res == HANDSHAKE:                          # receive handshake
             await asyncio.sleep_ms(10)
-            await swriter.awrite(HANDSHAKE_ACK) # send handshake ack to camera
+            await swriter.awrite(HANDSHAKE_ACK)       # send handshake ack to camera
 
-        elif res == REC_START:                  # receive record start
+        elif res == REC_START:                   # receive record start
             await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
-            vars.arm_state = "arm"              # Arm the FC
-            vars.shutter_state = "recording"    # now in recording state
-            await swriter.awrite(REC_START_ACK) # send record start ack to camera
+            vars.arm_state = "arm"                  # Arm the FC
+            vars.shutter_state = "recording"        # now in recording state
+            await swriter.awrite(REC_START_ACK)  # send record start ack to camera
 
-        elif res == REC_STOP:                   # receive record stop
+        elif res == REC_STOP:                    # receive record stop
             await asyncio.sleep_ms(8)
-            vars.arm_state = "disarm"           # disarm the FC
-            vars.shutter_state = "idle"         # now in idle state
-            await swriter.awrite(REC_STOP_ACK)  # send record stop ack to camera
+            vars.arm_state = "disarm"               # disarm the FC
+            vars.shutter_state = "stopping"         # now in stopping state
+            await swriter.awrite(REC_STOP_ACK)   # send record stop ack to camera
+
+            await asyncio.sleep_ms(3000)
+            vars.shutter_state = "idle"             # back to idle state
