@@ -14,23 +14,41 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import Pin, Timer
-import buttons, crsf, vars, sony_multiport,ui, settings
+import buttons, battery, crsf, vars, sony_multiport,ui,settings
 import uasyncio as asyncio
 from time import sleep
 
+updatecounter=0
+
+def update(t):
+#update multiple things with one hardware counter
+    global updatecounter
+
+    updatecounter+=1
+    buttons.check(t) #check buttons every call
+    
+    if updatecounter >= 500: #chack battery every 1000th call (5sec)
+        battery.check(t)
+        updatecounter = 0
 
 
-
+    
+    
+settings.read()
 
 
 timer0 = Timer(0)
-timer0.init(period=5, mode=Timer.PERIODIC, callback=buttons.check)
+timer0.init(period=5, mode=Timer.PERIODIC, callback=update)
 
 timer1 = Timer(1)
 timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
 
 timer2 = Timer(2)
 timer2.init(period=100, mode=Timer.PERIODIC, callback=ui.update)
+
+# update battery state every 5 seconds
+#timer3 = Timer(3)
+#timer3.init(period=500, mode=Timer.PERIODIC, callback=battery.check)
 
 
 camera_uart_handler = sony_multiport.uart_handler()

@@ -25,14 +25,38 @@ shutter_state = "idle"
 # "stopping"
 
 ## button state
-button_start = "released"
+button_page = "released"
+button_enter = "released"
 
+## WLAN state
+ap_state = "DOWN"
+wifi_state = "disconneted"
+## Other settings is coming soon!
 
+bat_state = 0 #integer values 0, 1, 2, 3, 4, 5
+bat_voltage = 0.
 
 # user_settings:
 version = "0.40" # when new user settings added, this should be update firstly!
-device_mode = "MASTER/SLAVE"
+device_mode = "SLAVE"
 inject_mode = "OFF"
 camera_protocol = "Sony MTP"
 
+device_mode_range = ["SLAVE", "MASTER/SLAVE"]
+inject_mode_range = ["OFF", "ON"]
+camera_protocol_range = ["Sony MTP", "NO"]
 
+def next(range, current):
+    try:
+        index = range.index(current)
+        if index == len(range) - 1:
+            return range[0]
+        else:
+            return range[index + 1]
+    except ValueError:# current parameter is not in the parameter range
+        import settings, oled
+        settings.update()    # then we write default settings
+        print("Error: settings.json is corrupted. Overwritten a new one.")
+        print("Please reboot the device.")
+        ## TODO: later there should implenment an error message on the OLED
+        settings.read()

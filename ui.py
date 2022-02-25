@@ -13,104 +13,69 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import ap, buttons,oled, vars, json, settings, sony_multiport
+import ap, oled, vars, json, settings
+oled1 = oled.init()
 
-welcome_time_count = 0
 
 def update(t):
-    buttons.check(t)
-    if vars.shutter_state == "welcome":
-        _welcome_()
-    elif vars.shutter_state == "idle":
-        _idle_()
-    elif vars.shutter_state == "starting":
-        _starting_()
-    elif vars.shutter_state == "recording":
-        _recording_()
-    elif vars.shutter_state == "stopping":
-        _stopping_()
-    elif vars.shutter_state == "menu_battery":
-        _menu_battery_()
-    elif vars.shutter_state == "menu_ap_mode":
-        _menu_ap_mode_() 
-    elif vars.shutter_state == "menu_camera_protocol":
-        _menu_camera_protocol_()
-    elif vars.shutter_state == "menu_device_mode":
-        _menu_device_mode_()
-    elif vars.shutter_state == "menu_inject_mode":
-        _menu_inject_mode_()
-
-def _check_oled_():# check if we need to update the OLED
-    if vars.previous_state != vars.shutter_state:
-        vars.previous_state = vars.shutter_state
-        oled.update(vars.shutter_state)
-
-def _welcome_():
-    global welcome_time_count
-    _check_oled_()
-
-    # enter do nothing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
     
-    # page do nothing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
+    if vars.shutter_state == "idle":
+        idle()
+    elif vars.shutter_state == "starting":
+        starting()
+    elif vars.shutter_state == "recording":
+        recording()
+    elif vars.shutter_state == "stopping":
+        stopping()
+    elif vars.shutter_state == "menu_battery":
+        menu_battery()
+    elif vars.shutter_state == "menu_ap_mode":
+        menu_ap_mode() 
+    elif vars.shutter_state == "menu_device_mode":
+        menu_device_mode()
+    elif vars.shutter_state == "menu_inject_mode":
+        menu_inject_mode()
+    elif vars.shutter_state == "menu_camera_protocol":
+        menu_camera_protocol()
 
-    # welcome auto switch
-    if welcome_time_count <= 600:
-        welcome_time_count = welcome_time_count + 1
-    else:
-        vars.shutter_state = "idle"
-
-def _idle_():
-    _check_oled_()
+def idle():
+    oled.display_idle_info(oled1)
 
     # enter to start recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
-        _rec_enter_()
+
+        if vars.device_mode == "MASTER/SLAVE":
+            oled.display_recording_info(oled1)
+            vars.arm_state = "arm"
+            vars.shutter_state = "recording"
 
     ## page to battery menu
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        
         vars.shutter_state = "menu_battery"
+        print("show battery")
 
-def _starting_():
-    _check_oled_()
-
-    # enter do nonthing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-    
-    # page do nonthing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-
-def _recording_():
-    _check_oled_()
-    
+def recording():
+    oled.display_recording_info(oled1)
     # enter to stop recording if in master or master/slave mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
-        _rec_enter_()
-    # page do nothing for now: TODO: let page cicle between rec_battery and recording
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
+        if vars.device_mode == "MASTER/SLAVE":
+            oled.display_stopping_info(oled1)
+            vars.arm_state = "disarm"
+            vars.shutter_state = "idle"
 
-def _stopping_():
-    _check_oled_()
+def starting():
+    oled.display_starting_info(oled1)
 
-    # enter do nothing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-    
-    # page do nothing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
+def stopping():
+    oled.display_stopping_info(oled1)
 
-def _menu_battery_():
-    _check_oled_()
+
+def menu_battery():
+    oled.display_menu_battery(oled1)
 
     # page to camera protocol menu
     if vars.button_page == "pressed":
@@ -122,75 +87,73 @@ def _menu_battery_():
         vars.button_enter = "released"       
         vars.shutter_state = "menu_ap_mode"
 
-def _menu_ap_mode_():
-    _check_oled_()
+def menu_ap_mode():
+    oled.display_menu_ap_mode(oled1)
 
-    # enter to set ap up or down
+    # enter to set ap
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
         if vars.ap_state == "DOWN":
             ap.up()
-            oled.update(vars.shutter_state)
+            oled.display_menu_ap_mode(oled1)
         else:
             ap.down()
-            oled.update(vars.shutter_state)
+            oled.display_menu_ap_mode(oled1)
 
     ## page to back to battery menu
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        
         vars.shutter_state = "menu_battery"
+        print("show battery")
 
-def _menu_camera_protocol_():
-    _check_oled_()
+def menu_camera_protocol():
+    oled.display_menu_camera_protocol(oled1)
 
     # enter to set camera protocol
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
+
         vars.camera_protocol = vars.next(vars.camera_protocol_range, vars.camera_protocol)
         settings.update_camera_preset()
-        oled.update(vars.shutter_state)
-        settings.update()
-
-    # page to device mode
+        oled.display_menu_camera_protocol(oled1)
+        print("var", vars.device_mode)
+    
+    # page to save and to device mode
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        settings.update()
         vars.shutter_state = "menu_device_mode"
 
-def _menu_device_mode_():
-    _check_oled_()
+def menu_device_mode():
+    oled.display_menu_device_mode(oled1)
 
     # enter to set device mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
+
         vars.device_mode = vars.next(vars.device_mode_range, vars.device_mode)
-        oled.update(vars.shutter_state)
-        settings.update()
+        oled.display_menu_device_mode(oled1)
 
     # page to inject mode menu
     if vars.button_page == "pressed":
-        vars.button_page = "released"       
+        vars.button_page = "released"
+        
         vars.shutter_state = "menu_inject_mode"
 
-def _menu_inject_mode_():
-    _check_oled_()
+def menu_inject_mode():
+    oled.display_menu_inject_mode(oled1)
 
     # enter to set inject mode
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
+        
         vars.inject_mode = vars.next(vars.inject_mode_range, vars.inject_mode)
-        oled.update(vars.shutter_state)
-        settings.update()
+        oled.display_menu_inject_mode(oled1)
 
     ## page to save and back to idle
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        settings.update()
         vars.shutter_state = "idle"
 
-def _rec_enter_():
-    if (vars.camera_protocol == "Sony MTP") & (vars.device_mode == "MASTER/SLAVE"):
-        sony_multiport.uart2.write(sony_multiport.REC_PRESS)
-        sony_multiport.uart2.write(sony_multiport.REC_RELEASE)
-        if vars.shutter_state == "idle":
-            vars.shutter_state = "starting"
-        elif vars.shutter_state == "recording":
-            vars.shutter_state = "stopping"
