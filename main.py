@@ -14,17 +14,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import Pin, Timer
-import buttons, crsf, vars, sony_multiport,ui
+import buttons, crsf, vars, sony_multiport,ui, settings
 import uasyncio as asyncio
 from time import sleep
-from m5stack import *
-from m5ui import *
-from uiflow import *
-
-
-rgb.setColorAll(0xff0000)
-
-
 
 
 
