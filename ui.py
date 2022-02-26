@@ -194,3 +194,10 @@ def _rec_enter_():
             vars.shutter_state = "starting"
         elif vars.shutter_state == "recording":
             vars.shutter_state = "stopping"
+    elif (vars.camera_protocol == "NO") & (vars.device_mode == "MASTER"):
+        if vars.shutter_state == "idle":
+            vars.shutter_state = "recording"
+            vars.arm_state = "arm"
+        elif vars.shutter_state == "recording":
+            vars.shutter_state = "idle"
+            vars.arm_state = "disarm"
