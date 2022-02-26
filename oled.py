@@ -221,6 +221,39 @@ def _draw_battery_():
     screen.pixel(112,26,0)
     screen.pixel(93,26,0)
 
+def _draw_battery_mask_(voltage):
+
+    bat_usage = int(100*(4.2 - voltage))
+    # % of the battery usage
+
+    if (bat_usage >= 0) & (bat_usage < 20):
+        screen.pixel(112-bat_usage,5,0)
+        screen.pixel(112-bat_usage,26,0)
+        screen.fill_rect(113-bat_usage,5,bat_usage,22,0)
+    elif (bat_usage >= 20) & (bat_usage < 40):
+        screen.fill_rect(93,5,20,22,0)
+        screen.pixel(110-bat_usage,5,0)
+        screen.pixel(110-bat_usage,26,0)
+        screen.fill_rect(111-bat_usage,5,bat_usage,22,0)
+    elif (bat_usage >= 40) & (bat_usage < 60):
+        screen.fill_rect(93,5,20,22,0)
+        screen.pixel(108-bat_usage,5,0)
+        screen.pixel(108-bat_usage,26,0)
+        screen.fill_rect(109-bat_usage,5,bat_usage,22,0)
+    elif (bat_usage >= 60) & (bat_usage < 80):
+        screen.fill_rect(93,5,20,22,0)
+        screen.pixel(106-bat_usage,5,0)
+        screen.pixel(106-bat_usage,26,0)
+        screen.fill_rect(107-bat_usage,5,bat_usage,22,0)
+    elif (bat_usage >= 80) & (bat_usage < 100):
+        screen.fill_rect(93,5,20,22,0)
+        screen.pixel(104-bat_usage,5,0)
+        screen.pixel(104-bat_usage,26,0)
+        screen.fill_rect(105-bat_usage,5,bat_usage,22,0)
+    elif (bat_usage>=100): # more than 100%
+        screen.fill_rect(5,5,108,22,0)
+    # else: # less than 0%, then do nothing
+        
 
 def _display_welcome_():
     screen.fill(0)
@@ -265,13 +298,14 @@ def _display_stopping_():
 def _display_menu_battery_():
     _draw_battery_()
 
-    voltage = '4.0V' # later this should be turn to some ADC values
+    voltage = 3.91 # TODO: later this should be turn to some ADC values
+    voltage_str = "%.2fV" % voltage
     for i in range(5):
         for j in range(5):
-            screen.text(voltage,42+i, 11+j,0)
-    screen.text(voltage,44,13,1)
+            screen.text(voltage_str,42+i, 11+j,0)
+    screen.text(voltage_str,44,13,1)
 
-    # TODO: also here should be some math to calculate the battery recct
+    _draw_battery_mask_(voltage)
 
     screen.show()
 
