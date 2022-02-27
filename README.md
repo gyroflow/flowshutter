@@ -89,3 +89,5 @@ The micropython firmware we used is [v1.18](https://micropython.org/resources/fi
 - other code is under AGPL-v3.0 **ONLY**
 
 This software is provided as is, and please feel free to use this on your own camera which will be used for shooting comercial images/videos. For any other commercial usage, please contact [DusKing1](1483569698@qq.com).
+
+**Due to egregious abuse of open source in Wuxi, China, this project refuses to provide any support to any user in Wuxi, or to cooperate in any form with any company or individual in Wuxi. Please do something worthy of your conscience.**
