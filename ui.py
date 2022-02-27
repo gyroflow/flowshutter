@@ -94,9 +94,10 @@ def _recording_():
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
         _rec_enter_()
-    # page do nothing for now: TODO: let page cicle between rec_battery and recording
+    # page cicle between rec_battery and recording
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        _rec_page_()
 
 def _stopping_():
     _check_oled_()
@@ -201,3 +202,11 @@ def _rec_enter_():
         elif vars.shutter_state == "recording":
             vars.shutter_state = "idle"
             vars.arm_state = "disarm"
+
+def _rec_page_(): # This is still an ugly approach. TODO: make it better
+    if vars.recording_state == "rec_info":
+        vars.recording_state = "rec_battery"
+        oled.display_menu_battery()
+    elif vars.recording_state == "rec_battery":
+        vars.recording_state = "rec_info"
+        oled.display_recording()

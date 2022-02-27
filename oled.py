@@ -31,11 +31,11 @@ def update(state):
     elif state == "starting":
         _display_starting_()
     elif state == "recording":
-        _display_recording_()
+        display_recording()
     elif state == "stopping":
         _display_stopping_()
     elif state == "menu_battery":
-        _display_menu_battery_()
+        display_menu_battery()
     elif state == "menu_ap_mode":
         _display_menu_ap_mode_()
     elif state == "menu_camera_protocol":
@@ -279,7 +279,7 @@ def _display_starting_():
     screen.text('Sony start', 34, 24, 1)
     screen.show()
 
-def _display_recording_():
+def display_recording():
     screen.fill(0)
     _draw_cam_recording_()
     screen.text('FlowShutter', 34, 0, 1)
@@ -295,7 +295,7 @@ def _display_stopping_():
     screen.text('Sony ending', 34, 24, 1)
     screen.show()
 
-def _display_menu_battery_():
+def display_menu_battery():
     _draw_battery_()
 
     voltage = 3.91 # TODO: later this should be turn to some ADC values

@@ -29,7 +29,8 @@ shutter_state = "welcome"
 # "menu_camera_protocol"
 # "menu_device_mode"
 # "menu_inject_mode"
-
+recording_state = "rec_info"
+# "rec_battery"
 
 ## button state
 button_page = "released"
