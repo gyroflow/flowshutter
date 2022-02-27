@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 ## ARM and DISARM global flag
 arm_state = "disarm" #the state of the ARM/DISARM
-# arm_time = 0        # the time of the ARM
+arm_time = 0        # the time of the ARM
 # "arm"
 
 ## flowshutter working state
