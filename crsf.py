@@ -24,21 +24,21 @@ def _init_():
     return disarm_packet, arm_packet, uart1
 
 fc_disarm_packet, fc_arm_packet, uart1 = _init_()
-# audio_pin = target.init_audio()
+audio_pin = target.init_audio()
 
-# def _toggle_():
-#     if audio_pin.value() == 1:
-#         audio_pin.value(0)
-#     else:
-#         audio_pin.value(1)
+def _toggle_(): # TODO: clean this later
+    if audio_pin.value() == 1:
+        audio_pin.value(0)
+    else:
+        audio_pin.value(1)
 
 def send_packet(t):
     if vars.arm_state == "arm":
         uart1.write(fc_arm_packet)
-        # vars.arm_time = vars.arm_time + 4   # 4ms per call
-        # if vars.arm_time >= 1000:           # 4s after arming
-        #     if vars.inject_mode == "ON":
-        #         _toggle_()
+        vars.arm_time = vars.arm_time + 4   # 4ms per call
+        if vars.arm_time >= 1000:           # 4s after arming
+            if vars.inject_mode == "ON":
+                _toggle_()
     elif vars.arm_state == "disarm":
-        # vars.arm_time = 0
+        vars.arm_time = 0
         uart1.write(fc_disarm_packet)
