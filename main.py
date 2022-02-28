@@ -19,11 +19,11 @@ import uasyncio as asyncio
 
 settings.read()
 
-timer0 = Timer(0)
+timer0 = Timer(0) # 200Hz update rate
 timer0.init(period=5, mode=Timer.PERIODIC, callback=ui.update)
 
-timer1 = Timer(1)
-timer1.init(period=4, mode=Timer.PERIODIC, callback=crsf.send_packet)
+timer1 = Timer(1) # 200Hz CRSF sender
+timer1.init(period=5, mode=Timer.PERIODIC, callback=crsf.send_packet)
 
 if vars.camera_protocol == "Sony MTP":
     camera_uart_handler = sony_multiport.uart_handler()
