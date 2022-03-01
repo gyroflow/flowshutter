@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vars, ssd1306, target
+import vars, ssd1306, target, wlan
 import framebuf
 
 def _init_():
@@ -36,8 +36,8 @@ def update(state):
         _display_stopping_()
     elif state == "menu_battery":
         display_menu_battery()
-    elif state == "menu_ap_mode":
-        _display_menu_ap_mode_()
+    elif state == "menu_wlan_mode":
+        _display_menu_wlan_mode_()
     elif state == "menu_camera_protocol":
         _display_menu_camera_protocol_()
     elif state == "menu_device_mode":
@@ -309,11 +309,11 @@ def display_menu_battery():
 
     screen.show()
 
-def _display_menu_ap_mode_():
+def _display_menu_wlan_mode_():
     screen.fill(0)
     _draw_cam_idle_()
-    screen.text('Access Point', 34, 0, 1)
-    screen.text("".join(tuple(vars.ap_state)), 34, 12, 1)
+    screen.text('Internet', 34, 0, 1)
+    screen.text("".join(tuple(vars.wlan_state)), 34, 12, 1)
     screen.text('NEXT Battery', 34, 24, 1)
     screen.show()
 
@@ -346,4 +346,18 @@ def display_settings_fault():
     screen.fill_rect(21,6,86,20,1)
     screen.text('Settings Fault', 26, 8, 1)
     screen.text('Please Reboot', 26, 20, 1)
+    screen.show()
+
+def display_wlan_connecting():
+    screen.fill_rect(18,3,92,26,1)
+    screen.fill_rect(19,4,90,24,0)
+    screen.text('Connecting', 21, 6, 1)
+    screen.text('Please wait', 21, 16, 1)
+    screen.show()
+
+def display_ap_info():
+    screen.fill_rect(0,3,128,26,1)
+    screen.fill_rect(1,4,126,24,0)
+    screen.text('SSID:'+ wlan.ap_ssid, 3, 6, 1)
+    screen.text('Pswd:'+ wlan.ap_password, 3, 16, 1)
     screen.show()

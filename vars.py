@@ -25,7 +25,7 @@ shutter_state = "welcome"
 # "recording"
 # "stopping"
 # "menu_battery"
-# "menu_ap_mode"
+# "menu_wlan_mode"
 # "menu_camera_protocol"
 # "menu_device_mode"
 # "menu_inject_mode"
@@ -37,8 +37,8 @@ button_page = "released"
 button_enter = "released"
 
 ## WLAN state
-ap_state = "DOWN"
-wifi_state = "disconneted"
+wlan_state = "DISCONNECTED"
+# "CONNECTED"
 ## Other settings is coming soon!
 
 
