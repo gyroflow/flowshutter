@@ -65,6 +65,10 @@ def _welcome_():
 
 def _idle_():
     _check_oled_()
+    
+    # clear rec state firstly
+    if vars.recording_state == "rec_info":
+        vars.recording_state == "rec_battery"
 
     # enter to start recording if in master or master/slave mode
     if vars.button_enter == "pressed":
