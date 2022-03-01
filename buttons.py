@@ -33,7 +33,7 @@ def check(t):
         button_page_press_count = 0
 
     if button_enter.value() == 0:
-        if button_enter_press_count <=50:   # dead time is 50*5 = 250ms = 0.25s
+        if button_enter_press_count <=20:   # dead time is 20*5 = 100ms = 0.1s
             button_enter_press_count += 1
         else:
             button_enter_press_count = 0
