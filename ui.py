@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import ap, buttons,oled, vars, json, settings, sony_multiport
+import wlan, buttons,oled, vars, json, settings, sony_multiport
 
 welcome_time_count = 0
 
@@ -31,8 +31,8 @@ def update(t):
         _stopping_()
     elif vars.shutter_state == "menu_battery":
         _menu_battery_()
-    elif vars.shutter_state == "menu_ap_mode":
-        _menu_ap_mode_() 
+    elif vars.shutter_state == "menu_wlan_mode":
+        _menu_wlan_mode_() 
     elif vars.shutter_state == "menu_camera_protocol":
         _menu_camera_protocol_()
     elif vars.shutter_state == "menu_device_mode":
@@ -122,22 +122,22 @@ def _menu_battery_():
         vars.button_page = "released"
         vars.shutter_state = "menu_camera_protocol"
     
-    # enter to hidden ap mode menu
+    # enter to hidden wlan mode menu
     if vars.button_enter == "pressed":
         vars.button_enter = "released"       
-        vars.shutter_state = "menu_ap_mode"
+        vars.shutter_state = "menu_wlan_mode"
 
-def _menu_ap_mode_():
+def _menu_wlan_mode_():
     _check_oled_()
 
-    # enter to set ap up or down
+    # enter to set wlan up or down
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
-        if vars.ap_state == "DOWN":
-            ap.up()
+        if vars.wlan_state == "DISCONNECTED":
+            wlan.up()
             oled.update(vars.shutter_state)
         else:
-            ap.down()
+            wlan.down()
             oled.update(vars.shutter_state)
 
     ## page to back to battery menu
