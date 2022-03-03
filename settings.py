@@ -29,22 +29,38 @@ def _load_():
             vars.version = vars.version
         else:
             vars.version = settings["version"]
-
-        vars.device_mode = settings["device_mode"]
-        vars.inject_mode = settings["inject_mode"]
-        vars.camera_protocol = settings["camera_protocol"]
+        
+        try:
+            index1              = vars.camera_protocol_range.index( settings["camera_protocol"] )
+            vars.camera_protocol= settings["camera_protocol"]
+            vars.update_camera_preset()
+            index2              = vars.device_mode_range.index(     settings["device_mode"]     )
+            vars.device_mode    = settings["device_mode"]
+            index3              = vars.inject_mode_range.index(     settings["inject_mode"]     )
+            vars.inject_mode    = settings["inject_mode"]
+            index4              = vars.ota_source_range.index(      settings["ota_source"]      )
+            vars.ota_source     = settings["ota_source"]
+            index5              = vars.ota_channel_range.index(     settings["ota_channel"]     )
+            vars.ota_channel    = settings["ota_channel"]
+        except ValueError: # one of the current settings is not in the valid range
+            print("settings.json is invalid")
+            f.close()
+            update()
+            print("updated settings.json")
+            f = open("settings.json", "r")  # then read again, cuz update() closed the file
+            vars.version        = settings["version"]
+            vars.camera_protocol= settings["camera_protocol"]
+            vars.device_mode    = settings["device_mode"]
+            vars.inject_mode    = settings["inject_mode"]
+            vars.ota_source     = settings["ota_source"]
+            vars.ota_channel    = settings["ota_channel"]
+            
         print("settings.json loaded")
-        f.close()
-
-def default(): #force to set default settings
-    with open("settings.json", "w") as f:
-        settings = {"version":vars.version,"device_mode":"SLAVE", "inject_mode":"OFF", "camera_protocol":"Sony MTP"}
-        json.dump(settings, f)
         f.close()
 
 def update(): # update settings.json
     with open("settings.json", "w") as f:
-        settings = {"version":vars.version,"device_mode":vars.device_mode, "inject_mode":vars.inject_mode, "camera_protocol":vars.camera_protocol}
+        settings = {"version":vars.version,"device_mode":vars.device_mode, "inject_mode":vars.inject_mode, "camera_protocol":vars.camera_protocol,"ota_source":vars.ota_source,"ota_channel":vars.ota_channel}
         json.dump(settings, f)
         f.close()
 
@@ -67,11 +83,3 @@ def read(): # read settings.json and set vars
     f=open("settings.json", "r")
     print("".join(f.read()))
     ## test end
-
-def update_camera_preset():# per camera protocol
-    if vars.camera_protocol == "Sony MTP":
-        vars.device_mode = "SLAVE"
-        vars.device_mode_range = ["SLAVE", "MASTER/SLAVE"]
-    elif vars.camera_protocol == "NO":
-        vars.device_mode = "MASTER"
-        vars.device_mode_range = ["MASTER"]

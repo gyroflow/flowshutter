@@ -26,7 +26,7 @@ wlan_sta = network.WLAN(network.STA_IF)
 
 server_socket = None
 
-def get_connection():
+def _get_connection_():
     # return a working WLAN(STA_IF) instance or None
 
     # First check if there already is any connection:
@@ -41,7 +41,7 @@ def get_connection():
             return wlan_sta
 
         # Read known network profiles from file
-        profiles = read_profiles()
+        profiles = _read_profiles_()
         ## TODO: add oled hint here
 
         # Search WiFis in range
@@ -56,25 +56,24 @@ def get_connection():
             if encrypted:
                 if ssid in profiles:
                     password = profiles[ssid]
-                    connected = do_connect(ssid, password)
+                    connected = _do_connect_(ssid, password)
                 else:
                     print("skipping unknown encrypted network")
             else:  # open
-                connected = do_connect(ssid, None)
+                connected = _do_connect_(ssid, None)
             if connected:
                 break
 
     except OSError as e:
         print("exception", str(e))
 
-    # start web server for connection manager:
+    # _start_ web server for connection manager:
     if not connected:
-        connected = start()
+        connected = _start_()
 
     return wlan_sta if connected else None
 
-
-def read_profiles():
+def _read_profiles_():
     with open(NETWORK_PROFILES) as f:
         lines = f.readlines()
     profiles = {}
@@ -83,16 +82,15 @@ def read_profiles():
         profiles[ssid] = password
     return profiles
 
-
-def write_profiles(profiles):
+def _write_profiles_(profiles):
     lines = []
     for ssid, password in profiles.items():
         lines.append("%s;%s\n" % (ssid, password))
     with open(NETWORK_PROFILES, "w") as f:
         f.write(''.join(lines))
 
-
-def do_connect(ssid, password):
+def _do_connect_(ssid, password):
+    wlan_sta.active(False)
     wlan_sta.active(True)
     if wlan_sta.isconnected():
         return None
@@ -110,27 +108,24 @@ def do_connect(ssid, password):
         print('\nFailed. Not Connected to: ' + ssid)
     return connected
 
-
-def send_header(client, status_code=200, content_length=None ):
+def _send_header_(client, status_code=200, content_length=None ):
     client.sendall("HTTP/1.0 {} OK\r\n".format(status_code))
     client.sendall("Content-Type: text/html\r\n")
     if content_length is not None:
       client.sendall("Content-Length: {}\r\n".format(content_length))
     client.sendall("\r\n")
 
-
-def send_response(client, payload, status_code=200):
+def _send_response_(client, payload, status_code=200):
     content_length = len(payload)
-    send_header(client, status_code, content_length)
+    _send_header_(client, status_code, content_length)
     if content_length > 0:
         client.sendall(payload)
     client.close()
 
-
-def handle_root(client):
+def _handle_root_(client):
     wlan_sta.active(True)
     ssids = sorted(ssid.decode('utf-8') for ssid, *_ in wlan_sta.scan())
-    send_header(client)
+    _send_header_(client)
     client.sendall("""\
         <html>
             <h1 style="color: #5e9ca0; text-align: center;">
@@ -176,12 +171,11 @@ def handle_root(client):
     """ % dict(filename=NETWORK_PROFILES))
     client.close()
 
-
-def handle_configure(client, request):
+def _handle_configure_(client, request):
     match = ure.search("ssid=([^&]*)&password=(.*)", request)
 
     if match is None:
-        send_response(client, "Parameters not found", status_code=400)
+        _send_response_(client, "Parameters not found", status_code=400)
         return False
     # version 1.9 compatibility
     try:
@@ -192,10 +186,10 @@ def handle_configure(client, request):
         password = match.group(2).replace("%3F", "?").replace("%21", "!")
 
     if len(ssid) == 0:
-        send_response(client, "SSID must be provided", status_code=400)
+        _send_response_(client, "SSID must be provided", status_code=400)
         return False
 
-    if do_connect(ssid, password):
+    if _do_connect_(ssid, password):
         response = """\
                     <html>
                         <center>
@@ -209,13 +203,13 @@ def handle_configure(client, request):
                         </center>
                     </html>
         """ % dict(ssid=ssid)## TDDO: add stlye to header
-        send_response(client, response)
+        _send_response_(client, response)
         try:
-            profiles = read_profiles()
+            profiles = _read_profiles_()
         except OSError:
             profiles = {}
         profiles[ssid] = password
-        write_profiles(profiles)
+        _write_profiles_(profiles)
 
         time.sleep(5)
 
@@ -236,28 +230,25 @@ def handle_configure(client, request):
                 </center>
             </html>
         """ % dict(ssid=ssid)
-        send_response(client, response)
+        _send_response_(client, response)
         return False
 
+def _handle_not_found_(client, url):
+    _send_response_(client, "Path not found: {}".format(url), status_code=404)
 
-def handle_not_found(client, url):
-    send_response(client, "Path not found: {}".format(url), status_code=404)
-
-
-def stop():
+def _stop_():
     global server_socket
 
     if server_socket:
         server_socket.close()
         server_socket = None
 
-
-def start(port=80):
+def _start_(port=80):
     global server_socket
 
     addr = socket.getaddrinfo('0.0.0.0', port)[0][-1]
 
-    stop()
+    _stop_()
 
     wlan_sta.active(True)
     wlan_ap.active(True)
@@ -303,18 +294,19 @@ def start(port=80):
             print("URL is {}".format(url))
 
             if url == "":
-                handle_root(client)
+                _handle_root_(client)
             elif url == "configure":
-                handle_configure(client, request)
+                _handle_configure_(client, request)
             else:
-                handle_not_found(client, url)
+                _handle_not_found_(client, url)
 
         finally:
             client.close()
 
+
 def up():
     vars.wlan_state = "CONNECTED"
-    wlan = get_connection()
+    wlan = _get_connection_()
     if wlan is None:
         print("Could not niitialized the network connection.")
         while True:
