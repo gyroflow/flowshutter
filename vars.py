@@ -26,6 +26,8 @@ shutter_state = "welcome"
 # "stopping"
 # "menu_battery"
 # "menu_wlan_mode"
+# "menu_ota_source"
+# "menu_ota_channel"
 # "menu_camera_protocol"
 # "menu_device_mode"
 # "menu_inject_mode"
@@ -47,20 +49,29 @@ version = "0.40" # when new user settings added, this should be update firstly!
 device_mode = "SLAVE"
 inject_mode = "OFF"
 camera_protocol = "Sony MTP"
+ota_source = "GitHub"
+ota_channel = "stable"
 
+camera_protocol_range = ["Sony MTP", "NO"]
 device_mode_range = ["SLAVE", "MASTER/SLAVE"]
 inject_mode_range = ["OFF", "ON"]
-camera_protocol_range = ["Sony MTP", "NO"]
+ota_source_range = ["GitHub", "Gitee"]
+ota_channel_range = ["stable", "beta", "dev"]
+
+def update_camera_preset():# per camera protocol
+    global camera_protocol
+    global device_mode
+    global device_mode_range
+    if camera_protocol == "Sony MTP":
+        device_mode = "SLAVE"
+        device_mode_range = ["SLAVE", "MASTER/SLAVE"]
+    elif camera_protocol == "NO":
+        device_mode = "MASTER"
+        device_mode_range = ["MASTER"]
 
 def next(range, current):
-    try:
-        index = range.index(current)
-        if index == len(range) - 1:
-            return range[0]
-        else:
-            return range[index + 1]
-    except ValueError:# current parameter is not in the parameter range
-        import settings, oled
-        settings.dafault()    # then we write default settings
-        oled.display_settings_fault()
-        settings.read()
+    index = range.index(current)
+    if index == len(range) - 1:
+        return range[0]
+    else:
+        return range[index + 1]

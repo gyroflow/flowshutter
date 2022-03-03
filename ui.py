@@ -33,12 +33,18 @@ def update(t):
         _menu_battery_()
     elif vars.shutter_state == "menu_wlan_mode":
         _menu_wlan_mode_() 
+    elif vars.shutter_state == "menu_ota_source":
+        _menu_ota_source_()
+    elif vars.shutter_state == "menu_ota_channel":
+        _menu_ota_channel_()
     elif vars.shutter_state == "menu_camera_protocol":
         _menu_camera_protocol_()
     elif vars.shutter_state == "menu_device_mode":
         _menu_device_mode_()
     elif vars.shutter_state == "menu_inject_mode":
         _menu_inject_mode_()
+    else:
+        print("Unknown UI state")
 
 def _check_oled_():# check if we need to update the OLED
     if vars.previous_state != vars.shutter_state:
@@ -140,6 +146,39 @@ def _menu_wlan_mode_():
             wlan.down()
             oled.update(vars.shutter_state)
 
+    ## page button
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
+        if vars.wlan_state == "CONNECTED":
+            vars.shutter_state = "menu_ota_source"
+        else:
+            vars.shutter_state = "menu_battery"
+
+def _menu_ota_source_():
+    _check_oled_()
+
+    # enter to set wlan up or down
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+        vars.ota_source = vars.next(vars.ota_source_range, vars.ota_source)
+        oled.update(vars.shutter_state)
+        settings.update()
+
+    ## page to ota channel menu
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
+        vars.shutter_state = "menu_ota_channel"
+
+def _menu_ota_channel_():
+    _check_oled_()
+
+    # enter to set ota channel
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+        vars.ota_channel = vars.next(vars.ota_channel_range, vars.ota_channel)
+        oled.update(vars.shutter_state)
+        settings.update()
+
     ## page to back to battery menu
     if vars.button_page == "pressed":
         vars.button_page = "released"
@@ -152,7 +191,7 @@ def _menu_camera_protocol_():
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
         vars.camera_protocol = vars.next(vars.camera_protocol_range, vars.camera_protocol)
-        settings.update_camera_preset()
+        vars.update_camera_preset()
         oled.update(vars.shutter_state)
         settings.update()
 
