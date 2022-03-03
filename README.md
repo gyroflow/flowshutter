@@ -82,10 +82,12 @@ The micropython firmware we used is [v1.18](https://micropython.org/resources/fi
 
 ## License
 
-- documents under ``/doc`` are licensed under MIT
+
 - micropython binary  ``/tool/esp32-20210902-v1.17.bin`` comes from micropython, licensed under MIT
-- SSD1306 driver ``/ssd1306.py`` comes from micropython, licensed under MIT
 - uPyCraft_V1.1.exe ``/tool/uPyCraft_V1.1.exe`` is no licensed
+- documents under ``/doc`` are licensed under MIT
+- SSD1306 driver ``/ssd1306.py`` is licensed under MIT
+- `wlan.py` is licensed under MIT and AGLPv3
 - other code is under AGPL-v3.0 **ONLY**
 
 This software is provided as is, and please feel free to use this on your own camera which will be used for shooting comercial images/videos. For any other commercial usage, please contact [DusKing1](1483569698@qq.com).
