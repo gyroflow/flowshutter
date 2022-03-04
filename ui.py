@@ -13,11 +13,12 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan, buttons,oled, vars, json, settings, sony_multiport
+import wlan,battery, buttons,oled, vars, json, settings, sony_multiport
 
 welcome_time_count = 0
 
 def update(t):
+    battery.read_vol()
     buttons.check(t)
     if vars.shutter_state == "welcome":
         _welcome_()
