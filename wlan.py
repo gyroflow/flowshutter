@@ -40,6 +40,7 @@ import network, gc, vars, socket, ure, time, oled
 ap_ssid = "Flowshutter"
 ap_password = "ilovehugo"
 ap_authmode = 3  # WPA2
+connect_to_open_wifis = False
 
 NETWORK_PROFILES = 'wifi.dat'
 
@@ -47,6 +48,16 @@ wlan_ap = network.WLAN(network.AP_IF)
 wlan_sta = network.WLAN(network.STA_IF)
 
 server_socket = None
+
+def unquote_plus(s):
+    r = s.replace('+', ' ').split('%')
+    for i in range(1, len(r)):
+        s = r[i]
+        try:
+            r[i] = chr(int(s[:2], 16)) + s[2:]
+        except ValueError:
+            r[i] = '%' + s
+    return ''.join(r)
 
 def _get_connection_():
     # return a working WLAN(STA_IF) instance or None
@@ -81,7 +92,7 @@ def _get_connection_():
                     connected = _do_connect_(ssid, password)
                 else:
                     print("skipping unknown encrypted network")
-            else:  # open
+            elif connect_to_open_wifis:  # open
                 connected = _do_connect_(ssid, None)
             if connected:
                 break
@@ -193,19 +204,19 @@ def _handle_root_(client):
     """ % dict(filename=NETWORK_PROFILES))
     client.close()
 
-def _handle_configure_(client, request):
-    match = ure.search("ssid=([^&]*)&password=(.*)", request)
+def _handle_configure_(client, content):
+    match = ure.search("ssid=([^&]*)&password=(.*)", content)
 
     if match is None:
         _send_response_(client, "Parameters not found", status_code=400)
         return False
     # version 1.9 compatibility
     try:
-        ssid = match.group(1).decode("utf-8").replace("%3F", "?").replace("%21", "!")
-        password = match.group(2).decode("utf-8").replace("%3F", "?").replace("%21", "!")
-    except Exception:
-        ssid = match.group(1).replace("%3F", "?").replace("%21", "!")
-        password = match.group(2).replace("%3F", "?").replace("%21", "!")
+        ssid = unquote_plus(match.group(1).decode("utf-8"))
+        password = unquote_plus(match.group(2).decode("utf-8"))
+    except UnicodeEncodeError:
+        ssid = unquote_plus(match.group(1))
+        password = unquote_plus(match.group(2))
 
     if len(ssid) == 0:
         _send_response_(client, "SSID must be provided", status_code=400)
@@ -296,17 +307,31 @@ def _start_(port=80):
         print('client connected from', addr)
         try:
             client.settimeout(5.0)
-
-            request = b""
+            request = bytearray()
             try:
                 while "\r\n\r\n" not in request:
-                    request += client.recv(512)
+                    request.extend(client.recv(512))
             except OSError:
                 pass
 
             print("Request is: {}".format(request))
-            if "HTTP" not in request:  # skip invalid requests
+            if "HTTP" not in request:
+                # skip invalid requests
                 continue
+
+            if "POST" in request and "Content-Length: " in request:
+                content_length = int(ure.search("Content-Length: ([0-9]+)?", bytes(request)).group(1))
+                content = bytearray(request[bytes(request).index(b"\r\n\r\n") + 4:])
+                content_length_remaining = content_length - len(content)
+
+                while content_length_remaining > 0:
+                    chunk = client.recv(512)
+                    content.extend(chunk)
+                    content_length_remaining -= len(chunk)
+
+            request = bytes(request)
+
+            print("Request is: {}".format(request))
 
             # version 1.9 compatibility
             try:
@@ -318,7 +343,7 @@ def _start_(port=80):
             if url == "":
                 _handle_root_(client)
             elif url == "configure":
-                _handle_configure_(client, request)
+                _handle_configure_(client, bytes(content))
             else:
                 _handle_not_found_(client, url)
 
