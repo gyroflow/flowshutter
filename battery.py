@@ -29,7 +29,7 @@ def read_vol():
     #     vol =0.5*vol+0.5* vol_read * 0.001305 *13 + 0.3401
         
     #     print("vol:", vol)
-        print("vol_read:",vol_read)
+        # print("vol_read:",vol_read)
     #     # print("read:",adc.read())
     #     # print("read:",adc.read())
     #     # print("read:",adc.read())
