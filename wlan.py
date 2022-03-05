@@ -246,8 +246,8 @@ def _handle_root_(client):
     wlan_sta.active(True)
     ssids = sorted(ssid.decode('utf-8') for ssid, *_ in wlan_sta.scan())
     _send_header_(client)
-    clinet.sendall("<html>")
-    clinet.sendall(html_head)
+    client.sendall("<html>")
+    client.sendall(html_head)
     client.sendall("""\
             <body>
                 <form action="configure" method="post">
