@@ -262,11 +262,11 @@ def _handle_root_(client):
     while len(ssids):
         ssid = ssids.pop(0)
         client.sendall("""\
-                        <tr>
-                            <td colspan="2">
-                                <input type="radio" name="ssid" value="{0}" />{0}
-                            </td>
-                        </tr>
+                        <a onclick="document.getElementById('ssid').value = '{ssid}';" href="javascript:void(0)">
+                            <li>
+                                {ssid}
+                            </li>
+                        </a>
         """.format(ssid=ssid))
     client.sendall("""\
                         <li onclick="document.getElementById('ssid').focus()">
