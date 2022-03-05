@@ -37,6 +37,93 @@
 # SOFTWARE.
 import network, gc, vars, socket, ure, time, oled
 
+html_head = """
+    <head>
+        <title>WiFi Manager</title>
+        <style>
+            body {
+                margin: 0px 20px;
+                font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0px;
+            }
+            li {
+                margin: 0px -10px;
+                padding: 10px 10px 10px 10px;
+            }
+            a, h1, h2, h3 {
+                color: #333;
+                text-decoration: none;
+            }
+            p > a {
+                text-decoration: underline;
+            }
+            a > li,
+            li[onclick] {
+                background-color: #ffffff00;
+                transition: background-color .5s;
+            }
+            a:hover li, a:active li,
+            li:hover[onclick], li:active[onclick] {
+                background-color: #ddd;
+                cursor: pointer;
+            }
+            h1, form {
+                position: relative;
+                max-width: 750px;
+                width: 100%;
+                margin: auto;
+            }
+            h1 {
+                margin: 10px auto;
+            }
+            h2 {
+                margin: 10px 0px -10px 0px;
+            }
+            select:-moz-focusring {
+                color: transparent;
+                text-shadow: 0 0 0 #000;
+            }
+            button {
+                position: relative;
+                max-width: 750px;
+                width: 100%;
+                margin: auto;
+                padding: 10px 10px 10px 10px;
+                display: block;
+                text-align: left;
+                border: none;
+                background: transparent;
+                font-size: 1em;
+                background-color: #ffffff00;
+                transition: background-color .5s;
+            }
+            button:hover, button:active {
+                background-color: #ddd;
+                cursor: pointer;
+            }
+            #submit {
+                border: none;
+                background: transparent;
+                padding: 0px;
+                font-size: 1em;
+            }
+            .monospace {
+                font-family: 'Roboto Mono', monospace;
+            }
+            .fixedWidth {
+                width: 100px;
+                display: inline-block;
+            }
+            .placeholder {
+                padding-bottom: 20px;
+            }
+        </style>
+    </head>
+"""
+
 ap_ssid = "Flowshutter"
 ap_password = "ilovehugo"
 ap_authmode = 3  # WPA2
@@ -159,16 +246,18 @@ def _handle_root_(client):
     wlan_sta.active(True)
     ssids = sorted(ssid.decode('utf-8') for ssid, *_ in wlan_sta.scan())
     _send_header_(client)
+    clinet.sendall("<html>")
+    clinet.sendall(html_head)
     client.sendall("""\
-        <html>
-            <h1 style="color: #5e9ca0; text-align: center;">
-                <span style="color: #ff0000;">
-                    Flowshutter Wi-Fi Setup
-                </span>
-            </h1>
-            <form action="configure" method="post">
-                <table style="margin-left: auto; margin-right: auto;">
-                    <tbody>
+            <body>
+                <form action="configure" method="post">
+                    <h1>
+                        Wi-Fi Client Setup
+                    </h1>
+                    <h2>
+                        SSIDs (click to select)
+                    </h2>
+                    <ul>
     """)
     while len(ssids):
         ssid = ssids.pop(0)
@@ -178,30 +267,31 @@ def _handle_root_(client):
                                 <input type="radio" name="ssid" value="{0}" />{0}
                             </td>
                         </tr>
-        """.format(ssid))
+        """.format(ssid=ssid))
     client.sendall("""\
-                        <tr>
-                            <td>Password:</td>
-                            <td><input name="password" type="password" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p style="text-align: center;">
-                    <input type="submit" value="Submit" />
-                </p>
-            </form>
-            <p>&nbsp;</p>
-            <hr />
-            <h5>
-                <span style="color: #ff0000;">
-                    Your SSID and password information will be saved into the
-                    "%(filename)s" file in your own flowshutter device.
-                    Be careful about security!
-                </span>
-            </h5>
-            <hr />
+                        <li onclick="document.getElementById('ssid').focus()">
+                            <span class="fixedWidth">SSID</span>
+                            <input id="ssid" name="ssid" type="text"/>
+                        </li>
+                        <li onclick="document.getElementById('password').focus()">
+                            <span class="fixedWidth">Password</span>
+                            <input id="password" name="password" type="password"/>
+                        </li>
+                        <li onclick="document.getElementById('submit').click()">
+                            <input id=submit type="submit" value="Submit" />
+                        </li>
+                    </ul>
+                    <div class="placeholder"></div>
+                    <h2>
+                        Infos:
+                    </h2>
+                    <p>
+                        Your ssid and password information will be saved into the "{filename}" file in your ESP module for future usage. Be careful about security!
+                    </p>
+                </form>
+            </body>
         </html>
-    """ % dict(filename=NETWORK_PROFILES))
+    """.format(filename=NETWORK_PROFILES))
     client.close()
 
 def _handle_configure_(client, content):
@@ -224,18 +314,15 @@ def _handle_configure_(client, content):
 
     if _do_connect_(ssid, password):
         response = """\
-                    <html>
-                        <center>
-                            <br><br>
-                            <h1 style="color: #458f94; text-align: center;">
-                                <span style="color: #8d3b86;">
-                                    Flowshutter successfully connected to WiFi network %(ssid)s.
-                                </span>
-                            </h1>
-                            <br><br>
-                        </center>
-                    </html>
-        """ % dict(ssid=ssid)## TDDO: add stlye to header
+            <html>
+                {html_head}
+                <body>
+                    <h1>
+                        ESP successfully connected to WiFi network "<span class="monospace">{ssid}</span>"
+                    </h1>
+                </body>
+            </html>
+        """.format(html_head=html_head, ssid=ssid)
         _send_response_(client, response)
         try:
             profiles = _read_profiles_()
@@ -250,19 +337,15 @@ def _handle_configure_(client, content):
     else:
         response = """\
             <html>
-                <center>
-                    <h1 style="color: #458f94; text-align: center;">
-                        <span style="color: #8d3b86;">
-                            Flowshutter could not connect to WiFi network %(ssid)s.
-                        </span>
+                {html_head}
+                <body>
+                    <h1>
+                        ESP could not connect to WiFi network "<span class="monospace">{ssid}</span>"
                     </h1>
-                    <br><br>
-                    <form>
-                        <input type="button" value="Go back!" onclick="history.back()"></input>
-                    </form>
-                </center>
+                    <button onclick="history.back()">Go back</button>
+                </body>
             </html>
-        """ % dict(ssid=ssid)
+        """.format(html_head=html_head, ssid=ssid)
         _send_response_(client, response)
         return False
 
@@ -306,7 +389,7 @@ def _start_(port=80):
         client, addr = server_socket.accept()
         print('client connected from', addr)
         try:
-            client.settimeout(5.0)
+            client.settimeout(15.0)
             request = bytearray()
             try:
                 while "\r\n\r\n" not in request:
