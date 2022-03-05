@@ -262,12 +262,12 @@ def _handle_root_(client):
     while len(ssids):
         ssid = ssids.pop(0)
         client.sendall("""\
-                        <a onclick="document.getElementById('ssid').value = '{ssid}';" href="javascript:void(0)">
+                        <a onclick="document.getElementById('ssid').value = '{0}';" href="javascript:void(0)">
                             <li>
-                                {ssid}
+                                {0}
                             </li>
                         </a>
-        """.format(ssid=ssid))
+        """.format(ssid))
     client.sendall("""\
                         <li onclick="document.getElementById('ssid').focus()">
                             <span class="fixedWidth">SSID</span>
@@ -286,12 +286,11 @@ def _handle_root_(client):
                         Infos:
                     </h2>
                     <p>
-                        Your ssid and password information will be saved into the "{filename}" file in your ESP module for future usage. Be careful about security!
+                        Your ssid and password information will be saved into the "{}" file in your ESP module for future usage. Be careful about security!
                     </p>
                 </form>
             </body>
-        </html>
-    """.format(filename=NETWORK_PROFILES))
+    """.format(NETWORK_PROFILES))
     client.close()
 
 def _handle_configure_(client, content):
@@ -389,7 +388,7 @@ def _start_(port=80):
         client, addr = server_socket.accept()
         print('client connected from', addr)
         try:
-            client.settimeout(15.0)
+            client.settimeout(50.0)
             request = bytearray()
             try:
                 while "\r\n\r\n" not in request:
