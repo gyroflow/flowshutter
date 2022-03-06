@@ -232,16 +232,12 @@ def _display_stopping_():
 
 def display_menu_battery():
     _draw_battery_()
-
-    voltage = 3.91 # TODO: later this should be turn to some ADC values
-    voltage_str = "%.2fV" % voltage
+    _draw_battery_mask_(vars.vol)
+    voltage_str = "%.2fV" % vars.vol
     for i in range(5):
         for j in range(5):
             screen.text(voltage_str,42+i, 11+j,0)
     screen.text(voltage_str,44,13,1)
-
-    _draw_battery_mask_(voltage)
-
     screen.show()
 
 def _display_menu_wlan_mode_():

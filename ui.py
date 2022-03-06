@@ -16,6 +16,7 @@
 import wlan,battery, buttons,oled, vars, json, settings, sony_multiport
 
 welcome_time_count = 0
+battery_update_count = 0
 
 def update(t):
     battery.read_vol()
@@ -123,6 +124,13 @@ def _stopping_():
 
 def _menu_battery_():
     _check_oled_()
+
+    global battery_update_count
+    if battery_update_count >=500:
+        battery_update_count = 0
+        oled.display_menu_battery()
+    else:
+        battery_update_count = battery_update_count +5
 
     # page to camera protocol menu
     if vars.button_page == "pressed":

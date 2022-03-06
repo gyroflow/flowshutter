@@ -13,34 +13,16 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import target
+import target, vars
 
 adc = target.init_adc()
 
 adc_read_time_count = 0
-# vol = 4.1
+
 def read_vol():
-    # vol = 4.1
     global adc_read_time_count
-    adc_read_time_count += 1
-    if adc_read_time_count >= 600:
+    adc_read_time_count += 5
+    if adc_read_time_count >= 100:
+        # read voltage every 100ms
         adc_read_time_count = 0
-        vol_read = adc.read()
-    #     vol =0.5*vol+0.5* vol_read * 0.001305 *13 + 0.3401
-        
-    #     print("vol:", vol)
-        # print("vol_read:",vol_read)
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("read:",adc.read())
-    #     # print("u16:",adc.read_u16())
-
-
+        vars.vol = (vars.vol + adc.read() * 3.3 / 2048)/2
