@@ -26,15 +26,16 @@ shutter_state = "welcome"
 # "starting"
 # "recording"
 # "stopping"
-# "menu_battery"
-# "menu_wlan_mode"
+# "battery"
+# "menu_internet"
 # "menu_ota_source"
 # "menu_ota_channel"
 # "menu_camera_protocol"
 # "menu_device_mode"
 # "menu_inject_mode"
-recording_state = "rec_info"
-# "rec_battery"
+info = "welcome"
+# this is the oled state
+# basically just shutter_state
 
 ## button state
 button_page = "released"
@@ -43,6 +44,10 @@ button_enter = "released"
 ## WLAN state
 wlan_state = "DISCONNECTED"
 # "CONNECTED"
+
+## OLED state
+oled_need_update = "no"
+# "yes"
 ## Other settings is coming soon!
 
 

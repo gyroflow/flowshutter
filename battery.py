@@ -22,7 +22,7 @@ adc_read_time_count = 0
 def read_vol():
     global adc_read_time_count
     adc_read_time_count += 5
-    if adc_read_time_count >= 100:
-        # read voltage every 100ms
+    if adc_read_time_count >= 50:
+        # read voltage every 50ms
         adc_read_time_count = 0
         vars.vol = (vars.vol + adc.read() * 3.3 / 2048)/2
