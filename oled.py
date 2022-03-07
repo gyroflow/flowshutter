@@ -23,33 +23,33 @@ def _init_():
 
 screen = _init_()
 
-def update(state):
-    if state == "welcome":
+def update(info):
+    if info == "welcome":
         _display_welcome_()
-    elif state == "idle":
+    elif info == "idle":
         _display_idle_()
-    elif state == "starting":
+    elif info == "starting":
         _display_starting_()
-    elif state == "recording":
-        display_recording()
-    elif state == "stopping":
+    elif info == "recording":
+        _display_recording_()
+    elif info == "stopping":
         _display_stopping_()
-    elif state == "menu_battery":
-        display_menu_battery()
-    elif state == "menu_wlan_mode":
-        _display_menu_wlan_mode_()
-    elif state == "menu_ota_source":
+    elif info == "battery":
+        _display_battery_()
+    elif info == "menu_internet":
+        _display_menu_internet_()
+    elif info == "menu_ota_source":
         _display_menu_ota_source_()
-    elif state == "menu_ota_channel":
+    elif info == "menu_ota_channel":
         _display_menu_ota_channel_()
-    elif state == "menu_camera_protocol":
+    elif info == "menu_camera_protocol":
         _display_menu_camera_protocol_()
-    elif state == "menu_device_mode":
+    elif info == "menu_device_mode":
         _display_menu_device_mode_()
-    elif state == "menu_inject_mode":
+    elif info == "menu_inject_mode":
         _display_menu_inject_mode_()
     else:
-        print("Unknown OLED state: "+ state)
+        print("Unknown OLED info: "+ info)
 
 def _draw_gyroflow_logo_():
     gyroflow_bytearray = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xc0\x00\x00\x00\x00\xf0\x00\xc0\x00\x00\x00\x00\x00\x00\x00\x03@\x00\x00\x00\x01\x98\x01\xc0\x00\x00\x00\x00\x00\x00\x00\x06@\x00\x00\x00\x01\x0c\x01\xe0\x00\x00\x00\x00\x00\x00\x00\x0cA\x80\x00\x00\x03\x06\x03p\x00\x00\x00\x00\x00\x00\x00\x18\xc3\x00\x00\x00\x02\x02G0\x00\x00\x00\x00\x00\x00\x001\x87\x00\x00\x00\x1a\x01\xe68\x00\x00\x00\x00\x00\x00\x00!\x0e\x00\x00\x00r\xc3\xee\x18\x00\x00\x00\x00\x00\x00\x00c\x0c\x00\x00\x00\xc2O|\x1c\x00\x00\x00\x00\x00\x00\x00B\x18\x00\x00\x00\x83<8\x0c\x0f\xe3\x03?\xe0|\x00\xc4\x10\x00\x00\x00\x818\x18\x0e\x1f\xf3\x87?\xf0\xfe\x00\x8c0\x00\x00\x01\xc1\x80\x18\xfe89\xce01\x83\x01\x98`\x00\x00\x01d\x80\x0f\x800\x18\xcc03\x01\x81\xb0\xc0\xff\x80\x016\x80\x0e\x00p\x00x03\x01\x81a\xc1\xe1\x82\x03X\x80\x06\x00p\x00x?\xe3\x01\x83\xc3\x83!\x06\x02l\x00\x07\x00p\xf80?\xc3\x01\x83\xce\x87#\x0e\x06w\x80\x1e\x80p\xf800\xc3\x01\x87\xf8\x86"\x1c\x0c1\xc0x\xc0p\x1800\xe3\x01\x87\x81\x86b4\x188p\xe0@8800q\x83\x0c\x81\x0c\xc3\xe4p\x18>\x00@<x008\xfe\x1c\x81\xbf\x81\x86\xc0\x0c\x07\x90\xc0\x1f\xf000\x18|<\x80\xe2\x00\x03\x80\x0c0\xff\x80\x07\xc0\x00\x00\x00\x00h\x80\x00\x00\x00\x00\x060\x04\x00\x00\x00\x00\x00\x00\x00\x08\x80\x00\x00\x00\x00\x06\x98\x10\x00\x00\x00\x00\x00\x00\x00\x19\x80\x00\x00\x00\x00\x03\x8c\x10\x00\x00\x00\x00\x00\x00\x00\x11\x00\x00\x00\x00\x00\x01\x060\x00\x00\x00\x00\x00\x00\x00\x13\x00\x00\x00\x00\x00\x00\x03`\x00\x00\x00\x00\x00\x00\x00\x1e\x00\x00\x00\x00\x00\x00\x01\xc0\x00\x00\x00\x00\x00\x00\x00\x0c\x00\x00\x00\x00\x00')
@@ -214,7 +214,7 @@ def _display_starting_():
     screen.text('Sony start', 34, 24, 1)
     screen.show()
 
-def display_recording():
+def _display_recording_():
     screen.fill(0)
     _draw_cam_working_()
     screen.text('FlowShutter', 34, 0, 1)
@@ -230,7 +230,7 @@ def _display_stopping_():
     screen.text('Sony ending', 34, 24, 1)
     screen.show()
 
-def display_menu_battery():
+def _display_battery_():
     _draw_battery_()
     _draw_battery_mask_(vars.vol)
     voltage_str = "%.2fV" % vars.vol
@@ -240,7 +240,7 @@ def display_menu_battery():
     screen.text(voltage_str,44,13,1)
     screen.show()
 
-def _display_menu_wlan_mode_():
+def _display_menu_internet_():
     screen.fill(0)
     screen.text('Internet', 34, 0, 1)
 
