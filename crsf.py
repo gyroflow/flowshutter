@@ -61,7 +61,7 @@ def send_packet(t):
 
         if vars.arm_time < 1000:            # in first second we don't inject
             uart1.write(fc_arm_packet)
-        elif vars.arm_time >= 1000:           # after that we start to inject
+        elif vars.arm_time >= 1000:         # after that we start to inject
             _inject_()
             packets_count = packets_count + 1
             if packets_count >= 8:

@@ -16,9 +16,11 @@
 from machine import UART, Pin, SoftI2C, ADC
 
 def init_adc():
-    adc = ADC(Pin(36))
-    adc.atten(ADC.ATTN_11DB)
-    return adc
+    adc1 = ADC(Pin(36))
+    adc1.atten(ADC.ATTN_11DB)
+    adc2 = ADC(Pin(34))
+    adc2.atten(ADC.ATTM_11DB)
+    return adc1, adc2
 
 def init_crsf_uart():
     uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 33, rx = 32)
