@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target, vars
 
-adc = target.init_adc()
+adc1, adc2 = target.init_adc()
 
 adc_read_time_count = 0
 
@@ -25,4 +25,7 @@ def read_vol():
     if adc_read_time_count >= 50:
         # read voltage every 50ms
         adc_read_time_count = 0
-        vars.vol = (vars.vol + adc.read() * 3.3 / 2048)/2
+        if adc1.read() != 0:
+            vars.vol = (vars.vol + adc1.read() * 3.3 / 2048)/2
+        else:
+            vars.vol = (vars.vol + adc2.read() * 3.3 / 4096)/2
