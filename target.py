@@ -19,7 +19,7 @@ def init_adc():
     adc1 = ADC(Pin(36))
     adc1.atten(ADC.ATTN_11DB)
     adc2 = ADC(Pin(34))
-    adc2.atten(ADC.ATTM_11DB)
+    adc2.atten(ADC.ATTN_11DB)
     return adc1, adc2
 
 def init_crsf_uart():
