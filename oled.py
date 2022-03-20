@@ -48,6 +48,9 @@ def update(info):
         _display_menu_device_mode_()
     elif info == "menu_inject_mode":
         _display_menu_inject_mode_()
+    elif info == "sony mtp ack":
+        show_sony_mtp_ack()
+
     else:
         print("Unknown OLED info: "+ info)
 
@@ -296,23 +299,30 @@ def _display_menu_inject_mode_():
         _draw_audio_off_()
     screen.show()
 
-def display_settings_fault():
+def show_settings_fault():
     screen.fill_rect(20,5,88,22,1)
     screen.fill_rect(21,6,86,20,1)
     screen.text('Settings Fault', 26, 8, 1)
     screen.text('Please Reboot', 26, 20, 1)
     screen.show()
 
-def display_wlan_connecting():
+def show_wlan_connecting():
     screen.fill_rect(18,3,92,26,1)
     screen.fill_rect(19,4,90,24,0)
     screen.text('Connecting', 21, 6, 1)
     screen.text('Please wait', 21, 16, 1)
     screen.show()
 
-def display_ap_info():
+def show_ap_info():
     screen.fill_rect(0,3,128,26,1)
     screen.fill_rect(1,4,126,24,0)
     screen.text('SSID:'+ wlan.ap_ssid, 3, 6, 1)
     screen.text('Pswd:'+ wlan.ap_password, 3, 16, 1)
+    screen.show()
+
+def show_sony_mtp_ack():
+    screen.fill_rect(18,3,92,26,1)
+    screen.fill_rect(19,4,90,24,0)
+    screen.text('Sony Remote', 21, 6, 1)
+    screen.text('Registered', 21, 16, 1)
     screen.show()
