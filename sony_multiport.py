@@ -47,7 +47,7 @@ async def uart_handler():
             tmp = vars.info
             vars.info = "sony mtp ack"
             vars.oled_need_update = True
-            await asyncio.sleep_ms(5000)
+            await asyncio.sleep_ms(2000)
             vars.info = tmp
             vars.oled_need_update = True
 
