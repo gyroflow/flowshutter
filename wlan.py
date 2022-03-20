@@ -65,7 +65,7 @@ def _get_connection_():
     # First check if there already is any connection:
     if wlan_sta.isconnected():
         return wlan_sta
-    oled.display_wlan_connecting()## TODO: add oled hint here
+    oled.show_wlan_connecting()## TODO: add oled hint here
     connected = False
     try:
         # ESP connecting to WiFi takes time, wait a bit and try again:
@@ -292,7 +292,7 @@ def _start_(port=80):
     server_socket.bind(addr)
     server_socket.listen(1)
 
-    oled.display_ap_info()
+    oled.show_ap_info()
     ## TODO: add oled hint here
 
     print('Connect to WiFi ssid ' + ap_ssid + ', default password: ' + ap_password)

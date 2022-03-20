@@ -44,6 +44,12 @@ async def uart_handler():
         if res == HANDSHAKE:                    # receive handshake
             await asyncio.sleep_ms(10)
             await swriter.awrite(HANDSHAKE_ACK) # send handshake ack to camera
+            tmp = vars.info
+            vars.info = "sony mtp ack"
+            vars.oled_need_update = True
+            await asyncio.sleep_ms(5000)
+            vars.info = tmp
+            vars.oled_need_update = True
 
         elif res == REC_START:                  # receive record start
             await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
