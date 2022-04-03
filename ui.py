@@ -17,6 +17,7 @@ import wlan,battery, buttons,oled, vars, json, settings, sony_multi
 
 welcome_time_count = 0
 udpate_count = 0
+starting_time_count = 0
 
 def update(t):          # UI tasks controller
     battery.read_vol()  # read the battery voltage
@@ -98,7 +99,18 @@ def _idle_():
         vars.shutter_state = "battery"
 
 def _starting_():
-
+    # starting timeout
+    global starting_time_count
+    if starting_time_count <= 5000:
+        starting_time_count = starting_time_count + 5
+    elif ((starting_time_count > 5000) & (starting_time_count <= 10000)):
+        starting_time_count = starting_time_count + 5
+        vars.info = "starting_timeout"
+    elif starting_time_count > 10000:
+        starting_time_count = 0
+        vars.shutter_state = "idle"
+        vars.info = vars.shutter_state
+    
     # enter do nonthing
     if vars.button_enter == "pressed":
         vars.button_enter = "released"
