@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan,battery, buttons,oled, vars, json, settings, sony_multi
+import wlan,battery, buttons,oled, vars, json, settings, simple_cam, sony_multi
 
 welcome_time_count = 0
 udpate_count = 0
@@ -246,20 +246,43 @@ def _menu_inject_mode_():
         vars.shutter_state = "idle"
 
 def _rec_enter_():
-    if (vars.camera_protocol == "Sony MTP") & (vars.device_mode == "MASTER/SLAVE"):
+    if (vars.device_mode == "MASTER/SLAVE") & (vars.camera_protocol == "Sony MTP"):
         sony_multi.uart2.write(sony_multi.REC_PRESS)
         sony_multi.uart2.write(sony_multi.REC_RELEASE)
         if vars.shutter_state == "idle":
             vars.shutter_state = "starting"
         elif vars.shutter_state == "recording":
             vars.shutter_state = "stopping"
-    elif (vars.camera_protocol == "NO") & (vars.device_mode == "MASTER"):
-        if vars.shutter_state == "idle":
-            vars.shutter_state = "recording"
-            vars.arm_state = "arm"
-        elif vars.shutter_state == "recording":
-            vars.shutter_state = "idle"
-            vars.arm_state = "disarm"
+    
+    elif vars.device_mode == "MASTER":
+
+        if vars.camera_protocol == "Internel SW":
+            if vars.shutter_state == "idle":
+                vars.shutter_state = "recording"
+                simple_cam.toggle_internal_switch()
+                vars.arm_state = "arm"
+            elif vars.shutter_state == "recording":
+                vars.shutter_state = "idle"
+                simple_cam.toggle_internal_switch()
+                vars.arm_state = "disarm"
+
+        elif vars.camera_protocol == "RED V-level":
+            if vars.shutter_state == "idle":
+                vars.shutter_state = "recording"
+                simple_cam.toggle_cc_voltage_level()
+                vars.arm_state = "arm"
+            elif vars.shutter_state == "recording":
+                vars.shutter_state = "idle"
+                simple_cam.toggle_cc_voltage_level()
+                vars.arm_state = "disarm"
+
+        elif vars.camera_protocol == "NO":
+            if vars.shutter_state == "idle":
+                vars.shutter_state = "recording"
+                vars.arm_state = "arm"
+            elif vars.shutter_state == "recording":
+                vars.shutter_state = "idle"
+                vars.arm_state = "disarm"
 
 def _rec_page_():
     if vars.info == "recording":
