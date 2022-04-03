@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://gyroflow.xyz">Homepage</a> •
+  <a href="https://docs.gyroflow.xyz/logging/flowshutter/flowshutter/">Documentation</a> •
   <a href="https://discord.gg/WfxZZXjpke">Discord</a> •
   <a href="https://github.com/gyroflow/flowshutter/issues">Report bug</a> •
   <a href="https://github.com/gyroflow/flowshutter/issues">Request feature</a>
@@ -40,17 +41,24 @@ with many more features on the way!
 
 ## Supported Hardware
 
-Flowshutter haven't worked with any manufacturer yet. So there's no "Ready-to-Use" commercial hardware/product yet.
+Currently we are working with a manufacturer that will produce flowshutter hardware. We will disclose more relevant information in the future.
 
-However you can try to build an official design from us at your own! The community [credit card sized design](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban) and [FC sized design](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban_copy_copy) are already open-sourced. Check out our [Build Video](https://www.youtube.com/watch?v=ELaQPYE9ncA)!
+At the same time you can try to DIY your own flowshutter hardware. We have two open sourced designs:
 
-[![Build Video](images/diy-your-own-flowshutter.png)](https://www.youtube.com/watch?v=ELaQPYE9ncA)
+- [Credit card sized design](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban):
+
+[![build](images/flowshutter-credit-card-sized.png)](https://youtu.be/ELaQPYE9ncA)
+
+- [FC sized design](https://oshwhub.com/AirFleet/xiang-ji-kong-zhi-ban_copy_copy): 
+
+[![build](images/flowshutter-fc-sized.png)](https://youtu.be/ry7Ey54Z7s8)
 
 
 ### Compatible camera protocol/trigger mechanisms
 
 - [x] Sony Multiport USB protocol
 - [] Sony LANC protocol (WIP)
+- [] HDMI CEC protocol (WIP)
 - [] Canon shutter wire (WIP)
 - [] Nikon protocol (WIP)
 - [] Others are on the way
@@ -74,14 +82,14 @@ The micropython firmware we used is [v1.18](https://micropython.org/resources/fi
 
 1. Install `Visual Studio Code`
 2. Install `node`
-3. Install `Pymakr` extension in `Visual Studio Code`
+3. Manually install `Pymakr` ([v1.18.0-beta.0](https://github.com/pycom/pymakr-vsc/releases/tag/v1.1.18-beta.0) or newer) extension in `Visual Studio Code`
 4. Edit `Pymakr`'s global settings that add `"wch.cn",` to `"autoconnect_comport_manufacturers"`
 5. Modify content of `"address"` to `"address": "",`
 6. Pull flowshutter code from `https://github.com/gyroflow/flowshutter`
 7. Then you can connect and upload the flowshutter code
 
-## License
 
+## License
 
 - micropython binary  ``/tool/esp32-20210902-v1.17.bin`` comes from micropython, licensed under MIT
 - uPyCraft_V1.1.exe ``/tool/uPyCraft_V1.1.exe`` is no licensed
