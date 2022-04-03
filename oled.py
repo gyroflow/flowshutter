@@ -30,6 +30,8 @@ def update(info):
         _display_idle_()
     elif info == "starting":
         _display_starting_()
+    elif info == "starting_timeout":
+        _show_starting_timeout_()
     elif info == "recording":
         _display_recording_()
     elif info == "stopping":
@@ -49,7 +51,7 @@ def update(info):
     elif info == "menu_inject_mode":
         _display_menu_inject_mode_()
     elif info == "sony mtp ack":
-        show_sony_mtp_ack()
+        _show_sony_mtp_ack_()
 
     else:
         print("Unknown OLED info: "+ info)
@@ -320,9 +322,16 @@ def show_ap_info():
     screen.text('Pswd:'+ wlan.ap_password, 3, 16, 1)
     screen.show()
 
-def show_sony_mtp_ack():
+def _show_sony_mtp_ack_():
     screen.fill_rect(18,3,92,26,1)
     screen.fill_rect(19,4,90,24,0)
     screen.text('Sony Remote', 21, 6, 1)
     screen.text('Registered', 21, 16, 1)
+    screen.show()
+
+def _show_starting_timeout_():
+    screen.fill_rect(10,1,108,30,1)
+    screen.fill_rect(14,4,98,24,0)
+    screen.text('No ACK back', 17, 6, 1)
+    screen.text('Start failed', 17, 16, 1)
     screen.show()
