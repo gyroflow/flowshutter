@@ -1,6 +1,6 @@
 ## Hardware specification
 
-Sony multi terminal USB is a custom USB connector with Sony defined pins based on a micro USB connector.
+Sony MULTI Terminal USB is a custom USB connector with Sony defined pins based on a micro USB connector.
 
 Micro USB part is same as the standard micro USB pin definition. Note that A5 is the GND.
 

@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan,battery, buttons,oled, vars, json, settings, sony_multiport
+import wlan,battery, buttons,oled, vars, json, settings, sony_multi
 
 welcome_time_count = 0
 udpate_count = 0
@@ -235,8 +235,8 @@ def _menu_inject_mode_():
 
 def _rec_enter_():
     if (vars.camera_protocol == "Sony MTP") & (vars.device_mode == "MASTER/SLAVE"):
-        sony_multiport.uart2.write(sony_multiport.REC_PRESS)
-        sony_multiport.uart2.write(sony_multiport.REC_RELEASE)
+        sony_multi.uart2.write(sony_multi.REC_PRESS)
+        sony_multi.uart2.write(sony_multi.REC_RELEASE)
         if vars.shutter_state == "idle":
             vars.shutter_state = "starting"
         elif vars.shutter_state == "recording":
