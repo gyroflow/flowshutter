@@ -41,3 +41,11 @@ def init_buttons():
 def init_uart2():
     uart2 = UART(2, baudrate = 9600, bits = 8, parity = 0,    stop = 1, tx = 25, rx = 26)
     return uart2
+
+def init_cc_internal_switch():
+    cciw = Pin(25, Pin.OUT, Pin.OPEN_DRAIN)
+    return cciw
+
+def init_v_level_pin():
+    v_pin = Pin(26, Pin.OUT, value = 0)
+    return v_pin

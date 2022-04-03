@@ -59,7 +59,7 @@ camera_protocol = "Sony MTP"
 ota_source = "GitHub"
 ota_channel = "stable"
 
-camera_protocol_range = ["Sony MTP", "NO"]
+camera_protocol_range = ["Sony MTP","Internel SW", "RED V-level", "NO"]
 device_mode_range = ["SLAVE", "MASTER/SLAVE"]
 inject_mode_range = ["OFF", "ON"]
 ota_source_range = ["GitHub", "Gitee"]
@@ -72,7 +72,7 @@ def update_camera_preset():# per camera protocol
     if camera_protocol == "Sony MTP":
         device_mode = "SLAVE"
         device_mode_range = ["SLAVE", "MASTER/SLAVE"]
-    elif camera_protocol == "NO":
+    elif camera_protocol == "NO" or camera_protocol == "Internel SW" or camera_protocol == "RED V-level":
         device_mode = "MASTER"
         device_mode_range = ["MASTER"]
 
