@@ -56,7 +56,7 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 
 ### Compatible camera protocol/trigger mechanisms
 
-- [x] Sony Multiport USB protocol
+- [x] Sony MULTI Terminal protocol
 - [] Sony LANC protocol (WIP)
 - [] HDMI CEC protocol (WIP)
 - [] Canon shutter wire (WIP)
