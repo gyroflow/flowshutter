@@ -57,10 +57,10 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 ### Compatible camera protocol/trigger mechanisms
 
 - [x] Sony MULTI Terminal protocol
+- [x] Momentary Ground (Short REC/Shutter pin to GND)
+- [x] Schmitt trigger (High=REC_START / LOW=REC_STOP )
 - [] Sony LANC protocol (WIP)
 - [] HDMI CEC protocol (WIP)
-- [] Canon shutter wire (WIP)
-- [] Nikon protocol (WIP)
 - [] Others are on the way
 
 ### Compatible FC

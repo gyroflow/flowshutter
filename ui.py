@@ -256,7 +256,7 @@ def _rec_enter_():
     
     elif vars.device_mode == "MASTER":
 
-        if vars.camera_protocol == "Internel SW":
+        if vars.camera_protocol == "MMTRY GND":
             if vars.shutter_state == "idle":
                 vars.shutter_state = "recording"
                 simple_cam.toggle_internal_switch()
@@ -266,7 +266,7 @@ def _rec_enter_():
                 simple_cam.toggle_internal_switch()
                 vars.arm_state = "disarm"
 
-        elif vars.camera_protocol == "RED V-level":
+        elif vars.camera_protocol == "Schmitt trig":
             if vars.shutter_state == "idle":
                 vars.shutter_state = "recording"
                 simple_cam.toggle_cc_voltage_level()
