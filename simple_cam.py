@@ -15,21 +15,21 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target, vars
 
-cciw = target.init_cc_internal_switch()
+switch = target.init_momentary_ground_pin()
 
 def toggle_internal_switch():
-    cciw.value(0)
+    switch.value(0)
     print("low voltage level")
-    cciw.value(1)
+    switch.value(1)
     print("high-impedance state")
 
-v_pin = target.init_v_level_pin()
+schmitt = target.init_schmitt_trigger_pin()
 
 def toggle_cc_voltage_level():
     if vars.shutter_state == "recording":
-        v_pin.value(1)
+        schmitt.value(1)
         print("high voltage level")
     else:
-        v_pin.value(0)
+        schmitt.value(0)
         print("low voltage level")
 
