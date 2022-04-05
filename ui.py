@@ -18,6 +18,7 @@ import wlan,battery, buttons,oled, vars, json, settings, simple_cam, sony_multi
 welcome_time_count = 0
 udpate_count = 0
 starting_time_count = 0
+ground_time_count = 0
 
 def update(t):          # UI tasks controller
     battery.read_vol()  # read the battery voltage
@@ -99,6 +100,16 @@ def _idle_():
         vars.shutter_state = "battery"
 
 def _starting_():
+    global ground_time_count
+    if vars.camera_protocol == "MMTRY GND":
+        if ground_time_count <1000:
+            ground_time_count = ground_time_count + 5
+        else:
+            simple_cam.toggle_internal_switch(1)
+            vars.shutter_state = "recording"
+            vars.arm_state = "arm"
+            ground_time_count = 0
+
     # starting timeout
     global starting_time_count
     if starting_time_count <= 5000:
@@ -120,6 +131,8 @@ def _starting_():
         vars.button_page = "released"
 
 def _recording_():
+    global starting_time_count
+    starting_time_count = 0
     
     # enter to stop recording if in master or master/slave mode
     if vars.button_enter == "pressed":
@@ -131,6 +144,16 @@ def _recording_():
         _rec_page_()
 
 def _stopping_():
+
+    global ground_time_count
+    if vars.camera_protocol == "MMTRY GND":
+        if ground_time_count <1000:
+            ground_time_count = ground_time_count + 5
+        else:
+            simple_cam.toggle_internal_switch(1)
+            vars.shutter_state = "idle"
+            vars.arm_state = "disarm"
+            ground_time_count = 0
 
     # enter do nothing
     if vars.button_enter == "pressed":
@@ -258,13 +281,12 @@ def _rec_enter_():
 
         if vars.camera_protocol == "MMTRY GND":
             if vars.shutter_state == "idle":
-                vars.shutter_state = "recording"
-                simple_cam.toggle_internal_switch()
-                vars.arm_state = "arm"
+                vars.shutter_state = "starting"
+                simple_cam.toggle_internal_switch(0)
             elif vars.shutter_state == "recording":
-                vars.shutter_state = "idle"
-                simple_cam.toggle_internal_switch()
-                vars.arm_state = "disarm"
+                vars.shutter_state = "stopping"
+                simple_cam.toggle_internal_switch(0)
+
 
         elif vars.camera_protocol == "Schmitt trig":
             if vars.shutter_state == "idle":

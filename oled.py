@@ -211,7 +211,7 @@ def _display_starting_():
     _draw_cam_()
     screen.text('Starting', 34, 0, 1)
     screen.text('FC Disarmed', 34, 12, 1)
-    screen.text('Sony start', 34, 24, 1)
+    screen.text('Camera start', 34, 24, 1)
     screen.show()
 
 def _display_recording_():
@@ -227,7 +227,7 @@ def _display_stopping_():
     _draw_cam_()
     screen.text('Stopping', 34, 0, 1)
     screen.text('FC Armed', 34, 12, 1)
-    screen.text('Sony ending', 34, 24, 1)
+    screen.text('Camera stop', 34, 24, 1)
     screen.show()
 
 def _display_battery_():

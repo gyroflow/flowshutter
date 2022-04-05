@@ -17,11 +17,8 @@ import target, vars
 
 switch = target.init_momentary_ground_pin()
 
-def toggle_internal_switch():
-    switch.value(0)
-    print("low voltage level")
-    switch.value(1)
-    print("high-impedance state")
+def toggle_internal_switch(value):
+    switch.value(value)
 
 schmitt = target.init_schmitt_trigger_pin()
 

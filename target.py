@@ -43,7 +43,7 @@ def init_uart2():
     return uart2
 
 def init_momentary_ground_pin():
-    switch = Pin(25, Pin.OUT, Pin.OPEN_DRAIN)
+    switch = Pin(25, Pin.OPEN_DRAIN, value = 1)
     return switch
 
 def init_schmitt_trigger_pin():
