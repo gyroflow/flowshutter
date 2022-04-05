@@ -57,11 +57,13 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 ### Compatible camera protocol/trigger mechanisms
 
 - [x] Sony MULTI Terminal protocol
-- [x] Momentary Ground (Short REC/Shutter pin to GND)
-- [x] Schmitt trigger (High=REC_START / LOW=REC_STOP )
+- [x] Momentary Ground
+- [x] Schmitt trigger
 - [] Sony LANC protocol (WIP)
 - [] HDMI CEC protocol (WIP)
 - [] Others are on the way
+
+For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/logging/flowshutter/camera%20list/) on the [documentation website](https://docs.gyroflow.xyz/).
 
 ### Compatible FC
 
@@ -80,18 +82,20 @@ The micropython firmware we used is [v1.18](https://micropython.org/resources/fi
 
 `Visual Studio Code` with `Pymakr` extension is recommended.
 
-1. Install `Visual Studio Code`
-2. Install `node`
-3. Manually install `Pymakr` ([v1.18.0-beta.0](https://github.com/pycom/pymakr-vsc/releases/tag/v1.1.18-beta.0) or newer) extension in `Visual Studio Code`
-4. Edit `Pymakr`'s global settings that add `"wch.cn",` to `"autoconnect_comport_manufacturers"`
-5. Modify content of `"address"` to `"address": "",`
-6. Pull flowshutter code from `https://github.com/gyroflow/flowshutter`
-7. Then you can connect and upload the flowshutter code
+1. Install `node`
+2. Manually install `Visual Studio Code` [1.64.2](https://code.visualstudio.com/updates/v1_64)
+3. Install `Pymakr` extension in `Visual Studio Code`
+4. Update `Visual Studio Code` to the latest version (currently 1.6.0)
+5. Manually install `Pymakr` ([v1.18.0-beta.0](https://github.com/pycom/pymakr-vsc/releases/tag/v1.1.18-beta.0) or newer) extension in `Visual Studio Code`
+6. Edit `Pymakr`'s global settings that add `"wch.cn",` to `"autoconnect_comport_manufacturers"`
+7. Modify content of `"address"` to `"address": "",`
+8. Pull flowshutter code from `https://github.com/gyroflow/flowshutter`
+9. Then you can connect and upload the flowshutter code
 
 
 ## License
 
-- micropython binary  ``/tool/esp32-20210902-v1.17.bin`` comes from micropython, licensed under MIT
+- micropython binary  ``/tool/esp32-20210902-v1.18.bin`` comes from micropython, licensed under MIT
 - uPyCraft_V1.1.exe ``/tool/uPyCraft_V1.1.exe`` is no licensed
 - documents under ``/doc`` are licensed under MIT
 - SSD1306 driver ``/ssd1306.py`` is licensed under MIT
