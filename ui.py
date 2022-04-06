@@ -23,17 +23,11 @@ ground_time_count = 0
 def update(t):          # UI tasks controller
     battery.read_vol()  # read the battery voltage
     buttons.check(t)    # check the buttons
-    _check_oled_()      # check if OLED needs update
     _check_shutter_state_() # check working state and assign handler
     _check_oled_()      # check if OLED needs update
 
 def _check_oled_():# check if we need to update the OLED
-    global udpate_count
-    if udpate_count >=1000:
-        udpate_count = 0
-        vars.oled_need_update = "yes"
-    else:
-        udpate_count = udpate_count +5
+
     if vars.previous_state != vars.shutter_state:
         vars.previous_state = vars.shutter_state
         vars.info = vars.shutter_state
@@ -164,6 +158,13 @@ def _stopping_():
         vars.button_page = "released"
 
 def _battery_():
+
+    global udpate_count
+    if udpate_count >=5000:
+        udpate_count = 0
+        vars.oled_need_update = "yes"
+    else:
+        udpate_count = udpate_count +5
 
     # page to camera protocol menu
     if vars.button_page == "pressed":
