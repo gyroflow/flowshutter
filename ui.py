@@ -65,16 +65,8 @@ def _check_shutter_state_():
         print("Unknown UI state")
 
 def _welcome_():
+    _ignore_buttons_()
     global welcome_time_count
-
-    # enter do nothing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-    
-    # page do nothing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-
     # welcome auto switch
     if welcome_time_count <= 2500:
         welcome_time_count = welcome_time_count + 5
@@ -94,6 +86,7 @@ def _idle_():
         vars.shutter_state = "battery"
 
 def _starting_():
+    _ignore_buttons_()
     global ground_time_count
     if vars.camera_protocol == "MMTRY GND":
         if ground_time_count <1000:
@@ -115,14 +108,6 @@ def _starting_():
         starting_time_count = 0
         vars.shutter_state = "idle"
         vars.info = vars.shutter_state
-    
-    # enter do nonthing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-    
-    # page do nonthing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
 
 def _recording_():
     global starting_time_count
@@ -138,7 +123,7 @@ def _recording_():
         _rec_page_()
 
 def _stopping_():
-
+    _ignore_buttons_()
     global ground_time_count
     if vars.camera_protocol == "MMTRY GND":
         if ground_time_count <1000:
@@ -148,14 +133,6 @@ def _stopping_():
             vars.shutter_state = "idle"
             vars.arm_state = "disarm"
             ground_time_count = 0
-
-    # enter do nothing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-    
-    # page do nothing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
 
 def _battery_():
 
@@ -314,3 +291,12 @@ def _rec_page_():
     elif vars.info == "battery":
         vars.info = "recording"
         vars.oled_need_update = "yes"
+
+def _ignore_buttons_():    
+    # enter do nonthing
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+    
+    # page do nonthing
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
