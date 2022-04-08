@@ -52,14 +52,14 @@ oled_need_update = "no"
 
 
 # user_settings:
-version = "0.51" # when new user settings added, this should be update firstly!
+version = "0.52" # when new user settings added, this should be update firstly!
 device_mode = "SLAVE"
 inject_mode = "OFF"
 camera_protocol = "Sony MTP"
 ota_source = "GitHub"
 ota_channel = "stable"
 
-camera_protocol_range = ["Sony MTP","MMTRY GND", "Schmitt trig", "NO"]
+camera_protocol_range = ["Sony MTP","MMTRY GND", "3V3 Schmitt", "NO"]
 device_mode_range = ["SLAVE", "MASTER/SLAVE"]
 inject_mode_range = ["OFF", "ON"]
 ota_source_range = ["GitHub", "Gitee"]
@@ -72,7 +72,7 @@ def update_camera_preset():# per camera protocol
     if camera_protocol == "Sony MTP":
         device_mode = "SLAVE"
         device_mode_range = ["SLAVE", "MASTER/SLAVE"]
-    elif camera_protocol == "NO" or camera_protocol == "MMTRY GND" or camera_protocol == "Schmitt trig":
+    elif camera_protocol == "NO" or camera_protocol == "MMTRY GND" or camera_protocol == "3V3 Schmitt":
         device_mode = "MASTER"
         device_mode_range = ["MASTER"]
 

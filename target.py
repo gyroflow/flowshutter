@@ -46,6 +46,6 @@ def init_momentary_ground_pin():
     switch = Pin(25, Pin.OPEN_DRAIN, value = 1)
     return switch
 
-def init_schmitt_trigger_pin():
-    schmitt = Pin(26, Pin.OUT, value = 0)
-    return schmitt
+def init_schmitt_3v3_trigger_pin():
+    schmitt_3v3 = Pin(26, Pin.OUT, value = 0)
+    return schmitt_3v3

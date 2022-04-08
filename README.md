@@ -58,10 +58,10 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 
 - [x] Sony MULTI Terminal protocol
 - [x] Momentary Ground
-- [x] Schmitt trigger
-- [] Sony LANC protocol (WIP)
-- [] HDMI CEC protocol (WIP)
-- [] Others are on the way
+- [x] 3.3V Schmitt trigger
+- (WIP) 5V Schmitt trigger
+- (WIP) Sony LANC protocol
+- (WIP) HDMI CEC protocol
 
 For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/logging/flowshutter/camera%20list/) on the [documentation website](https://docs.gyroflow.xyz/).
 
