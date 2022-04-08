@@ -57,6 +57,8 @@ def _check_shutter_state_():
         _menu_ota_channel_()
     elif vars.shutter_state == "menu_camera_protocol":
         _menu_camera_protocol_()
+    elif vars.shutter_state == "menu_reboot_hint":
+        _menu_reboot_hint_()
     elif vars.shutter_state == "menu_device_mode":
         _menu_device_mode_()
     elif vars.shutter_state == "menu_inject_mode":
@@ -210,13 +212,20 @@ def _menu_camera_protocol_():
         vars.button_enter = "released"
         vars.camera_protocol = vars.next(vars.camera_protocol_range, vars.camera_protocol)
         vars.update_camera_preset()
-        vars.oled_need_update = "yes"
+        vars.shutter_state = "menu_reboot_hint"
         settings.update()
 
     # page to device mode
     if vars.button_page == "pressed":
         vars.button_page = "released"
         vars.shutter_state = "menu_device_mode"
+
+def _menu_reboot_hint_():
+    
+    if (vars.button_enter == "pressed") or (vars.button_page == "pressed"):
+        vars.button_enter = "released"
+        vars.button_page = "released"
+        vars.shutter_state = "menu_camera_protocol"
 
 def _menu_device_mode_():
 
