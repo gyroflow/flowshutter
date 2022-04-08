@@ -94,7 +94,7 @@ def _starting_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         else:
-            simple_cam.toggle_internal_switch(1)
+            simple_cam.momentary_ground(1)
             vars.shutter_state = "recording"
             vars.arm_state = "arm"
             ground_time_count = 0
@@ -131,7 +131,7 @@ def _stopping_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         else:
-            simple_cam.toggle_internal_switch(1)
+            simple_cam.momentary_ground(1)
             vars.shutter_state = "idle"
             vars.arm_state = "disarm"
             ground_time_count = 0
@@ -269,13 +269,13 @@ def _rec_enter_():
         if vars.camera_protocol == "MMTRY GND":
             if vars.shutter_state == "idle":
                 vars.shutter_state = "starting"
-                simple_cam.toggle_internal_switch(0)
+                simple_cam.momentary_ground(0)
             elif vars.shutter_state == "recording":
                 vars.shutter_state = "stopping"
-                simple_cam.toggle_internal_switch(0)
+                simple_cam.momentary_ground(0)
 
 
-        elif vars.camera_protocol == "Schmitt trig":
+        elif vars.camera_protocol == "3V3 Schmitt":
             if vars.shutter_state == "idle":
                 vars.shutter_state = "recording"
                 simple_cam.toggle_cc_voltage_level()

@@ -17,16 +17,18 @@ import target, vars
 
 switch = target.init_momentary_ground_pin()
 
-def toggle_internal_switch(value):
+def momentary_ground(value):
+    # 1 High impedance (open drain)
+    # 0 Low voltage (tied to ground)
     switch.value(value)
 
-schmitt = target.init_schmitt_trigger_pin()
+schmitt_3v3 = target.init_schmitt_3v3_trigger_pin()
 
 def toggle_cc_voltage_level():
     if vars.shutter_state == "recording":
-        schmitt.value(1)
+        schmitt_3v3.value(1)
         print("high voltage level")
     else:
-        schmitt.value(0)
+        schmitt_3v3.value(0)
         print("low voltage level")
 
