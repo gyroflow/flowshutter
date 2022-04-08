@@ -50,6 +50,8 @@ def update(info):
         _display_menu_device_mode_()
     elif info == "menu_inject_mode":
         _display_menu_inject_mode_()
+    elif info == "menu_reboot_hint":
+        _display_menu_reboot_hint_()
     elif info == "sony mtp ack":
         _show_sony_mtp_ack_()
 
@@ -282,6 +284,14 @@ def _display_menu_camera_protocol_():
     screen.text('Cam Protocol', 34, 0, 1)
     screen.text("".join(tuple(vars.camera_protocol)), 34, 12, 1)
     screen.text('Next Device', 34, 24, 1)
+    screen.show()
+
+def _display_menu_reboot_hint_():
+    screen.fill(0)
+    screen.fill_rect(2,1,124,30,1)
+    screen.fill_rect(6,4,116,24,0)
+    screen.text('Please reboot', 9, 6, 1)
+    screen.text('to apply', 32, 16, 1)
     screen.show()
 
 def _display_menu_device_mode_():
