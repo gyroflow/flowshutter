@@ -96,13 +96,15 @@ The micropython firmware we used is [v1.18](https://micropython.org/resources/fi
 
 ## License
 
-- micropython binary  ``/tool/esp32-20210902-v1.18.bin`` comes from micropython, licensed under MIT
-- uPyCraft_V1.1.exe ``/tool/uPyCraft_V1.1.exe`` is no licensed
-- documents under ``/doc`` are licensed under MIT
-- SSD1306 driver ``/ssd1306.py`` is licensed under MIT
-- `wlan.py` is licensed under MIT and AGLPv3
-- other code is under AGPL-v3.0 **ONLY**
+This project is licensed under:
 
-This software is provided as is, and please feel free to use this on your own camera which will be used for shooting comercial images/videos. For any other commercial usage, please contact [DusKing1](1483569698@qq.com).
+- CC-BY-NC-ND 4.0
+- AGPL 3.0
+
+**Note:** AGPL 3.0 is only avaliable after you signed our CLA.
+
+This software is provided as is, and please feel free to use this on your own camera which will be used for shooting/recording comercial images/videos. Please contact [DusKing1](1483569698@qq.com) if you intend to use it for other commercial purposes.
+
+## Pillar of shame
 
 **Due to egregious abuse of open source in Wuxi, China, this project refuses to provide any support to any user in Wuxi, or to cooperate in any form with any company or individual in Wuxi. Please do something worthy of your conscience.**
