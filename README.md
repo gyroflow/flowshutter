@@ -85,12 +85,13 @@ The micropython firmware we used is [v1.18](https://micropython.org/resources/fi
 1. Install `node`
 2. Manually install `Visual Studio Code` [1.64.2](https://code.visualstudio.com/updates/v1_64)
 3. Install `Pymakr` extension in `Visual Studio Code`
-4. Update `Visual Studio Code` to the latest version (currently 1.6.0)
+4. After pymakr correctly loaded in `Visual Studio Code`, update `Visual Studio Code` to the latest version (currently 1.66.1)
 5. Manually install `Pymakr` ([v1.18.0-beta.0](https://github.com/pycom/pymakr-vsc/releases/tag/v1.1.18-beta.0) or newer) extension in `Visual Studio Code`
 6. Edit `Pymakr`'s global settings that add `"wch.cn",` to `"autoconnect_comport_manufacturers"`
 7. Modify content of `"address"` to `"address": "",`
-8. Pull flowshutter code from `https://github.com/gyroflow/flowshutter`
-9. Then you can connect and upload the flowshutter code
+8. Edit `address` in `pymakr.config` 
+9. Pull flowshutter code from `https://github.com/gyroflow/flowshutter`
+10. Then you can connect and upload the flowshutter code
 
 
 ## License

@@ -60,7 +60,12 @@ def _load_():
 
 def update(): # update settings.json
     with open("settings.json", "w") as f:
-        settings = {"version":vars.version,"device_mode":vars.device_mode, "inject_mode":vars.inject_mode, "camera_protocol":vars.camera_protocol,"ota_source":vars.ota_source,"ota_channel":vars.ota_channel}
+        settings = {"version":vars.version,
+                    "device_mode":vars.device_mode,
+                    "inject_mode":vars.inject_mode,
+                    "camera_protocol":vars.camera_protocol,
+                    "ota_source":vars.ota_source,
+                    "ota_channel":vars.ota_channel}
         json.dump(settings, f)
         f.close()
 
