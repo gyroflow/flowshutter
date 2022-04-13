@@ -15,7 +15,6 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import hashlib, json, os, sys
 
-sha1 = hashlib.sha1()
 files = os.listdir("src/")
 
 try:
@@ -29,22 +28,33 @@ jtext = {"files":[]}
 for f in files:
     with open("src/"+f,"rb") as hf:
         for byte_block in iter(lambda: hf.read(4096),b""):
+            sha1 = hashlib.sha1()
             sha1.update(byte_block)
         # print(f,sha1.hexdigest()) # for debug
         jtext["files"].append({"name":f,"sha1":sha1.hexdigest()})
+        del sha1
 
 jdata = json.dumps(jtext,indent = 4, separators=(',', ': '))
+print("SHA1 of all files generated!")
+
+def write_json(jdir):
+    jfile = open(jdir,"w")
+    jfile.write(jdata)
+    jfile.close()
+    print("Update sha.json success!")
 
 jdir = ""
 # print(len(sys.argv)) # for debug
-if len(sys.argv) > 1:
+if len(sys.argv) == 1:
+    jdir = "src/sha.json"
+    write_json(jdir)
+else:
     if sys.argv[1] == "check":
         jdir = "check_sha.json"
-else:
-    jdir = "src/sha.json"
-    
-print("SHA1 of all files generated!")
-jfile = open(jdir,"w")
-jfile.write(jdata)
-jfile.close()
-print("Update sha.json success!")
+        write_json(jdir)
+        f1 = open(jdir,"r").read()
+        f2 = open("src/sha.json","r").read()
+        if f1 == f2:
+            pass
+        else:
+            raise Exception("'sha.json' is outdated! Please run 'python tools/gen_sha.py' to update!")
