@@ -41,7 +41,7 @@ with many more features on the way!
 
 ## Supported Hardware
 
-Currently we are working with a manufacturer that will produce flowshutter hardware. We will disclose more relevant information in the future.
+Currently we are working with NeutronRC that will produce flowshutter hardware. We will disclose more relevant information in the future.
 
 At the same time you can try to DIY your own flowshutter hardware. We have two open sourced designs:
 
