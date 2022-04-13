@@ -12,14 +12,14 @@
   <a href="https://github.com/gyroflow/flowshutter/languages/top">
     <img src="https://img.shields.io/github/languages/top/gyroflow/flowshutter" alt="Languages">
   </a>
-  <a href="https://github.com/gyroflow/flowshutter/">
+  <a href="https://github.com/gyroflow/flowshutter/graphs/contributors/">
     <img src="https://img.shields.io/github/contributors/gyroflow/flowshutter?color=dark-green" alt="Contributors">
   </a>
   <a href="https://github.com/gyroflow/flowshutter/issues/">
     <img src="https://img.shields.io/github/issues/gyroflow/flowshutter" alt="Issues">
   </a>
-  <a href="https://github.com/gyroflow/flowshutter/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/gyroflow/flowshutter" alt="License">
+  <a href="https://github.com/gyroflow/flowshutter/">
+    <img src="https://img.shields.io/github/languages/code-size/gyroflow/flowshutter">
   </a>
 </p>
 
