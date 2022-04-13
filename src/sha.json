@@ -1,0 +1,76 @@
+{
+    "files": [
+        {
+            "name": "battery.py",
+            "sha1": "1715b26c835ca2878dbf65e439b642500ba415a8"
+        },
+        {
+            "name": "boot.py",
+            "sha1": "7cda26db3f43d45bf0ed9c3c7791ef8d3de61a95"
+        },
+        {
+            "name": "buttons.py",
+            "sha1": "ce93b8ee12699b47d0c715ff24c67d64d6ee6b22"
+        },
+        {
+            "name": "crsf.py",
+            "sha1": "02f5cc810b45e6ce5f1eae29a9bce3017b95b973"
+        },
+        {
+            "name": "crsf_gen.py",
+            "sha1": "7a03c54e0d3f4ff32b1eddab7f09f953f02ce0ca"
+        },
+        {
+            "name": "LICENSE",
+            "sha1": "372ab19d0a158e3f3300d37210b5a813fb11d3ac"
+        },
+        {
+            "name": "main.py",
+            "sha1": "57fab8c6649319ee2fe872aa0da6c7620f001870"
+        },
+        {
+            "name": "oled.py",
+            "sha1": "8c40a38cad4eaa35a87a47a889ee2074923b7262"
+        },
+        {
+            "name": "README.md",
+            "sha1": "d504c25f2fb31f2699a24418c304abd1e52588f5"
+        },
+        {
+            "name": "settings.py",
+            "sha1": "d6bf43cbbecf2268eac005823bf502fac32b390b"
+        },
+        {
+            "name": "sha.json",
+            "sha1": "7e60bafd9895614ec703587d0e763de069f4d8b9"
+        },
+        {
+            "name": "simple_cam.py",
+            "sha1": "ca21a36e00f0a9d243018f0f541200eef877e4e8"
+        },
+        {
+            "name": "sony_multi.py",
+            "sha1": "90f5d53e7afd81648bdf7631ab7ce949202e31ff"
+        },
+        {
+            "name": "ssd1306.py",
+            "sha1": "2a8a6f55073f33f25c61e9ffcc080dbcc88fe3e2"
+        },
+        {
+            "name": "target.py",
+            "sha1": "0a001688e29c533b37653a48f59b0dcaa4bed2c2"
+        },
+        {
+            "name": "ui.py",
+            "sha1": "c601f17c81f34c2a8e83b04a98b173f6f7f1352e"
+        },
+        {
+            "name": "vars.py",
+            "sha1": "609fb3983e0ccbf21f1397bc0c024a121706c819"
+        },
+        {
+            "name": "wlan.py",
+            "sha1": "c5a61a6eae44937464f479c03659d3749e4f8020"
+        }
+    ]
+}
