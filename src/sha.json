@@ -41,36 +41,32 @@
             "sha1": "d6bf43cbbecf2268eac005823bf502fac32b390b"
         },
         {
-            "name": "sha.json",
-            "sha1": "7e60bafd9895614ec703587d0e763de069f4d8b9"
-        },
-        {
             "name": "simple_cam.py",
-            "sha1": "ca21a36e00f0a9d243018f0f541200eef877e4e8"
+            "sha1": "46e4de8b2705366427853c18dc5522875ae1beb9"
         },
         {
             "name": "sony_multi.py",
-            "sha1": "90f5d53e7afd81648bdf7631ab7ce949202e31ff"
+            "sha1": "de3965f0203b18b6b12328f1b26049fe47c76dc4"
         },
         {
             "name": "ssd1306.py",
-            "sha1": "2a8a6f55073f33f25c61e9ffcc080dbcc88fe3e2"
+            "sha1": "ac1e735b4e7aeed1aa5aa9c07f885953c815a852"
         },
         {
             "name": "target.py",
-            "sha1": "0a001688e29c533b37653a48f59b0dcaa4bed2c2"
+            "sha1": "b8c26f4f6192232fc99ab133a9abb0832e8fcccd"
         },
         {
             "name": "ui.py",
-            "sha1": "c601f17c81f34c2a8e83b04a98b173f6f7f1352e"
+            "sha1": "203648534fe70fb59d89aa897fe74d64aa3b5d41"
         },
         {
             "name": "vars.py",
-            "sha1": "609fb3983e0ccbf21f1397bc0c024a121706c819"
+            "sha1": "a522c5594c0111daa9e7c0ce9586dd72c12172d0"
         },
         {
             "name": "wlan.py",
-            "sha1": "c5a61a6eae44937464f479c03659d3749e4f8020"
+            "sha1": "3c6691b3a701bb98b7433d9de51e8bb25cc898f8"
         }
     ]
 }
