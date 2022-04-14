@@ -1,0 +1,61 @@
+name: Check SHA
+
+on:
+  push:
+    branches: [ master, beta, stable ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  windows-check:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+
+      - name: Check SHA
+        run: |
+          python tools/gen_sha.py check
+
+      - name: Upload SHA
+        uses: actions/upload-artifact@v1
+        with:
+          name: SHA build from windows ${{ github.run_number }}
+          path: check_sha.json
+
+      - name: Verify SHA
+        run: |
+          python tools/gen_sha.py verify
+        continue-on-error: false
+
+  ubuntu-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+
+      - name: Check SHA
+        run: |
+          python3 tools/gen_sha.py check
+
+      - name: Upload SHA
+        uses: actions/upload-artifact@v1
+        with:
+          name: SHA build from ubuntu ${{ github.run_number }}
+          path: check_sha.json
+
+      - name: Verify SHA
+        run: |
+          python3 tools/gen_sha.py verify
+        continue-on-error: true

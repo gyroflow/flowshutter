@@ -1,0 +1,7 @@
+*.py linguist-lanuage=Python
+*.md linguist-language=Markdown
+*.json linguist-language=JSON
+*.config linguist-language=JSON
+*.yml linguist-language=YAML
+
+* text=auto
