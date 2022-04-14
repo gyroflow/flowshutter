@@ -1,6 +1,14 @@
 {
     "files": [
         {
+            "name": "LICENSE",
+            "sha1": "d9236feaa3e2aa813fa6ca4b2550fe0847bb5303"
+        },
+        {
+            "name": "README.md",
+            "sha1": "dd761412132020e8c76accaa7c875f86e7e312c4"
+        },
+        {
             "name": "battery.py",
             "sha1": "1715b26c835ca2878dbf65e439b642500ba415a8"
         },
@@ -21,20 +29,12 @@
             "sha1": "ea37c0baada5074f103fce64e798d00b29e82329"
         },
         {
-            "name": "LICENSE",
-            "sha1": "d9236feaa3e2aa813fa6ca4b2550fe0847bb5303"
-        },
-        {
             "name": "main.py",
             "sha1": "c0a5af15889c42b9072dbfbf9abb677bb9d94a5a"
         },
         {
             "name": "oled.py",
             "sha1": "f00081858d59718869df12f56dc9d8b732191ae7"
-        },
-        {
-            "name": "README.md",
-            "sha1": "dd761412132020e8c76accaa7c875f86e7e312c4"
         },
         {
             "name": "settings.py",

@@ -22,6 +22,9 @@ try:
 except ValueError:
     pass
 
+# sort file list
+files = sorted(files)
+
 # print(files)
 jtext = {"files":[]}
 
@@ -41,20 +44,24 @@ def write_json(jdir):
     jfile = open(jdir,"w")
     jfile.write(jdata)
     jfile.close()
-    print("Update sha.json success!")
+    
 
 jdir = ""
 # print(len(sys.argv)) # for debug
 if len(sys.argv) == 1:
     jdir = "src/sha.json"
     write_json(jdir)
+    print("Update sha.json success!")
 else:
     if sys.argv[1] == "check":
         jdir = "check_sha.json"
         write_json(jdir)
-        f1 = open(jdir,"r").read()
+        print("Create check_sha.json success!")
+    elif sys.argv[1] == "verify":
+        f1 = open("check_sha.json","r").read()
         f2 = open("src/sha.json","r").read()
         if f1 == f2:
             pass
         else:
             raise Exception("'sha.json' is outdated! Please run 'python tools/gen_sha.py' to update!")
+        print("SHA verify success!")
