@@ -41,8 +41,8 @@ jdata = json.dumps(jtext,indent = 4, separators=(',', ': '))
 print("SHA1 of all files generated!")
 
 def write_json(jdir):
-    jfile = open(jdir,"w")
-    jfile.write(jdata)
+    jfile = open(jdir,"wb")
+    jfile.write(bytes(jdata, "utf-8"))
     jfile.close()
     
 

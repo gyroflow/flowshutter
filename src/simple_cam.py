@@ -31,4 +31,3 @@ def toggle_cc_voltage_level():
     else:
         schmitt_3v3.value(0)
         print("low voltage level")
-
