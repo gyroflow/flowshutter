@@ -1,1 +1,4 @@
 pymakr.conf
+.DS_Store
+*~
+check_sha.json

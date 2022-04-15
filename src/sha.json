@@ -2,71 +2,71 @@
     "files": [
         {
             "name": "LICENSE",
-            "sha1": "d9236feaa3e2aa813fa6ca4b2550fe0847bb5303"
+            "sha1": "577b777343de7a870bc70e9dbd1e45e990ad26e4"
         },
         {
             "name": "README.md",
-            "sha1": "dd761412132020e8c76accaa7c875f86e7e312c4"
+            "sha1": "9512059d38085dabf9cf4942f421640e502f0078"
         },
         {
             "name": "battery.py",
-            "sha1": "1715b26c835ca2878dbf65e439b642500ba415a8"
+            "sha1": "f02772cae442052c37518ddae0341445fed2e204"
         },
         {
             "name": "boot.py",
-            "sha1": "a7d8ca953877cd0e869b0c8a6947151d0ae68c69"
+            "sha1": "3947b36ed837906d45bee3e0d8a0befa17d9052c"
         },
         {
             "name": "buttons.py",
-            "sha1": "35a77a3c12b10e4def04d9a9fd216de31ad8b400"
+            "sha1": "1e01b854d3b34525b785e5637119f63ed04da5ae"
         },
         {
             "name": "crsf.py",
-            "sha1": "a0e4e0df21a5b629b462b725a64897a8ee215854"
+            "sha1": "353ca585baeed58710f67bb3c22dfa3dade47367"
         },
         {
             "name": "crsf_gen.py",
-            "sha1": "ea37c0baada5074f103fce64e798d00b29e82329"
+            "sha1": "5e3e04a8adf4c715f9b70b301d7448b6a99a22d0"
         },
         {
             "name": "main.py",
-            "sha1": "c0a5af15889c42b9072dbfbf9abb677bb9d94a5a"
+            "sha1": "0d0ec6f810d6e767a263d21289ef4947bc2c24c2"
         },
         {
             "name": "oled.py",
-            "sha1": "f00081858d59718869df12f56dc9d8b732191ae7"
+            "sha1": "a02cf74bda3af6ea08bea8c487d25918540a85e6"
         },
         {
             "name": "settings.py",
-            "sha1": "bedf2387e6583727a711903d7e6a946e5dac9fc0"
+            "sha1": "611fdb37bd48522061d7c21db97cb6b8a96389b6"
         },
         {
             "name": "simple_cam.py",
-            "sha1": "52d980877f3157c16d07095026447822a89e1de0"
+            "sha1": "70b41756329c71e8b36ecbd19df5e30b98dbbb40"
         },
         {
             "name": "sony_multi.py",
-            "sha1": "073b4f2d1dbc357103a059b90a5a0b20c3fcf5f6"
+            "sha1": "c3c9f861030cfe0a5f663c3c9e818d496e6409b2"
         },
         {
             "name": "ssd1306.py",
-            "sha1": "d864ba82149c97e74ff9f3109a4793bfbf352c51"
+            "sha1": "fbed0e96bfd49d97bbb94c5075b3fbc86107621c"
         },
         {
             "name": "target.py",
-            "sha1": "cdcc257da51663ec3b7b138715cf89c727316a10"
+            "sha1": "7cf64fd50e43a47ac2e42bb383bc29d0e889177e"
         },
         {
             "name": "ui.py",
-            "sha1": "366d812c725fc316f11d107e886d9420c11ea426"
+            "sha1": "092abe240b8b901ffc08e8a64d7c6fe5797862a8"
         },
         {
             "name": "vars.py",
-            "sha1": "6577abf00ec1c56794998ccc659cc1e0dc90918a"
+            "sha1": "9798d710698befe980b59288b0c5f3af8e4c11b7"
         },
         {
             "name": "wlan.py",
-            "sha1": "3e7af006a57b54aa2a89426a7efb9c39519f99e0"
+            "sha1": "a5689a6134ce3cdfcdc7b6a9ccd5e0fbdc5f4527"
         }
     ]
 }

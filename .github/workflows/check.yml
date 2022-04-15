@@ -7,55 +7,47 @@ on:
     branches: [ master ]
 
   workflow_dispatch:
-    branches: [ master ]
+    branches: [ master, beta, stable ]
 
 jobs:
-  windows-check:
-    runs-on: windows-latest
+  Check:
+    strategy:
+      matrix: 
+        targets: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.targets }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Setup Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10.4"
 
-      - name: Check SHA
+      - name: Check SHA on Windows
+        if: ${{ matrix.targets == 'windows-latest' }}
         run: |
           python tools/gen_sha.py check
-
-      - name: Upload SHA
-        uses: actions/upload-artifact@v1
-        with:
-          name: SHA build from windows ${{ github.run_number }}
-          path: check_sha.json
-
-      - name: Verify SHA
-        run: |
           python tools/gen_sha.py verify
         continue-on-error: false
-
-  ubuntu-check:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Python
-        uses: actions/setup-python@v1
-
-      - name: Check SHA
+      
+      - name: Check SHA on Ubuntu
+        if: ${{ matrix.targets == 'ubuntu-latest' }}
         run: |
           python3 tools/gen_sha.py check
+          python3 tools/gen_sha.py verify
+        continue-on-error: false
+      
+      - name: Check SHA on MacOS
+        if: ${{ matrix.targets == 'macos-latest' }}
+        run: |
+          python3 tools/gen_sha.py check
+          python3 tools/gen_sha.py verify
+        continue-on-error: false
 
       - name: Upload SHA
         uses: actions/upload-artifact@v1
         with:
-          name: SHA build from ubuntu ${{ github.run_number }}
+          name: SHA build from ${{ matrix.targets }} ${{ github.run_number }}
           path: check_sha.json
-
-      - name: Verify SHA
-        run: |
-          python3 tools/gen_sha.py verify
-        continue-on-error: true

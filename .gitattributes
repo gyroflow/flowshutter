@@ -1,7 +1,15 @@
-*.py linguist-lanuage=Python
+*.py linguist-language=Python
 *.md linguist-language=Markdown
 *.json linguist-language=JSON
-*.config linguist-language=JSON
+*.conf linguist-language=JSON
 *.yml linguist-language=YAML
 
-* text=auto
+LICENSE text eol=lf
+*.md test eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.conf text eol=lf
+*.yml text eol=lf
+*.png -crlf diff
+*.svg text eol=lf
+*.html text eol=lf
