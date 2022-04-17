@@ -15,10 +15,17 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import hashlib, json, os, sys
 
+# Script for generating sha file, checking sha file, and verifying sha files
+# This script does not need to be written to ESP32, 
+# it only needs to be called when the version is updated
+# to generate a new files verification information,
+# for use during subsequent OTA upgrades
+
 files = os.listdir("src/")
 
 try:
     files.remove("sha.json")
+    # No need to generate sha for sha.json
 except ValueError:
     pass
 
@@ -41,26 +48,32 @@ jdata = json.dumps(jtext,indent = 4, separators=(',', ': '))
 print("SHA1 of all files generated!")
 
 def write_json(jdir):
+    # write jdata to json file
     jfile = open(jdir,"wb")
     jfile.write(bytes(jdata, "utf-8"))
     jfile.close()
-    
 
 jdir = ""
 # print(len(sys.argv)) # for debug
 if len(sys.argv) == 1:
+    # `python tools/gen_sha.py`, just gerenate new sha.json
     jdir = "src/sha.json"
     write_json(jdir)
     print("Update sha.json success!")
 else:
     if sys.argv[1] == "check":
+        # `python tools/gen_sha.py check`, generate check_sha.json
+        # for CI testing
         jdir = "check_sha.json"
         write_json(jdir)
         print("Create check_sha.json success!")
     elif sys.argv[1] == "verify":
+        # `python tools/gen_sha.py verify`, verify sha.json and check_sha.json
+        # for CI testing
         f1 = open("check_sha.json","r").read()
         f2 = open("src/sha.json","r").read()
         if f1 == f2:
+            # sha.json is already updated with the changes
             pass
         else:
             raise Exception("'sha.json' is outdated! Please run 'python tools/gen_sha.py' to update!")
