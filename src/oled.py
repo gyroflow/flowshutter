@@ -44,6 +44,8 @@ def update(info):
         _display_menu_ota_source_()
     elif info == "menu_ota_channel":
         _display_menu_ota_channel_()
+    elif info == "menu_ota_check":
+        _display_menu_ota_check_()
     elif info == "menu_camera_protocol":
         _display_menu_camera_protocol_()
     elif info == "menu_device_mode":
@@ -88,7 +90,7 @@ def _draw_github_logo_():
     github_fb = framebuf.FrameBuffer(github_bytearray, 32,32, framebuf.MONO_HLSB)
     screen.blit(github_fb, 0, 0)
 
-def _draw_gitee_logo():
+def _draw_gitee_logo_():
     gitee_bytearray = bytearray(b'\x00\x7f\xff\xfe\x01\xff\xff\xff\x07\xff\xff\xff\x0f\xff\xff\xff\x1f\xff\xff\xff?\xff\xff\xff?\xff\xff\xfe\x7f\xc0\x00\x00\x7f\x80\x00\x00\xff\x00\x00\x00\xfe\x00\x00\x00\xfe\x00\x00\x00\xfe\x00\x00\x00\xfe\x07\xff\xfe\xfe\x0f\xff\xff\xfe\x0f\xff\xff\xfe\x0f\xff\xff\xfe\x0f\xff\xff\xfe\x07\xff\xff\xfe\x00\x00\xff\xfe\x00\x00\x7f\xfe\x00\x00\x7f\xfe\x00\x00\x7f\xfe\x00\x00\xff\xff\x00\x01\xfe\xff\xff\xff\xfe\xff\xff\xff\xfc\xff\xff\xff\xf8\xff\xff\xff\xf0\xff\xff\xff\xe0\x7f\xff\xff\xc0?\xff\xff\x00')
     gitee_fb = framebuf.FrameBuffer(gitee_bytearray, 32,32, framebuf.MONO_HLSB)
     screen.blit(gitee_fb, 0, 0)
@@ -265,7 +267,7 @@ def _display_menu_ota_source_():
         _draw_github_logo_()
         screen.text('GitHub', 34, 12, 1)
     elif vars.ota_source == 'Gitee':
-        _draw_gitee_logo()
+        _draw_gitee_logo_()
         screen.text('Gitee', 34, 12, 1)
 
     screen.text('NEXT Channel', 34, 24, 1)
@@ -276,6 +278,12 @@ def _display_menu_ota_channel_():
     screen.text('OTA Channel', 34, 0, 1)
     screen.text("".join(tuple(vars.ota_channel)), 34, 12, 1)
     screen.text('NEXT Battery', 34, 24, 1)
+    screen.show()
+
+def _display_menu_ota_check_():
+    screen.fill(0)
+    screen.text('OTA Check', 34, 0, 1)
+    screen.text('Check update', 34, 24, 1)
     screen.show()
 
 def _display_menu_camera_protocol_():

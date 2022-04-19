@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan,battery, buttons,oled, vars, json, settings, simple_cam, sony_multi
+import wlan,battery, buttons,oled, vars, json, settings, simple_cam, sony_multi, ota
 
 welcome_time_count = 0
 udpate_count = 0
@@ -55,6 +55,8 @@ def _check_shutter_state_():
         _menu_ota_source_()
     elif vars.shutter_state == "menu_ota_channel":
         _menu_ota_channel_()
+    elif vars.shutter_state == "menu_ota_check":
+        _menu_ota_check_()
     elif vars.shutter_state == "menu_camera_protocol":
         _menu_camera_protocol_()
     elif vars.shutter_state == "menu_reboot_hint":
@@ -199,11 +201,27 @@ def _menu_ota_channel_():
         vars.ota_channel = vars.next(vars.ota_channel_range, vars.ota_channel)
         vars.oled_need_update = "yes"
         settings.update()
+        print(vars.ota_channel)
 
     ## page to back to battery menu
     if vars.button_page == "pressed":
         vars.button_page = "released"
+        vars.shutter_state = "menu_ota_check"
+
+def _menu_ota_check_():
+
+    # enter to check ota
+    if vars.button_enter == "pressed":
+        vars.button_enter = "released"
+        # vars.info = "menu_ota_check_hint"
+        ota.check()
+        vars.oled_need_update = "yes"
+    
+    ## page to back to battery menu
+    if vars.button_page == "pressed":
+        vars.button_page = "released"
         vars.shutter_state = "battery"
+
 
 def _menu_camera_protocol_():
 
