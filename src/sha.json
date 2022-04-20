@@ -34,7 +34,11 @@
         },
         {
             "name": "oled.py",
-            "sha1": "a02cf74bda3af6ea08bea8c487d25918540a85e6"
+            "sha1": "885e1bc614dcbd1c8807a04cda72659c5791cb6e"
+        },
+        {
+            "name": "ota.py",
+            "sha1": "6dcad585c5604626e7a1f55b0893a75478076326"
         },
         {
             "name": "settings.py",
@@ -58,11 +62,11 @@
         },
         {
             "name": "ui.py",
-            "sha1": "092abe240b8b901ffc08e8a64d7c6fe5797862a8"
+            "sha1": "4bca9c2febf9edf1a3c3432aa5e8330de03e66b7"
         },
         {
             "name": "vars.py",
-            "sha1": "9798d710698befe980b59288b0c5f3af8e4c11b7"
+            "sha1": "f06d9959e7c58f7afc1edf5d874ba2c01dda5032"
         },
         {
             "name": "wlan.py",
