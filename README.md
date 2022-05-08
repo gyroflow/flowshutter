@@ -1,5 +1,3 @@
-<div align='center' ><font size='50'>Flowshutter</font></div>
-
 <p align="center">
   <a href="https://gyroflow.xyz">Homepage</a> •
   <a href="https://docs.gyroflow.xyz/logging/flowshutter/flowshutter/">Documentation</a> •
@@ -23,7 +21,7 @@
   </a>
 </p>
 
-Flowshutter is a custom camera remote. When used in conjunction with readily available hardware, this results in a flexible and reliable external camera motion logger for Gyroflow. It can provide precise synchronization of camera video recording and motion logger (betaflight/emuflight FC) recording. 
+**Flowshutter** is a custom camera remote. When used in conjunction with readily available hardware, this results in a flexible and reliable external camera motion logger for Gyroflow. It can provide precise synchronization of camera video recording and motion logger (betaflight/emuflight FC) recording. 
 
 It was designed to be used with the [Gyroflow](https://github.com/gyroflow/gyroflow) software to provide you one of the best open source video stabilization experiences.
 
@@ -61,9 +59,9 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 - [x] Sony MULTI Terminal protocol
 - [x] Momentary Ground
 - [x] 3.3V Schmitt trigger
-- (WIP) 5V Schmitt trigger
-- (WIP) Sony LANC protocol
-- (WIP) HDMI CEC protocol
+- [ ] 5V Schmitt trigger (WIP)
+- [ ] Sony LANC protocol (WIP)
+- [ ] HDMI CEC protocol (WIP)
 
 For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/logging/flowshutter/camera%20list/) on the [documentation website](https://docs.gyroflow.xyz/).
 
