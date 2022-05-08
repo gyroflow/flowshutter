@@ -100,6 +100,13 @@ def _starting_():
             vars.shutter_state = "recording"
             vars.arm_state = "arm"
             ground_time_count = 0
+    elif vars.camera_protocol == "Sony MTP":
+        if ground_time_count <1000:
+            ground_time_count = ground_time_count + 5
+        else:
+            sony_multi.uart2.write(sony_multi.REC_PRESS)
+            sony_multi.uart2.write(sony_multi.REC_RELEASE)
+            ground_time_count = 0
 
     # starting timeout
     global starting_time_count
@@ -136,6 +143,17 @@ def _stopping_():
             simple_cam.momentary_ground(1)
             vars.shutter_state = "idle"
             vars.arm_state = "disarm"
+            ground_time_count = 0
+    elif vars.camera_protocol == "Sony MTP":
+        if ground_time_count <1000:
+            ground_time_count = ground_time_count + 5
+        elif ground_time_count == 1000:
+            sony_multi.uart2.write(sony_multi.REC_PRESS)
+            ground_time_count = ground_time_count + 5
+        elif ground_time_count < 2000 and ground_time_count > 1000:
+            ground_time_count = ground_time_count + 5
+        else:
+            sony_multi.uart2.write(sony_multi.REC_RELEASE)
             ground_time_count = 0
 
 def _battery_():
@@ -275,8 +293,6 @@ def _menu_inject_mode_():
 
 def _rec_enter_():
     if (vars.device_mode == "MASTER/SLAVE") & (vars.camera_protocol == "Sony MTP"):
-        sony_multi.uart2.write(sony_multi.REC_PRESS)
-        sony_multi.uart2.write(sony_multi.REC_RELEASE)
         if vars.shutter_state == "idle":
             vars.shutter_state = "starting"
         elif vars.shutter_state == "recording":

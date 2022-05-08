@@ -30,7 +30,7 @@
         },
         {
             "name": "main.py",
-            "sha1": "0d0ec6f810d6e767a263d21289ef4947bc2c24c2"
+            "sha1": "2f5503637fb1414a57ca0c756c0b654027c2f5af"
         },
         {
             "name": "oled.py",
@@ -42,7 +42,7 @@
         },
         {
             "name": "settings.py",
-            "sha1": "611fdb37bd48522061d7c21db97cb6b8a96389b6"
+            "sha1": "a57c1019869b94c691af2aadfb647b7a2b6dbc22"
         },
         {
             "name": "simple_cam.py",
@@ -50,7 +50,7 @@
         },
         {
             "name": "sony_multi.py",
-            "sha1": "c3c9f861030cfe0a5f663c3c9e818d496e6409b2"
+            "sha1": "6e529dcbe9f516abe45d0f003ec207ba3eba2697"
         },
         {
             "name": "ssd1306.py",
@@ -66,7 +66,7 @@
         },
         {
             "name": "ui.py",
-            "sha1": "4bca9c2febf9edf1a3c3432aa5e8330de03e66b7"
+            "sha1": "49ffacfa80b38dd0c5e0d221dc2ad4d047e5ee50"
         },
         {
             "name": "vars.py",
