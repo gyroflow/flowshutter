@@ -14,7 +14,7 @@
         },
         {
             "name": "boot.py",
-            "sha1": "efda214a11829e94c4d57a137b1c45a2dfa91a33"
+            "sha1": "79adbb6d4e93ae3c0daf6f72edc81c7dbcba65f4"
         },
         {
             "name": "buttons.py",
@@ -38,7 +38,7 @@
         },
         {
             "name": "ota.py",
-            "sha1": "c7ec129d89c073253aa15c232ede4f1ba7147d64"
+            "sha1": "4a9a4e95138952e7a332b86d26a5c5071e27ad89"
         },
         {
             "name": "settings.py",
@@ -70,7 +70,7 @@
         },
         {
             "name": "vars.py",
-            "sha1": "f06d9959e7c58f7afc1edf5d874ba2c01dda5032"
+            "sha1": "923ac723419ab2da65eba6edcfbb84289408b0fe"
         },
         {
             "name": "wlan.py",
