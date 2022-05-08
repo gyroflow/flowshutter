@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import json, os
-import vars
+import target, vars
 
 def _load_():
     with open("settings.json", "r") as f:
@@ -88,3 +88,11 @@ def read(): # read settings.json and set vars
     f=open("settings.json", "r")
     print("".join(f.read()))
     ## test end
+
+def apply(): # apply hardware settings according to the settings.json
+    if vars.camera_protocol == "Sony MTP":
+        target.init_uart2()
+    elif vars.camera_protocol == "MMTRY GND":
+        target.init_momentary_ground_pin()
+    elif vars.camera_protocol == "3V3 Schmitt":
+        target.init_3v3_schmitt_pin()
