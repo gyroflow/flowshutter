@@ -25,25 +25,22 @@ jobs:
         with:
           python-version: "3.10.4"
 
-      - name: Check SHA on Windows
+      - name: Build (check) SHA on Windows
         if: ${{ matrix.targets == 'windows-latest' }}
         run: |
           python tools/gen_sha.py check
-          python tools/gen_sha.py verify
         continue-on-error: false
       
-      - name: Check SHA on Ubuntu
+      - name: Build (check) SHA on Ubuntu
         if: ${{ matrix.targets == 'ubuntu-latest' }}
         run: |
           python3 tools/gen_sha.py check
-          python3 tools/gen_sha.py verify
         continue-on-error: false
       
-      - name: Check SHA on MacOS
+      - name: Build (check) SHA on MacOS
         if: ${{ matrix.targets == 'macos-latest' }}
         run: |
           python3 tools/gen_sha.py check
-          python3 tools/gen_sha.py verify
         continue-on-error: false
 
       - name: Upload SHA
@@ -51,3 +48,21 @@ jobs:
         with:
           name: SHA build from ${{ matrix.targets }} ${{ github.run_number }}
           path: check_sha.json
+
+      - name: Verify SHA on Windows
+        if: ${{ matrix.targets == 'windows-latest' }}
+        run: |
+          python tools/gen_sha.py verify
+        continue-on-error: false
+
+      - name: Verify SHA on Ubuntu
+        if: ${{ matrix.targets == 'ubuntu-latest' }}
+        run: |
+          python3 tools/gen_sha.py verify
+        continue-on-error: false
+
+      - name: Verify SHA on MacOS
+        if: ${{ matrix.targets == 'macos-latest' }}
+        run: |
+          python3 tools/gen_sha.py verify
+        continue-on-error: false

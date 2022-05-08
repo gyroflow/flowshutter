@@ -61,4 +61,48 @@ def check():
         f.close()
     import os
     print(os.listdir())
+    compare()
     #### can be removed later
+
+def compare():
+    with open("tmp_sha.json", "r") as f_1:
+        upstream = json.load(f_1)
+        f_1.close()
+    with open("sha.json", "r") as f_2:
+        local = json.load(f_2)
+        f_2.close()
+    
+    # print("upstream: " + str(upstream))
+    # print("local: " + str(local))
+
+    for i in range(1,len(local['files'])):
+        # compare local => upstream to get update and delete info
+        for j in range(1,len(upstream['files'])):
+            if local['files'][i]['name'] == upstream['files'][j]['name']:
+
+                # A file with the same name is found both locally and remotely,
+                # check sha1 between the two files
+                if local['files'][i]['sha1'] == upstream['files'][j]['sha1']:
+                    # They are same, no update is needed
+                    print(str(local['files'][i]['name']) + " no change")
+                    break
+                else:
+                    # Local file is outdated, it should be updated
+                    print(str(local['files'][i]['name']) + " outdated")
+                    break
+
+            elif j == len(upstream['files']) - 1 and local['files'][i]['name'] != upstream['files'][j]['name']:
+                # The local file was not found in the remote
+                # it should be deleted
+                print(str(local['files'][i]['name']) + " deleted")
+    
+    for i in range(1,len(upstream['files'])):
+        # compare upstream => local to get new file info
+        for j in range(1,len(local['files'])):
+            if upstream['files'][i]['name'] == local['files'][j]['name']:
+                # we have checked this before
+                break
+            elif j == len(local['files']) - 1 and upstream['files'][i]['name'] != local['files'][j]['name']:
+                # The remote file was not found in the local
+                # It is the new file, which should be downloaded
+                print(str(upstream['files'][i]['name']) + " new")
