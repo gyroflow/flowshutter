@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import hashlib, json, os, sys
 
-# Script for generating sha file, checking sha file, and verifying sha files
+# Script for generating sha file, building check_sha file, and verifying sha files
 # This script does not need to be written to ESP32, 
 # it only needs to be called when the version is updated
 # to generate a new files verification information,
@@ -61,7 +61,7 @@ if len(sys.argv) == 1:
     write_json(jdir)
     print("Update sha.json success!")
 else:
-    if sys.argv[1] == "check":
+    if sys.argv[1] == "build":
         # `python tools/gen_sha.py check`, generate check_sha.json
         # for CI testing
         jdir = "check_sha.json"
@@ -78,3 +78,8 @@ else:
         else:
             raise Exception("'sha.json' is outdated! Please run 'python tools/gen_sha.py' to update!")
         print("SHA verify success!")
+    elif sys.argv[1] == "clean":
+        # `python tools/gen_sha.py clean`, clean sha.json and check_sha.json
+        # for development testing
+        os.remove("check_sha.json")
+        print("Extra SHA cleaned!")
