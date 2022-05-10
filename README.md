@@ -19,6 +19,15 @@
   <a href="https://github.com/gyroflow/flowshutter/">
     <img src="https://img.shields.io/github/languages/code-size/gyroflow/flowshutter">
   </a>
+  <a href="https://github.com/gyroflow/flowshutter/tree/master">
+    <img src="https://github.com/gyroflow/flowshutter/actions/workflows/check.yml/badge.svg?branch=master">
+  </a>
+    <a href="https://github.com/gyroflow/flowshutter/tree/beta">
+    <img src="https://github.com/gyroflow/flowshutter/actions/workflows/check.yml/badge.svg?branch=beta">
+  </a>
+    <a href="https://github.com/gyroflow/flowshutter/tree/stable">
+    <img src="https://github.com/gyroflow/flowshutter/actions/workflows/check.yml/badge.svg?branch=stable">
+  </a>
 </p>
 
 **Flowshutter** is a custom camera remote. When used in conjunction with readily available hardware, this results in a flexible and reliable external camera motion logger for Gyroflow. It can provide precise synchronization of camera video recording and motion logger (betaflight/emuflight FC) recording. 
