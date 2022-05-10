@@ -14,7 +14,7 @@
         },
         {
             "name": "boot.py",
-            "sha1": "adb4af8415dfcc7e2a242c1be9ba8b330a0ab102"
+            "sha1": "59313e7af53fba16ed1ff64ab7c1665e3c015ee3"
         },
         {
             "name": "buttons.py",
@@ -38,7 +38,7 @@
         },
         {
             "name": "ota.py",
-            "sha1": "4a9a4e95138952e7a332b86d26a5c5071e27ad89"
+            "sha1": "9fc087b14502a4e0c5e6cce82f6f33e22c157779"
         },
         {
             "name": "settings.py",
@@ -61,7 +61,7 @@
             "sha1": "7cf64fd50e43a47ac2e42bb383bc29d0e889177e"
         },
         {
-            "name": "test1.py",
+            "name": "test2.py",
             "sha1": "61101786e05acc1a36949ad6d6396ebe2aa70fa3"
         },
         {

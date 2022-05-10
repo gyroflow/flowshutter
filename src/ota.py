@@ -148,3 +148,7 @@ def fetch():
         del url
         del content
     print(os.listdir('tmp'))
+    print("now we reset the machine")
+
+    import machine
+    machine.soft_reset()
