@@ -44,11 +44,15 @@ def update_files():
 
 
     if new_f_flag == True or del_f_flag == True:
-        print("hey we supposed to remove the project.pymakr")
-        # try:
-        #     os.remove("project.pymakr")
-        # except:
-        #     print("Already removed")
+        print("hey we supposed to remove the project.pymakr and old sha.json")
+
+        os.remove("sha.json")
+        os.rename("tmp_sha.json","sha.json")
+        print("sha.json updated")
+        try:
+            os.remove("project.pymakr")
+        except:
+            print("Already removed")
 
     print("delete flag: "+str(del_f_flag))
     print("update flag: "+str(new_f_flag))
