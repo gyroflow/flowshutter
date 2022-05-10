@@ -151,4 +151,4 @@ def fetch():
     print("now we reset the machine")
 
     import machine
-    machine.soft_reset()
+    machine.reset()

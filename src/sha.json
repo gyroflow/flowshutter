@@ -38,7 +38,7 @@
         },
         {
             "name": "ota.py",
-            "sha1": "9fc087b14502a4e0c5e6cce82f6f33e22c157779"
+            "sha1": "8a66b31eb1895e4d28ca91b0cd6de518fe263eb5"
         },
         {
             "name": "settings.py",
@@ -70,7 +70,7 @@
         },
         {
             "name": "vars.py",
-            "sha1": "923ac723419ab2da65eba6edcfbb84289408b0fe"
+            "sha1": "f06d9959e7c58f7afc1edf5d874ba2c01dda5032"
         },
         {
             "name": "wlan.py",
