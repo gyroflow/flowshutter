@@ -6,7 +6,7 @@
         },
         {
             "name": "README.md",
-            "sha1": "9512059d38085dabf9cf4942f421640e502f0078"
+            "sha1": "fb7760b740a0c7ea0dad4bd0dca1b50536dc6799"
         },
         {
             "name": "battery.py",
@@ -54,15 +54,11 @@
         },
         {
             "name": "ssd1306.py",
-            "sha1": "fbed0e96bfd49d97bbb94c5075b3fbc86107621c"
+            "sha1": "01427e8df1798264476fc3508d5417dffbfed6d8"
         },
         {
             "name": "target.py",
             "sha1": "7cf64fd50e43a47ac2e42bb383bc29d0e889177e"
-        },
-        {
-            "name": "test2.py",
-            "sha1": "61101786e05acc1a36949ad6d6396ebe2aa70fa3"
         },
         {
             "name": "ui.py",
