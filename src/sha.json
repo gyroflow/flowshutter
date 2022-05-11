@@ -34,7 +34,7 @@
         },
         {
             "name": "oled.py",
-            "sha1": "885e1bc614dcbd1c8807a04cda72659c5791cb6e"
+            "sha1": "7242ee1548d185a8aaae00647336ff678c910ff0"
         },
         {
             "name": "ota.py",
@@ -54,7 +54,7 @@
         },
         {
             "name": "ssd1306.py",
-            "sha1": "b108dfc4151f5d3bbc03cc681974840352b90cb7"
+            "sha1": "adf8023a40022d0123b1646406d8bf4ccd28d33b"
         },
         {
             "name": "target.py",

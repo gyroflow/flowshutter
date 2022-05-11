@@ -283,8 +283,15 @@ def _display_menu_ota_channel_():
 def _display_menu_ota_check_():
     screen.fill(0)
     screen.text('OTA Check', 34, 0, 1)
+    screen.text("".join(tuple(vars.ota_source))+"/"+"".join(tuple(vars.ota_channel)), 34, 12, 1)
     screen.text('Check update', 34, 24, 1)
     screen.show()
+
+def _display_menu_ota_update_():
+    screen.fill(0)
+    screen.text('OTA Update - Enter to start!', 0, 0, 1)
+    screen.text("Downloading xxx.py", 0, 12, 1)
+    screen.text("Please wait for downloading complete!", 0, 24, 1)
 
 def _display_menu_camera_protocol_():
     screen.fill(0)
