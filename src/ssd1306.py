@@ -26,6 +26,7 @@ SET_PAGE_ADDR       = const(0x22)
 SET_DISP_START_LINE = const(0x40)
 SET_SEG_REMAP       = const(0xA0)
 SET_MUX_RATIO       = const(0xA8)
+SET_IREF_SELECT     = const(0xAD)
 SET_COM_OUT_DIR     = const(0xC0)
 SET_DISP_OFFSET     = const(0xD3)
 SET_COM_PIN_CFG     = const(0xDA)
@@ -49,11 +50,11 @@ class SSD1306_I2C:
         self.init_display()
     def init_display(self):
         for cmd in (
-            SET_DISP | 0x00, # off
+            SET_DISP, # off
             # address setting
             SET_MEM_ADDR, 0x00, # horizontal
             # resolution and layout
-            SET_DISP_START_LINE | 0x00,
+            SET_DISP_START_LINE,
             SET_SEG_REMAP | 0x01, # column addr 127 mapped to SEG0
             SET_MUX_RATIO, self.height - 1,
             SET_COM_OUT_DIR | 0x08, # scan from COM[N] to COM0
@@ -62,12 +63,15 @@ class SSD1306_I2C:
             # timing and driving scheme
             SET_DISP_CLK_DIV, 0x80,
             SET_PRECHARGE, 0x22 if self.external_vcc else 0xf1,
-            SET_VCOM_DESEL, 0x30,
+            SET_VCOM_DESEL, 0x30, # 0.83*Vcc
             # display
             SET_CONTRAST, 0xff,
             SET_ENTIRE_ON,
             SET_NORM_INV,
-            SET_DISP | 0x01, # on
+            SET_IREF_SELECT, 0x30, # enable internal IREF during display on
+            # charge pump
+            SET_CHARGE_PUMP, 0x10 if self.external_vcc else 0x14,
+            SET_DISP | 0x01, # display on
         ):
             self.write_cmd(cmd)
         self.fill(0)
@@ -86,13 +90,27 @@ class SSD1306_I2C:
             # displays with width of 64 pixels are shifted by 32
             x0 += 32
             x1 += 32
-        self.write_cmd(SET_COL_ADDR)
-        self.write_cmd(x0)
-        self.write_cmd(x1)
-        self.write_cmd(SET_PAGE_ADDR)
-        self.write_cmd(0)
-        self.write_cmd(self.pages - 1)
-        self.write_data(self.buffer)
+        for i in range(self.pages):
+            self.write_cmd(SET_COL_ADDR)
+            self.write_cmd(x0)
+            self.write_cmd(x1)
+            self.write_cmd(SET_PAGE_ADDR)
+            self.write_cmd(i)
+            self.write_cmd(i)
+            self.write_data(self.buffer[i*self.width:(i+1)*self.width])
+
+    def write_cmd(self, cmd):
+        self.temp[0] = 0x80 # Co=1, D/C#=0
+        self.temp[1] = cmd
+        self.i2c.writeto(self.addr, self.temp)
+    def write_data(self, buf):
+        self.temp[0] = self.addr << 1
+        self.temp[1] = 0x40 # Co=0, D/C#=1
+        self.i2c.start()
+        self.i2c.write(self.temp)
+        self.i2c.write(buf)
+        print(len(buf))
+        self.i2c.stop()
 
     def fill(self, col):
         self.framebuf.fill(col)
@@ -118,16 +136,5 @@ class SSD1306_I2C:
     def blit(self, fbuf, x, y):
         self.framebuf.blit(fbuf, x, y)
 
-    def write_cmd(self, cmd):
-        self.temp[0] = 0x80 # Co=1, D/C#=0
-        self.temp[1] = cmd
-        self.i2c.writeto(self.addr, self.temp)
-    def write_data(self, buf):
-        self.temp[0] = self.addr << 1
-        self.temp[1] = 0x40 # Co=0, D/C#=1
-        self.i2c.start()
-        self.i2c.write(self.temp)
-        self.i2c.write(buf)
-        self.i2c.stop()
     def poweron(self):
         pass
