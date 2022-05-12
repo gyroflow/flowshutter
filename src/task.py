@@ -14,15 +14,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import camera, crsf, vram, oled, peripherals
+import time
 
 class Task:
     def __init__(self):
-        print("[Create] Task schedular")
+        print(str(time.time_ns()) + " [Create] Task schedular")
         self.crsf = crsf.CRSF()
         self.oled = oled.screen
         self.battery = peripherals.Battery()
         self.buttons = peripherals.Buttons()
-        print("[  OK  ] Task schedular")
+        print(str(time.time_ns()) + " [  OK  ] Task schedular")
     
     def schedular(self, t):
 
