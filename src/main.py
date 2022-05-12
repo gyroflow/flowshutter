@@ -15,12 +15,12 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import Timer
 import machine as machine
-import crsf, vars, sony_multi,ui,settings
+import crsf, vars, camera, ui, settings
 import uasyncio as asyncio
 
 machine.freq(240000000)
 settings.read()
-settings.apply()
+# settings.apply()
 
 timer0 = Timer(0) # 100Hz CRSF sender
 crsf = crsf.CRSF()
@@ -30,7 +30,7 @@ timer1 = Timer(1) # 200Hz update rate
 timer1.init(period=5, mode=Timer.PERIODIC, callback=ui.update)
 
 if vars.camera_protocol == "Sony MTP":
-    camera_uart_handler = sony_multi.Sony_multi().uart_handler()
+    camera_uart_handler = camera.Sony_multi().uart_handler()
     loop = asyncio.get_event_loop()
     loop.create_task(camera_uart_handler)
     loop.run_forever()

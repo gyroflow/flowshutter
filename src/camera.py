@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
-import vars,target
+import vars, target
 
 class Sony_multi:
     def __init__(self):
@@ -69,3 +69,26 @@ class Sony_multi:
                 vars.arm_state = "disarm"
                 await swriter.awrite(self.REC_STOP_ACK)
                 vars.shutter_state = "idle"
+
+
+class Momentary_ground:
+    def __init__(self):
+        self.pin = target.init_momentary_ground_pin()
+    
+    def momentary_ground(self,value):
+        # 1 High impedance (open drain)
+        # 0 Low voltage (tied to ground)    
+        self.pin.value(value)
+
+
+class Schmitt_3v3:
+    def __init__(self):
+        self.pin = target.init_schmitt_3v3_trigger_pin()
+    
+    def toggle_cc_voltage_level(self):
+        if vars.shutter_state == "recording":
+            self.pin.value(1)
+            print("high voltarge level")
+        else:
+            self.pin.value(0)
+            print("low voltage level")

@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan,battery, buttons,oled, vars, json, settings, simple_cam, sony_multi, ota
+import wlan,battery, buttons,oled, vars, json, settings, camera, ota
 
 welcome_time_count = 0
 udpate_count = 0
@@ -96,7 +96,7 @@ def _starting_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         else:
-            simple_cam.momentary_ground(1)
+            camera.Momentary_ground().momentary_ground(1)
             vars.shutter_state = "recording"
             vars.arm_state = "arm"
             ground_time_count = 0
@@ -104,13 +104,13 @@ def _starting_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         elif ground_time_count == 1000:
-            sony_multi.Sony_multi().rec_press()
+            camera.Sony_multi().rec_press()
             print("called rec press")
             ground_time_count = ground_time_count + 5
         elif ground_time_count < 2000 and ground_time_count > 1000:
             ground_time_count = ground_time_count + 5
         else:
-            sony_multi.Sony_multi().rec_release()
+            camera.Sony_multi().rec_release()
             print("called rec release")
             ground_time_count = 0
 
@@ -146,7 +146,7 @@ def _stopping_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         else:
-            simple_cam.momentary_ground(1)
+            camera.Momentary_ground().momentary_ground(1)
             vars.shutter_state = "idle"
             vars.arm_state = "disarm"
             ground_time_count = 0
@@ -154,13 +154,13 @@ def _stopping_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         elif ground_time_count == 1000:
-            sony_multi.Sony_multi().rec_press()
+            camera.Sony_multi().rec_press()
             print("called rec press")
             ground_time_count = ground_time_count + 5
         elif ground_time_count < 2000 and ground_time_count > 1000:
             ground_time_count = ground_time_count + 5
         else:
-            sony_multi.Sony_multi().rec_release()
+            camera.Sony_multi().rec_release()
             print("called rec release")
             ground_time_count = 0
     
@@ -323,20 +323,20 @@ def _rec_enter_():
         if vars.camera_protocol == "MMTRY GND":
             if vars.shutter_state == "idle":
                 vars.shutter_state = "starting"
-                simple_cam.momentary_ground(0)
+                camera.Momentary_ground().momentary_ground(0)
             elif vars.shutter_state == "recording":
                 vars.shutter_state = "stopping"
-                simple_cam.momentary_ground(0)
+                camera.Momentary_ground().momentary_ground(0)
 
 
         elif vars.camera_protocol == "3V3 Schmitt":
             if vars.shutter_state == "idle":
                 vars.shutter_state = "recording"
-                simple_cam.toggle_cc_voltage_level()
+                camera.Schmitt_3v3().toggle_cc_voltage_level()
                 vars.arm_state = "arm"
             elif vars.shutter_state == "recording":
                 vars.shutter_state = "idle"
-                simple_cam.toggle_cc_voltage_level()
+                camera.Schmitt_3v3().toggle_cc_voltage_level()
                 vars.arm_state = "disarm"
 
         elif vars.camera_protocol == "NO":

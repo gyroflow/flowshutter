@@ -37,6 +37,7 @@ SET_CHARGE_PUMP     = const(0x8D)
 
 class SSD1306_I2C:
     def __init__(self, width, height, i2c, addr=0x3c, external_vcc=False):
+        print("SSD1306 init called")
         self.width = width
         self.height = height
         self.i2c = i2c

@@ -10,7 +10,7 @@
         },
         {
             "name": "battery.py",
-            "sha1": "f02772cae442052c37518ddae0341445fed2e204"
+            "sha1": "c0ac9624f9140ba290d7c977d7fb976cc5974c29"
         },
         {
             "name": "boot.py",
@@ -21,8 +21,12 @@
             "sha1": "1e01b854d3b34525b785e5637119f63ed04da5ae"
         },
         {
+            "name": "camera.py",
+            "sha1": "dd40d2cf78ada743732af533a1fd7412d4567f10"
+        },
+        {
             "name": "crsf.py",
-            "sha1": "b75423f1c25df56be4e2fd792c348d24253c396d"
+            "sha1": "2755b64daeaca55bc0d94e7132d1205ada6d1b72"
         },
         {
             "name": "crsf_gen.py",
@@ -30,7 +34,7 @@
         },
         {
             "name": "main.py",
-            "sha1": "b384f78161ea8fc091e8598103d88c6679b22a31"
+            "sha1": "f69b945281b850337f299a620dcafe3bbf6e8989"
         },
         {
             "name": "oled.py",
@@ -42,27 +46,19 @@
         },
         {
             "name": "settings.py",
-            "sha1": "a57c1019869b94c691af2aadfb647b7a2b6dbc22"
-        },
-        {
-            "name": "simple_cam.py",
-            "sha1": "70b41756329c71e8b36ecbd19df5e30b98dbbb40"
-        },
-        {
-            "name": "sony_multi.py",
-            "sha1": "fe08e5041619812d7c009f35f6318192273bfa65"
+            "sha1": "ef85f1602bf992348b45a22c93d26138d16bc8b7"
         },
         {
             "name": "ssd1306.py",
-            "sha1": "1578d291249c8b814a7b5cc6251324bdb67383d9"
+            "sha1": "4df295359b5c9df8354481850e8b1c509b226487"
         },
         {
             "name": "target.py",
-            "sha1": "7cf64fd50e43a47ac2e42bb383bc29d0e889177e"
+            "sha1": "428a1d07188c8bcb0ac4534e21514ab781984d5e"
         },
         {
             "name": "ui.py",
-            "sha1": "e9cfea38ca0925efc9355983bf2b497edb4a564c"
+            "sha1": "e4a657bb3e759ca4d9892677c893a227303bcc02"
         },
         {
             "name": "vars.py",
