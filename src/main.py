@@ -23,6 +23,7 @@ settings.read()
 settings.apply()
 
 timer0 = Timer(0) # 100Hz CRSF sender
+crsf = crsf.CRSF()
 timer0.init(period=10, mode=Timer.PERIODIC, callback=crsf.send_packet)
 
 timer1 = Timer(1) # 200Hz update rate

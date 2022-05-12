@@ -22,15 +22,15 @@
         },
         {
             "name": "crsf.py",
-            "sha1": "353ca585baeed58710f67bb3c22dfa3dade47367"
+            "sha1": "b75423f1c25df56be4e2fd792c348d24253c396d"
         },
         {
             "name": "crsf_gen.py",
-            "sha1": "5e3e04a8adf4c715f9b70b301d7448b6a99a22d0"
+            "sha1": "aeafb156994fe1bb644c1f71b1b9347ce2cc03f4"
         },
         {
             "name": "main.py",
-            "sha1": "b0067981f40ea295b8e3d128eb4f4739807c514e"
+            "sha1": "b384f78161ea8fc091e8598103d88c6679b22a31"
         },
         {
             "name": "oled.py",
@@ -50,7 +50,7 @@
         },
         {
             "name": "sony_multi.py",
-            "sha1": "683bc377efb9082ee27206ec32ff7a800657355f"
+            "sha1": "fe08e5041619812d7c009f35f6318192273bfa65"
         },
         {
             "name": "ssd1306.py",
@@ -66,7 +66,7 @@
         },
         {
             "name": "vars.py",
-            "sha1": "f06d9959e7c58f7afc1edf5d874ba2c01dda5032"
+            "sha1": "a4658079d26ace0e133a9a479b383a6abf1beaa5"
         },
         {
             "name": "wlan.py",
