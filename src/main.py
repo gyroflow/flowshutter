@@ -18,9 +18,8 @@ import machine as machine
 import task, vars, camera, ui, settings
 import uasyncio as asyncio
 
-machine.freq(240000000)
+# machine.freq(240000000)
 settings.read()
-# settings.apply()
 
 timer0 = Timer(0) # 200Hz CRSF sender
 timer0.init(period=5, mode=Timer.PERIODIC, callback=task.schedular)

@@ -13,16 +13,19 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan,battery, buttons,oled, vars, json, settings, camera, ota
+import wlan, oled, vars, json, settings, camera, ota
 
 welcome_time_count = 0
 udpate_count = 0
 starting_time_count = 0
 ground_time_count = 0
 
+# battery = battery.Battery()
+# buttons = buttons.Buttons()
+
 def update(t):          # UI tasks controller
-    battery.read_vol()  # read the battery voltage
-    buttons.check(t)    # check the buttons
+    # battery.read_vol()  # read the battery voltage
+    # buttons.check(t)    # check the buttons
     _check_shutter_state_() # check working state and assign handler
     _check_oled_()      # check if OLED needs update
 
