@@ -88,11 +88,3 @@ def read(): # read settings.json and set vars
     f=open("settings.json", "r")
     print("".join(f.read()))
     ## test end
-
-# def apply(): # apply hardware settings according to the settings.json
-#     if vars.camera_protocol == "Sony MTP":
-#         target.init_uart2()
-#     elif vars.camera_protocol == "MMTRY GND":
-#         camera.Momentary_ground()
-#     elif vars.camera_protocol == "3V3 Schmitt":
-#         camera.Schmitt_3v3()

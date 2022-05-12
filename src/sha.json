@@ -9,16 +9,8 @@
             "sha1": "fb7760b740a0c7ea0dad4bd0dca1b50536dc6799"
         },
         {
-            "name": "battery.py",
-            "sha1": "c0ac9624f9140ba290d7c977d7fb976cc5974c29"
-        },
-        {
             "name": "boot.py",
             "sha1": "59313e7af53fba16ed1ff64ab7c1665e3c015ee3"
-        },
-        {
-            "name": "buttons.py",
-            "sha1": "1e01b854d3b34525b785e5637119f63ed04da5ae"
         },
         {
             "name": "camera.py",
@@ -30,11 +22,11 @@
         },
         {
             "name": "crsf_gen.py",
-            "sha1": "aeafb156994fe1bb644c1f71b1b9347ce2cc03f4"
+            "sha1": "ffbb5d890173ccd7a232a73da13eb814fcfd8721"
         },
         {
             "name": "main.py",
-            "sha1": "42adfc7030801d7bf3cfb0f2da47477dfadd18f9"
+            "sha1": "a4d10cfd6d3493521e193476908ce44b2e86ebdc"
         },
         {
             "name": "oled.py",
@@ -45,8 +37,12 @@
             "sha1": "8a66b31eb1895e4d28ca91b0cd6de518fe263eb5"
         },
         {
+            "name": "peripherals.py",
+            "sha1": "72fbf0e26701dbcec0d8aa9090594c00216c3492"
+        },
+        {
             "name": "settings.py",
-            "sha1": "ef85f1602bf992348b45a22c93d26138d16bc8b7"
+            "sha1": "1162f35fd09cdc194122d7945cf2e1a603ed90e6"
         },
         {
             "name": "ssd1306.py",
@@ -58,11 +54,11 @@
         },
         {
             "name": "task.py",
-            "sha1": "614fb9d8ab139e4b9965cec3586ad8048e69f27a"
+            "sha1": "a168ae55a5c89d18e77e59b319b6e3b47720ef4c"
         },
         {
             "name": "ui.py",
-            "sha1": "e4a657bb3e759ca4d9892677c893a227303bcc02"
+            "sha1": "2182607679f4eef9ba2efb9bb15b3433ebeb17b8"
         },
         {
             "name": "vars.py",
