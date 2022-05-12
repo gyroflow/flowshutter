@@ -18,6 +18,7 @@ import vars,target
 
 class Sony_multi:
     def __init__(self):
+        print("Sony MTP object created")
         self.REC_PRESS = b'#7100*'      # record button pressed
         self.REC_RELEASE = b'#7110*'    # record button released
 

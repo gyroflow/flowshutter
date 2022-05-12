@@ -15,61 +15,53 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import crsf_gen,target, vars
 
-# two private variables
-packets_count = 0   # control the injection frequency
-marker = "L"        # control the injection logic high/low
+class CRSF:
+    def __init__(self):
+        print("CRSF object created")
+        self.arm_time       = 0
+        self.packets_count  = 0     # number of packets sent 
+        self.marker         = 'L'   # marker
+        self.uart           = target.init_crsf_uart()
+        self.audio          = target.init_audio()
+        self.disarm_packet  = crsf_gen.build_rc_packet( 992,992,189,992,189,992,992,992,
+                                                        992,992,992,992,992,992,992,992)
+        self.arm_packet     = crsf_gen.build_rc_packet( 992,992,189,992,1800,992,992,992,
+                                                        992,992,992,992,992,992,992,992)
+        self.marker_packet  = crsf_gen.build_rc_packet( 992,992,1800,992,1800,992,992,992,
+                                                        992,992,992,992,992,992,992,992)
 
-def _toggle_marker_():# toggle the marker
-    global marker
-    if marker == "L":
-        marker = "H"
-    else:
-        marker = "L"
+    def _toggle_marker_(self):  #toggle the marker
+        if self.marker == 'L':
+            self.marker = 'H'
+        else:
+            self.marker = 'L'
 
-def _init_():
-    disarm_packet = crsf_gen.build_rc_packet(   992,992,189,992,189,992,992,992,
-                                                992,992,992,992,992,992,992,992)
-    arm_packet = crsf_gen.build_rc_packet(      992,992,189,992,1800,992,992,992,
-                                                992,992,992,992,992,992,992,992)
-    marker_packet = crsf_gen.build_rc_packet(   992,992,1800,992,1800,992,992,992,
-                                                992,992,992,992,992,992,992,992)
+    def _inject_(self):
+        if self.marker == "L":
+            self.uart.write(self.arm_packet)  # low throttle
+            self.audio.value(0)          # low voltage on audio
+        elif self.marker == "H":
+            self.uart.write(self.marker_packet)# high throttle
+            self.audio.value(1)          # high voltage on audio
 
-    uart1 = target.init_crsf_uart()
-    return disarm_packet, arm_packet, marker_packet, uart1
+    def send_packet(self, t):
+        if (vars.arm_state == "arm") & (vars.inject_mode == "OFF"):
+            self.uart.write(self.arm_packet)  # just ARM the FC 
 
-fc_disarm_packet, fc_arm_packet, fc_marker_packet, uart1 = _init_()
-audio_pin = target.init_audio()
+        elif (vars.arm_state == "arm") & (vars.inject_mode == "ON"):
+            self.arm_time = self.arm_time + 5   # 5ms per call
 
-def _inject_():
-    global marker
-    if marker == "L":
-        uart1.write(fc_arm_packet)  # low throttle
-        audio_pin.value(0)          # low voltage on audio
-    elif marker == "H":
-        uart1.write(fc_marker_packet)# high throttle
-        audio_pin.value(1)          # high voltage on audio
+            if self.arm_time < 1000:            # in first second we don't inject
+                self.uart.write(self.arm_packet)
+            elif self.arm_time >= 1000:         # after that we start to inject
+                self._inject_()
+                self.packets_count = self.packets_count + 1
+                if self.packets_count >= 8:
+                    self._toggle_marker_()
+                    self.packets_count = 0
 
-def send_packet(t):
-    global packets_count
-    global marker
-
-    if (vars.arm_state == "arm") & (vars.inject_mode == "OFF"):
-        uart1.write(fc_arm_packet)  # just ARM the FC 
-
-    elif (vars.arm_state == "arm") & (vars.inject_mode == "ON"):
-        vars.arm_time = vars.arm_time + 5   # 5ms per call
-
-        if vars.arm_time < 1000:            # in first second we don't inject
-            uart1.write(fc_arm_packet)
-        elif vars.arm_time >= 1000:         # after that we start to inject
-            _inject_()
-            packets_count = packets_count + 1
-            if packets_count >= 8:
-                _toggle_marker_()
-                packets_count = 0
-
-    elif vars.arm_state == "disarm":
-        vars.arm_time = 0
-        uart1.write(fc_disarm_packet)
-        packets_count = 0
-        marker = "L"
+        elif vars.arm_state == "disarm":
+            self.arm_time = 0
+            self.uart.write(self.disarm_packet)
+            self.packets_count = 0
+            self.marker = "L"

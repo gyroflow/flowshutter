@@ -110,6 +110,7 @@ def build_rc_packet(
     channel_8, channel_9, channel_10,channel_11,
     channel_12,channel_13,channel_14,channel_15
     ):
+    print("crsf builder called")
     address_int = 0xC8  # flight controller
     lenth_int = 0x18    # 26
     type_int = 0x16     # RC_CHANNEL_PACKET
