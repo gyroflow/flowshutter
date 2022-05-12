@@ -29,7 +29,7 @@ timer1 = Timer(1) # 200Hz update rate
 timer1.init(period=5, mode=Timer.PERIODIC, callback=ui.update)
 
 if vars.camera_protocol == "Sony MTP":
-    camera_uart_handler = sony_multi.uart_handler()
+    camera_uart_handler = sony_multi.Sony_multi().uart_handler()
     loop = asyncio.get_event_loop()
     loop.create_task(camera_uart_handler)
     loop.run_forever()

@@ -109,7 +109,7 @@ class SSD1306_I2C:
         self.i2c.start()
         self.i2c.write(self.temp)
         self.i2c.write(buf)
-        print(len(buf))
+        # print(len(buf))
         self.i2c.stop()
 
     def fill(self, col):
