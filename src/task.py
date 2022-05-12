@@ -13,23 +13,19 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import Timer
-import machine as machine
-import task, vars, camera, ui, settings
-import uasyncio as asyncio
+import camera, crsf, vars, oled
 
-machine.freq(240000000)
-settings.read()
-# settings.apply()
+crsf = crsf.CRSF()
+oled = oled.screen
 
-timer0 = Timer(0) # 200Hz CRSF sender
-timer0.init(period=5, mode=Timer.PERIODIC, callback=task.schedular)
-
-timer1 = Timer(1) # 200Hz update rate
-timer1.init(period=5, mode=Timer.PERIODIC, callback=ui.update)
-
-if vars.camera_protocol == "Sony MTP":
-    camera_uart_handler = camera.Sony_multi().uart_handler()
-    loop = asyncio.get_event_loop()
-    loop.create_task(camera_uart_handler)
-    loop.run_forever()
+def schedular(t):
+    crsf.send_packet(t) # task1
+    if vars.oled_tasklist != []:
+        print("oled task not empty!")
+        print(vars.oled_tasklist)
+        i = vars.oled_tasklist[0]
+        oled.show_sub(i)
+        del vars.oled_tasklist[0]
+    else:
+        pass
+        # print("no oled task")
