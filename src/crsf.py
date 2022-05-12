@@ -21,8 +21,13 @@ class CRSF:
         self.arm_time       = 0
         self.packets_count  = 0     # number of packets sent 
         self.marker         = 'L'   # marker
+        print("Call uart1 init")
         self.uart           = target.init_crsf_uart()
+        print("UART1 called")
+
+        print("Call AJ")
         self.audio          = target.init_audio()
+        print("AJ called")
         self.disarm_packet  = crsf_gen.build_rc_packet( 992,992,189,992,189,992,992,992,
                                                         992,992,992,992,992,992,992,992)
         self.arm_packet     = crsf_gen.build_rc_packet( 992,992,189,992,1800,992,992,992,

@@ -15,7 +15,9 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target, vars
 
+print("Try to call adc init")
 adc1, adc2 = target.init_adc()
+print("Called ADC init")
 
 adc_read_time_count = 0
 
