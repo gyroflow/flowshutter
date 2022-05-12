@@ -30,7 +30,7 @@
         },
         {
             "name": "main.py",
-            "sha1": "2f5503637fb1414a57ca0c756c0b654027c2f5af"
+            "sha1": "b0067981f40ea295b8e3d128eb4f4739807c514e"
         },
         {
             "name": "oled.py",
@@ -50,11 +50,11 @@
         },
         {
             "name": "sony_multi.py",
-            "sha1": "6e529dcbe9f516abe45d0f003ec207ba3eba2697"
+            "sha1": "683bc377efb9082ee27206ec32ff7a800657355f"
         },
         {
             "name": "ssd1306.py",
-            "sha1": "adf8023a40022d0123b1646406d8bf4ccd28d33b"
+            "sha1": "1578d291249c8b814a7b5cc6251324bdb67383d9"
         },
         {
             "name": "target.py",
@@ -62,7 +62,7 @@
         },
         {
             "name": "ui.py",
-            "sha1": "49ffacfa80b38dd0c5e0d221dc2ad4d047e5ee50"
+            "sha1": "e9cfea38ca0925efc9355983bf2b497edb4a564c"
         },
         {
             "name": "vars.py",

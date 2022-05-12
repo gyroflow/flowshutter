@@ -103,9 +103,15 @@ def _starting_():
     elif vars.camera_protocol == "Sony MTP":
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
+        elif ground_time_count == 1000:
+            sony_multi.Sony_multi().rec_press()
+            print("called rec press")
+            ground_time_count = ground_time_count + 5
+        elif ground_time_count < 2000 and ground_time_count > 1000:
+            ground_time_count = ground_time_count + 5
         else:
-            sony_multi.uart2.write(sony_multi.REC_PRESS)
-            sony_multi.uart2.write(sony_multi.REC_RELEASE)
+            sony_multi.Sony_multi().rec_release()
+            print("called rec release")
             ground_time_count = 0
 
     # starting timeout
@@ -148,13 +154,27 @@ def _stopping_():
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         elif ground_time_count == 1000:
-            sony_multi.uart2.write(sony_multi.REC_PRESS)
+            sony_multi.Sony_multi().rec_press()
+            print("called rec press")
             ground_time_count = ground_time_count + 5
         elif ground_time_count < 2000 and ground_time_count > 1000:
             ground_time_count = ground_time_count + 5
         else:
-            sony_multi.uart2.write(sony_multi.REC_RELEASE)
+            sony_multi.Sony_multi().rec_release()
+            print("called rec release")
             ground_time_count = 0
+    
+        # starting timeout
+    global starting_time_count
+    if starting_time_count <= 5000:
+        starting_time_count = starting_time_count + 5
+    elif ((starting_time_count > 5000) & (starting_time_count <= 10000)):
+        starting_time_count = starting_time_count + 5
+        vars.info = "starting_timeout"
+    elif starting_time_count > 10000:
+        starting_time_count = 0
+        vars.shutter_state = "idle"
+        vars.info = vars.shutter_state
 
 def _battery_():
 

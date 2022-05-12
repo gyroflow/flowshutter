@@ -15,50 +15,56 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
 import vars,target
-def _init_():
-    REC_PRESS = b'#7100*'     # record button pressed
-    REC_RELEASE = b'#7110*'     # record button released
 
-    HANDSHAKE = b'%000*'
-    HANDSHAKE_ACK = b'&00080*'
+class Sony_multi:
+    def __init__(self):
+        self.REC_PRESS = b'#7100*'      # record button pressed
+        self.REC_RELEASE = b'#7110*'    # record button released
 
-    REC_START = b'%7610*'
-    REC_START_ACK = b'&76100*'
+        self.HANDSHAKE = b'%000*'
+        self.HANDSHAKE_ACK = b'&00080*'
 
-    REC_STOP  = b'%7600*'
-    REC_STOP_ACK = b'&76000*'
+        self.REC_START = b'%7610*'
+        self.REC_START_ACK = b'&76100*'
 
-    return REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK
+        self.REC_STOP  = b'%7600*'
+        self.REC_STOP_ACK = b'&76000*'
 
-REC_PRESS, REC_RELEASE, HANDSHAKE, HANDSHAKE_ACK, REC_START, REC_START_ACK, REC_STOP, REC_STOP_ACK = _init_()
+        self.uart = target.init_uart2()
+    
+    def rec_press(self):
+        self.uart.write(self.REC_PRESS)
+        print("shutter send: ", self.REC_PRESS)
 
-uart2 = target.init_uart2()
+    def rec_release(self):
+        self.uart.write(self.REC_RELEASE)
+        print("shutter send: ", self.REC_RELEASE)
 
-async def uart_handler():
-    swriter = asyncio.StreamWriter(uart2, {})
-    sreader = asyncio.StreamReader(uart2)
-    while True:
-        res = await sreader.read(n=-1)
-        print('Cam sent:', res)
+    async def uart_handler(self):
+        swriter = asyncio.StreamWriter(self.uart, {})
+        sreader = asyncio.StreamReader(self.uart)
+        while True:
+            data = await sreader.read(n=-1)
+            print("Cam sent:", data)
 
-        if res == HANDSHAKE:                    # receive handshake
-            await asyncio.sleep_ms(10)
-            await swriter.awrite(HANDSHAKE_ACK) # send handshake ack to camera
-            tmp = vars.info
-            vars.info = "sony mtp ack"
-            vars.oled_need_update = "yes"
-            await asyncio.sleep_ms(2000)
-            vars.info = tmp
-            vars.oled_need_update = "yes"
+            if data == self.HANDSHAKE:
+                await asyncio.sleep_ms(8)
+                await swriter.awrite(self.HANDSHAKE_ACK)
+                tmp = vars.info
+                vars.info = "sony mtp ack"
+                vars.oled_need_update = "yes"
+                await asyncio.sleep_ms(2000)
+                vars.info = tmp
+                vars.oled_need_update = "yes"
 
-        elif res == REC_START:                  # receive record start
-            await asyncio.sleep_ms(9)# I don't know if this timing is good, should look into it later
-            vars.arm_state = "arm"              # Arm the FC
-            vars.shutter_state = "recording"    # now in recording state
-            await swriter.awrite(REC_START_ACK) # send record start ack to camera
+            elif data == self.REC_START:
+                await asyncio.sleep_ms(8)
+                vars.arm_state = "arm"
+                await swriter.awrite(self.REC_START_ACK)
+                vars.shutter_state = "recording"
 
-        elif res == REC_STOP:                   # receive record stop
-            await asyncio.sleep_ms(8)
-            vars.arm_state = "disarm"           # disarm the FC
-            vars.shutter_state = "idle"         # now in idle state
-            await swriter.awrite(REC_STOP_ACK)  # send record stop ack to camera
+            elif data == self.REC_STOP:
+                await asyncio.sleep_ms(8)
+                vars.arm_state = "disarm"
+                await swriter.awrite(self.REC_STOP_ACK)
+                vars.shutter_state = "idle"
