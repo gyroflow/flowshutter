@@ -14,11 +14,11 @@
         },
         {
             "name": "camera.py",
-            "sha1": "dd40d2cf78ada743732af533a1fd7412d4567f10"
+            "sha1": "e0717c203cd16933cc4f8dd7c1881467c5bdb7b7"
         },
         {
             "name": "crsf.py",
-            "sha1": "2755b64daeaca55bc0d94e7132d1205ada6d1b72"
+            "sha1": "a4b4a35e963506c79795a50a328bf2004d968d1d"
         },
         {
             "name": "crsf_gen.py",
@@ -26,47 +26,47 @@
         },
         {
             "name": "main.py",
-            "sha1": "a4d10cfd6d3493521e193476908ce44b2e86ebdc"
+            "sha1": "349368a1653b26902f81429f1f068fc56b1b8b9d"
         },
         {
             "name": "oled.py",
-            "sha1": "7242ee1548d185a8aaae00647336ff678c910ff0"
+            "sha1": "5212271c77b7b8b01858cb4133cb6cb1cb23906c"
         },
         {
             "name": "ota.py",
-            "sha1": "8a66b31eb1895e4d28ca91b0cd6de518fe263eb5"
+            "sha1": "562727152711548310dac381062821f3a33d9d74"
         },
         {
             "name": "peripherals.py",
-            "sha1": "72fbf0e26701dbcec0d8aa9090594c00216c3492"
+            "sha1": "5741429e06484eed30b36757e6f0c397d001648a"
         },
         {
             "name": "settings.py",
-            "sha1": "1162f35fd09cdc194122d7945cf2e1a603ed90e6"
+            "sha1": "e45ba6d8e8bdf1f99d0af844b305cb9c2240fbfa"
         },
         {
             "name": "ssd1306.py",
-            "sha1": "5021a637caafa4a40cbc5b1a75379095c8096edd"
+            "sha1": "ca4f3f961b8fce4939cad4ccad23056f3b844467"
         },
         {
             "name": "target.py",
-            "sha1": "428a1d07188c8bcb0ac4534e21514ab781984d5e"
+            "sha1": "17973e34698222af0ea1541d73e08afab8003033"
         },
         {
             "name": "task.py",
-            "sha1": "a168ae55a5c89d18e77e59b319b6e3b47720ef4c"
+            "sha1": "a5b11723428d7dec53385f5fa453c3030e8adc74"
         },
         {
             "name": "ui.py",
-            "sha1": "2182607679f4eef9ba2efb9bb15b3433ebeb17b8"
+            "sha1": "f0a3fd58f448ceca343bb080ed7c19d9800711e9"
         },
         {
-            "name": "vars.py",
+            "name": "vram.py",
             "sha1": "f4e52a25a990e835ab24cb9bada0fce19c05f8be"
         },
         {
             "name": "wlan.py",
-            "sha1": "a5689a6134ce3cdfcdc7b6a9ccd5e0fbdc5f4527"
+            "sha1": "293e19603b5c29c8c75f9b670d53fdffa899cbd0"
         }
     ]
 }

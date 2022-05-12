@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
-import vars, target
+import vram, target
 
 class Sony_multi:
     def __init__(self):
-        print("Sony MTP object created")
+        print("[Create] Sony MTP object")
         self.REC_PRESS = b'#7100*'      # record button pressed
         self.REC_RELEASE = b'#7110*'    # record button released
 
@@ -31,7 +31,10 @@ class Sony_multi:
         self.REC_STOP  = b'%7600*'
         self.REC_STOP_ACK = b'&76000*'
 
+        print("[Create] UART2")
         self.uart = target.init_uart2()
+        print("[  OK  ] UART2")
+        print("[Create] Sony MTP object")
     
     def rec_press(self):
         self.uart.write(self.REC_PRESS)
@@ -51,24 +54,24 @@ class Sony_multi:
             if data == self.HANDSHAKE:
                 await asyncio.sleep_ms(8)
                 await swriter.awrite(self.HANDSHAKE_ACK)
-                tmp = vars.info
-                vars.info = "sony mtp ack"
-                vars.oled_need_update = "yes"
+                tmp = vram.info
+                vram.info = "sony mtp ack"
+                vram.oled_need_update = "yes"
                 await asyncio.sleep_ms(2000)
-                vars.info = tmp
-                vars.oled_need_update = "yes"
+                vram.info = tmp
+                vram.oled_need_update = "yes"
 
             elif data == self.REC_START:
                 await asyncio.sleep_ms(8)
-                vars.arm_state = "arm"
+                vram.arm_state = "arm"
                 await swriter.awrite(self.REC_START_ACK)
-                vars.shutter_state = "recording"
+                vram.shutter_state = "recording"
 
             elif data == self.REC_STOP:
                 await asyncio.sleep_ms(8)
-                vars.arm_state = "disarm"
+                vram.arm_state = "disarm"
                 await swriter.awrite(self.REC_STOP_ACK)
-                vars.shutter_state = "idle"
+                vram.shutter_state = "idle"
 
 
 class Momentary_ground:
@@ -86,7 +89,7 @@ class Schmitt_3v3:
         self.pin = target.init_schmitt_3v3_trigger_pin()
     
     def toggle_cc_voltage_level(self):
-        if vars.shutter_state == "recording":
+        if vram.shutter_state == "recording":
             self.pin.value(1)
             print("high voltarge level")
         else:

@@ -13,8 +13,8 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan, oled, vars, json, settings, camera, ota
-
+import wlan, oled, vram, json, settings, camera, ota
+ota = ota.OTA()
 welcome_time_count = 0
 udpate_count = 0
 starting_time_count = 0
@@ -31,42 +31,42 @@ def update(t):          # UI tasks controller
 
 def _check_oled_():# check if we need to update the OLED
 
-    if vars.previous_state != vars.shutter_state:
-        vars.previous_state = vars.shutter_state
-        vars.info = vars.shutter_state
-        oled.update(vars.info)
-    if vars.oled_need_update == "yes":
-        vars.oled_need_update = "no"
-        oled.update(vars.info)
+    if vram.previous_state != vram.shutter_state:
+        vram.previous_state = vram.shutter_state
+        vram.info = vram.shutter_state
+        oled.update(vram.info)
+    if vram.oled_need_update == "yes":
+        vram.oled_need_update = "no"
+        oled.update(vram.info)
 
 def _check_shutter_state_():
-    if vars.shutter_state == "welcome":
+    if vram.shutter_state == "welcome":
         _welcome_()
-    elif vars.shutter_state == "idle":
+    elif vram.shutter_state == "idle":
         _idle_()
-    elif vars.shutter_state == "starting":
+    elif vram.shutter_state == "starting":
         _starting_()
-    elif vars.shutter_state == "recording":
+    elif vram.shutter_state == "recording":
         _recording_()
-    elif vars.shutter_state == "stopping":
+    elif vram.shutter_state == "stopping":
         _stopping_()
-    elif vars.shutter_state == "battery":
+    elif vram.shutter_state == "battery":
         _battery_()
-    elif vars.shutter_state == "menu_internet":
+    elif vram.shutter_state == "menu_internet":
         _menu_internet_() 
-    elif vars.shutter_state == "menu_ota_source":
+    elif vram.shutter_state == "menu_ota_source":
         _menu_ota_source_()
-    elif vars.shutter_state == "menu_ota_channel":
+    elif vram.shutter_state == "menu_ota_channel":
         _menu_ota_channel_()
-    elif vars.shutter_state == "menu_ota_check":
+    elif vram.shutter_state == "menu_ota_check":
         _menu_ota_check_()
-    elif vars.shutter_state == "menu_camera_protocol":
+    elif vram.shutter_state == "menu_camera_protocol":
         _menu_camera_protocol_()
-    elif vars.shutter_state == "menu_reboot_hint":
+    elif vram.shutter_state == "menu_reboot_hint":
         _menu_reboot_hint_()
-    elif vars.shutter_state == "menu_device_mode":
+    elif vram.shutter_state == "menu_device_mode":
         _menu_device_mode_()
-    elif vars.shutter_state == "menu_inject_mode":
+    elif vram.shutter_state == "menu_inject_mode":
         _menu_inject_mode_()
     else:
         print("Unknown UI state")
@@ -78,32 +78,32 @@ def _welcome_():
     if welcome_time_count <= 2500:
         welcome_time_count = welcome_time_count + 5
     else:
-        vars.shutter_state = "idle"
+        vram.shutter_state = "idle"
 
 def _idle_():
 
     # enter to start recording if in master or master/slave mode
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
         _rec_enter_()
 
     ## page to battery menu
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "battery"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "battery"
 
 def _starting_():
     _ignore_buttons_()
     global ground_time_count
-    if vars.camera_protocol == "MMTRY GND":
+    if vram.camera_protocol == "MMTRY GND":
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         else:
             camera.Momentary_ground().momentary_ground(1)
-            vars.shutter_state = "recording"
-            vars.arm_state = "arm"
+            vram.shutter_state = "recording"
+            vram.arm_state = "arm"
             ground_time_count = 0
-    elif vars.camera_protocol == "Sony MTP":
+    elif vram.camera_protocol == "Sony MTP":
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         elif ground_time_count == 1000:
@@ -123,37 +123,37 @@ def _starting_():
         starting_time_count = starting_time_count + 5
     elif ((starting_time_count > 5000) & (starting_time_count <= 10000)):
         starting_time_count = starting_time_count + 5
-        vars.info = "starting_timeout"
+        vram.info = "starting_timeout"
     elif starting_time_count > 10000:
         starting_time_count = 0
-        vars.shutter_state = "idle"
-        vars.info = vars.shutter_state
+        vram.shutter_state = "idle"
+        vram.info = vram.shutter_state
 
 def _recording_():
     global starting_time_count
     starting_time_count = 0
     
     # enter to stop recording if in master or master/slave mode
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
         _rec_enter_()
     # page cicle between rec_battery and recording
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
         _rec_page_()
 
 def _stopping_():
     _ignore_buttons_()
     global ground_time_count
-    if vars.camera_protocol == "MMTRY GND":
+    if vram.camera_protocol == "MMTRY GND":
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         else:
             camera.Momentary_ground().momentary_ground(1)
-            vars.shutter_state = "idle"
-            vars.arm_state = "disarm"
+            vram.shutter_state = "idle"
+            vram.arm_state = "disarm"
             ground_time_count = 0
-    elif vars.camera_protocol == "Sony MTP":
+    elif vram.camera_protocol == "Sony MTP":
         if ground_time_count <1000:
             ground_time_count = ground_time_count + 5
         elif ground_time_count == 1000:
@@ -173,196 +173,196 @@ def _stopping_():
         starting_time_count = starting_time_count + 5
     elif ((starting_time_count > 5000) & (starting_time_count <= 10000)):
         starting_time_count = starting_time_count + 5
-        vars.info = "starting_timeout"
+        vram.info = "starting_timeout"
     elif starting_time_count > 10000:
         starting_time_count = 0
-        vars.shutter_state = "idle"
-        vars.info = vars.shutter_state
+        vram.shutter_state = "idle"
+        vram.info = vram.shutter_state
 
 def _battery_():
 
     global udpate_count
     if udpate_count >=5000:
         udpate_count = 0
-        vars.oled_need_update = "yes"
+        vram.oled_need_update = "yes"
     else:
         udpate_count = udpate_count +5
 
     # page to camera protocol menu
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "menu_camera_protocol"
-        vars.oled_need_update = "yes"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "menu_camera_protocol"
+        vram.oled_need_update = "yes"
     
     # enter to hidden wlan mode menu
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"       
-        vars.shutter_state = "menu_internet"
-        vars.oled_need_update = "yes"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"       
+        vram.shutter_state = "menu_internet"
+        vram.oled_need_update = "yes"
 
 def _menu_internet_():
 
     # enter to set wlan up or down
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        if vars.wlan_state == "DISCONNECTED":
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        if vram.wlan_state == "DISCONNECTED":
             wlan.up()
-            vars.oled_need_update = "yes"
+            vram.oled_need_update = "yes"
         else:
             wlan.down()
-            vars.oled_need_update = "yes"
+            vram.oled_need_update = "yes"
 
     ## page button
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        if vars.wlan_state == "CONNECTED":
-            vars.shutter_state = "menu_ota_source"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        if vram.wlan_state == "CONNECTED":
+            vram.shutter_state = "menu_ota_source"
         else:
-            vars.shutter_state = "battery"
+            vram.shutter_state = "battery"
 
 def _menu_ota_source_():
 
     # enter to set wlan up or down
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        vars.ota_source = vars.next(vars.ota_source_range, vars.ota_source)
-        vars.oled_need_update = "yes"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        vram.ota_source = vram.next(vram.ota_source_range, vram.ota_source)
+        vram.oled_need_update = "yes"
         settings.update()
 
     ## page to ota channel menu
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "menu_ota_channel"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "menu_ota_channel"
 
 def _menu_ota_channel_():
 
     # enter to set ota channel
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        vars.ota_channel = vars.next(vars.ota_channel_range, vars.ota_channel)
-        vars.oled_need_update = "yes"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        vram.ota_channel = vram.next(vram.ota_channel_range, vram.ota_channel)
+        vram.oled_need_update = "yes"
         settings.update()
-        print(vars.ota_channel)
+        print(vram.ota_channel)
 
     ## page to back to battery menu
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "menu_ota_check"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "menu_ota_check"
 
 def _menu_ota_check_():
 
     # enter to check ota
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        # vars.info = "menu_ota_check_hint"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        # vram.info = "menu_ota_check_hint"
         ota.check()
-        vars.oled_need_update = "yes"
+        vram.oled_need_update = "yes"
     
     ## page to back to battery menu
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "battery"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "battery"
 
 
 def _menu_camera_protocol_():
 
     # enter to set camera protocol
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        vars.camera_protocol = vars.next(vars.camera_protocol_range, vars.camera_protocol)
-        vars.update_camera_preset()
-        vars.shutter_state = "menu_reboot_hint"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        vram.camera_protocol = vram.next(vram.camera_protocol_range, vram.camera_protocol)
+        vram.update_camera_preset()
+        vram.shutter_state = "menu_reboot_hint"
         settings.update()
 
     # page to device mode
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "menu_device_mode"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "menu_device_mode"
 
 def _menu_reboot_hint_():
     
-    if (vars.button_enter == "pressed") or (vars.button_page == "pressed"):
-        vars.button_enter = "released"
-        vars.button_page = "released"
-        vars.shutter_state = "menu_camera_protocol"
+    if (vram.button_enter == "pressed") or (vram.button_page == "pressed"):
+        vram.button_enter = "released"
+        vram.button_page = "released"
+        vram.shutter_state = "menu_camera_protocol"
 
 def _menu_device_mode_():
 
     # enter to set device mode
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        vars.device_mode = vars.next(vars.device_mode_range, vars.device_mode)
-        vars.oled_need_update = "yes"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        vram.device_mode = vram.next(vram.device_mode_range, vram.device_mode)
+        vram.oled_need_update = "yes"
         settings.update()
 
     # page to inject mode menu
-    if vars.button_page == "pressed":
-        vars.button_page = "released"       
-        vars.shutter_state = "menu_inject_mode"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"       
+        vram.shutter_state = "menu_inject_mode"
 
 def _menu_inject_mode_():
 
     # enter to set inject mode
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
-        vars.inject_mode = vars.next(vars.inject_mode_range, vars.inject_mode)
-        vars.oled_need_update = "yes"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
+        vram.inject_mode = vram.next(vram.inject_mode_range, vram.inject_mode)
+        vram.oled_need_update = "yes"
         settings.update()
 
     ## page to save and back to idle
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
-        vars.shutter_state = "idle"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"
+        vram.shutter_state = "idle"
 
 def _rec_enter_():
-    if (vars.device_mode == "MASTER/SLAVE") & (vars.camera_protocol == "Sony MTP"):
-        if vars.shutter_state == "idle":
-            vars.shutter_state = "starting"
-        elif vars.shutter_state == "recording":
-            vars.shutter_state = "stopping"
+    if (vram.device_mode == "MASTER/SLAVE") & (vram.camera_protocol == "Sony MTP"):
+        if vram.shutter_state == "idle":
+            vram.shutter_state = "starting"
+        elif vram.shutter_state == "recording":
+            vram.shutter_state = "stopping"
     
-    elif vars.device_mode == "MASTER":
+    elif vram.device_mode == "MASTER":
 
-        if vars.camera_protocol == "MMTRY GND":
-            if vars.shutter_state == "idle":
-                vars.shutter_state = "starting"
+        if vram.camera_protocol == "MMTRY GND":
+            if vram.shutter_state == "idle":
+                vram.shutter_state = "starting"
                 camera.Momentary_ground().momentary_ground(0)
-            elif vars.shutter_state == "recording":
-                vars.shutter_state = "stopping"
+            elif vram.shutter_state == "recording":
+                vram.shutter_state = "stopping"
                 camera.Momentary_ground().momentary_ground(0)
 
 
-        elif vars.camera_protocol == "3V3 Schmitt":
-            if vars.shutter_state == "idle":
-                vars.shutter_state = "recording"
+        elif vram.camera_protocol == "3V3 Schmitt":
+            if vram.shutter_state == "idle":
+                vram.shutter_state = "recording"
                 camera.Schmitt_3v3().toggle_cc_voltage_level()
-                vars.arm_state = "arm"
-            elif vars.shutter_state == "recording":
-                vars.shutter_state = "idle"
+                vram.arm_state = "arm"
+            elif vram.shutter_state == "recording":
+                vram.shutter_state = "idle"
                 camera.Schmitt_3v3().toggle_cc_voltage_level()
-                vars.arm_state = "disarm"
+                vram.arm_state = "disarm"
 
-        elif vars.camera_protocol == "NO":
-            if vars.shutter_state == "idle":
-                vars.shutter_state = "recording"
-                vars.arm_state = "arm"
-            elif vars.shutter_state == "recording":
-                vars.shutter_state = "idle"
-                vars.arm_state = "disarm"
+        elif vram.camera_protocol == "NO":
+            if vram.shutter_state == "idle":
+                vram.shutter_state = "recording"
+                vram.arm_state = "arm"
+            elif vram.shutter_state == "recording":
+                vram.shutter_state = "idle"
+                vram.arm_state = "disarm"
 
 def _rec_page_():
-    if vars.info == "recording":
-        vars.info = "battery"
-        vars.oled_need_update = "yes"
-    elif vars.info == "battery":
-        vars.info = "recording"
-        vars.oled_need_update = "yes"
+    if vram.info == "recording":
+        vram.info = "battery"
+        vram.oled_need_update = "yes"
+    elif vram.info == "battery":
+        vram.info = "recording"
+        vram.oled_need_update = "yes"
 
 def _ignore_buttons_():    
     # enter do nonthing
-    if vars.button_enter == "pressed":
-        vars.button_enter = "released"
+    if vram.button_enter == "pressed":
+        vram.button_enter = "released"
     
     # page do nonthing
-    if vars.button_page == "pressed":
-        vars.button_page = "released"
+    if vram.button_page == "pressed":
+        vram.button_page = "released"

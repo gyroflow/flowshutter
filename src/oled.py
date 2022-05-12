@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vars, ssd1306, target, wlan
+import vram, ssd1306, target, wlan
 import framebuf
 
 def _init_():
@@ -207,7 +207,7 @@ def _display_idle_():
     screen.text('FlowShutter', 34, 0, 1)
     screen.text('Powered by', 34, 12, 1)
     screen.text('DusKing', 34, 24, 1)
-    screen.text("".join(tuple(vars.version)), 96, 24, 1)
+    screen.text("".join(tuple(vram.version)), 96, 24, 1)
     screen.show()
 
 def _display_starting_():
@@ -236,8 +236,8 @@ def _display_stopping_():
 
 def _display_battery_():
     _draw_battery_()
-    _draw_battery_mask_(vars.vol)
-    voltage_str = "%.2fV" % vars.vol
+    _draw_battery_mask_(vram.vol)
+    voltage_str = "%.2fV" % vram.vol
     for i in range(5):
         for j in range(5):
             screen.text(voltage_str,42+i, 11+j,0)
@@ -248,11 +248,11 @@ def _display_menu_internet_():
     screen.fill(0)
     screen.text('Internet', 34, 0, 1)
 
-    if vars.wlan_state == "DISCONNECTED":
+    if vram.wlan_state == "DISCONNECTED":
         _draw_wifi_disconnected_()
         screen.text('Disconnected', 34, 12, 1)
         screen.text('NEXT Battery', 34, 24, 1)
-    elif vars.wlan_state == "CONNECTED":
+    elif vram.wlan_state == "CONNECTED":
         _draw_wifi_connected_()
         screen.text('Connected', 34, 12, 1)
         screen.text('NEXT Source', 34, 24, 1)
@@ -263,10 +263,10 @@ def _display_menu_ota_source_():
     screen.fill(0)
     screen.text('OTA Source', 34, 0, 1)
 
-    if vars.ota_source == 'GitHub':
+    if vram.ota_source == 'GitHub':
         _draw_github_logo_()
         screen.text('GitHub', 34, 12, 1)
-    elif vars.ota_source == 'Gitee':
+    elif vram.ota_source == 'Gitee':
         _draw_gitee_logo_()
         screen.text('Gitee', 34, 12, 1)
 
@@ -276,14 +276,14 @@ def _display_menu_ota_source_():
 def _display_menu_ota_channel_():
     screen.fill(0)
     screen.text('OTA Channel', 34, 0, 1)
-    screen.text("".join(tuple(vars.ota_channel)), 34, 12, 1)
+    screen.text("".join(tuple(vram.ota_channel)), 34, 12, 1)
     screen.text('NEXT Battery', 34, 24, 1)
     screen.show()
 
 def _display_menu_ota_check_():
     screen.fill(0)
     screen.text('OTA Check', 34, 0, 1)
-    screen.text("".join(tuple(vars.ota_source))+"/"+"".join(tuple(vars.ota_channel)), 34, 12, 1)
+    screen.text("".join(tuple(vram.ota_source))+"/"+"".join(tuple(vram.ota_channel)), 34, 12, 1)
     screen.text('Check update', 34, 24, 1)
     screen.show()
 
@@ -297,7 +297,7 @@ def _display_menu_camera_protocol_():
     screen.fill(0)
     _draw_settings_()
     screen.text('Cam Protocol', 34, 0, 1)
-    screen.text("".join(tuple(vars.camera_protocol)), 34, 12, 1)
+    screen.text("".join(tuple(vram.camera_protocol)), 34, 12, 1)
     screen.text('Next Device', 34, 24, 1)
     screen.show()
 
@@ -313,16 +313,16 @@ def _display_menu_device_mode_():
     screen.fill(0)
     _draw_settings_()
     screen.text('Device Mode', 34, 0, 1)
-    screen.text("".join(tuple(vars.device_mode)), 34, 12, 1)
+    screen.text("".join(tuple(vram.device_mode)), 34, 12, 1)
     screen.text('Next Marker', 34, 24, 1)
     screen.show()
 
 def _display_menu_inject_mode_():
     screen.fill(0)
     screen.text('Audio Injection', 0, 0, 1)
-    if vars.inject_mode == "ON":
+    if vram.inject_mode == "ON":
         _draw_audio_on_()
-    elif vars.inject_mode == "OFF":
+    elif vram.inject_mode == "OFF":
         _draw_audio_off_()
     screen.show()
 
@@ -339,6 +339,10 @@ def show_wlan_connecting():
     screen.text('Connecting', 21, 6, 1)
     screen.text('Please wait', 21, 16, 1)
     screen.show()
+    screen.show_sub(0)
+    screen.show_sub(1)
+    screen.show_sub(2)
+    screen.show_sub(3)
 
 def show_ap_info():
     screen.fill_rect(0,3,128,26,1)

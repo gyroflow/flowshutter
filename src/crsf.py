@@ -13,27 +13,28 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import crsf_gen,target, vars
+import crsf_gen,target, vram
 
 class CRSF:
     def __init__(self):
-        print("CRSF object created")
+        print("[Create] CRSF object")
         self.arm_time       = 0
         self.packets_count  = 0     # number of packets sent 
         self.marker         = 'L'   # marker
-        print("Call uart1 init")
+        print("[Create] UART1")
         self.uart           = target.init_crsf_uart()
-        print("UART1 called")
+        print("[  OK  ] UART1")
 
-        print("Call AJ")
+        print("[Create] AJ pin")
         self.audio          = target.init_audio()
-        print("AJ called")
+        print("[  OK  ] AJ pin")
         self.disarm_packet  = crsf_gen.build_rc_packet( 992,992,189,992,189,992,992,992,
                                                         992,992,992,992,992,992,992,992)
         self.arm_packet     = crsf_gen.build_rc_packet( 992,992,189,992,1800,992,992,992,
                                                         992,992,992,992,992,992,992,992)
         self.marker_packet  = crsf_gen.build_rc_packet( 992,992,1800,992,1800,992,992,992,
                                                         992,992,992,992,992,992,992,992)
+        print("[  OK  ] CRSF object")
 
     def _toggle_marker_(self):  #toggle the marker
         if self.marker == 'L':
@@ -50,10 +51,10 @@ class CRSF:
             self.audio.value(1)          # high voltage on audio
 
     def send_packet(self, t):
-        if (vars.arm_state == "arm") & (vars.inject_mode == "OFF"):
+        if (vram.arm_state == "arm") & (vram.inject_mode == "OFF"):
             self.uart.write(self.arm_packet)  # just ARM the FC 
 
-        elif (vars.arm_state == "arm") & (vars.inject_mode == "ON"):
+        elif (vram.arm_state == "arm") & (vram.inject_mode == "ON"):
             self.arm_time = self.arm_time + 5   # 5ms per call
 
             if self.arm_time < 1000:            # in first second we don't inject
@@ -65,7 +66,7 @@ class CRSF:
                     self._toggle_marker_()
                     self.packets_count = 0
 
-        elif vars.arm_state == "disarm":
+        elif vram.arm_state == "disarm":
             self.arm_time = 0
             self.uart.write(self.disarm_packet)
             self.packets_count = 0
