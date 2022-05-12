@@ -18,7 +18,7 @@ import machine as machine
 import task, vram, camera, ui, settings
 import uasyncio as asyncio
 
-# machine.freq(240000000)
+machine.freq(240000000)
 settings.read()
 
 task = task.Task()

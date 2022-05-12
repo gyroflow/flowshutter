@@ -18,12 +18,12 @@ import time
 
 class Battery:
     def __init__(self):
-        print(str(time.time_ns()) + " [Create] Battery object")
-        print(str(time.time_ns()) + " [Create] ADC")
+        print(str(time.ticks_us()) + " [Create] Battery object")
+        print(str(time.ticks_us()) + " [Create] ADC")
         self.adc1, self.adc2 = target.init_adc()
-        print(str(time.time_ns()) + " [  OK  ] ADC")
+        print(str(time.ticks_us()) + " [  OK  ] ADC")
         self.adc_read_time_count = 0
-        print(str(time.time_ns()) + " [  OK  ] Battery object")
+        print(str(time.ticks_us()) + " [  OK  ] Battery object")
 
     def read_vol(self):
         self.adc_read_time_count += 5
@@ -37,13 +37,13 @@ class Battery:
 
 class Buttons:
     def __init__(self):
-        print(str(time.time_ns()) + " [Create] Buttons object")
-        print(str(time.time_ns()) + " [Create] buttons")
+        print(str(time.ticks_us()) + " [Create] Buttons object")
+        print(str(time.ticks_us()) + " [Create] buttons")
         self.page, self.enter = target.init_buttons()
-        print(str(time.time_ns()) + " [  OK  ] buttons")
+        print(str(time.ticks_us()) + " [  OK  ] buttons")
         self.page_press_count = 0
         self.enter_press_count = 0
-        print(str(time.time_ns()) + " [  OK  ] Buttons object")
+        print(str(time.ticks_us()) + " [  OK  ] Buttons object")
     
     def check(self, t):
         if self.page.value() == 0:

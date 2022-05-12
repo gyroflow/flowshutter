@@ -18,27 +18,27 @@ import time
 
 class CRSF:
     def __init__(self):
-        print(str(time.time_ns()) + " [Create] CRSF object")
+        print(str(time.ticks_us()) + " [Create] CRSF object")
         self.arm_time       = 0
         self.packets_count  = 0     # number of packets sent 
         self.marker         = 'L'   # marker
-        print(str(time.time_ns()) + " [Create] UART1")
+        print(str(time.ticks_us()) + " [Create] UART1")
         self.uart           = target.init_crsf_uart()
-        print(str(time.time_ns()) + " [  OK  ] UART1")
+        print(str(time.ticks_us()) + " [  OK  ] UART1")
 
-        print(str(time.time_ns()) + " [Create] AJ pin")
+        print(str(time.ticks_us()) + " [Create] AJ pin")
         self.audio          = target.init_audio()
-        print(str(time.time_ns()) + " [  OK  ] AJ pin")
-        print(str(time.time_ns()) + " [Create] CRSF Generator")
+        print(str(time.ticks_us()) + " [  OK  ] AJ pin")
+        print(str(time.ticks_us()) + " [Create] CRSF Generator")
         self.crsf_gen = CRSF_Generator()
-        print(str(time.time_ns()) + " [  OK  ] CRSF Generator")
+        print(str(time.ticks_us()) + " [  OK  ] CRSF Generator")
         self.disarm_packet  = self.crsf_gen.build_rc_packet(992,992,189,992,189,992,992,992,
                                                             992,992,992,992,992,992,992,992)
         self.arm_packet     = self.crsf_gen.build_rc_packet(992,992,189,992,1800,992,992,992,
                                                             992,992,992,992,992,992,992,992)
         self.marker_packet  = self.crsf_gen.build_rc_packet(992,992,1800,992,1800,992,992,992,
                                                             992,992,992,992,992,992,992,992)
-        print(str(time.time_ns()) + " [  OK  ] CRSF object")
+        print(str(time.ticks_us()) + " [  OK  ] CRSF object")
 
     def _toggle_marker_(self):  #toggle the marker
         if self.marker == 'L':
@@ -79,7 +79,7 @@ class CRSF:
 
 class CRSF_Generator:
     def __init__(self):
-        print(str(time.time_ns()) + " [ Init ] CRSF Generator")
+        print(str(time.ticks_us()) + " [ Init ] CRSF Generator")
         self._crc_tab = [
                 0x00,0xD5,0x7F,0xAA,0xFE,0x2B,0x81,0x54,0x29,0xFC,0x56,0x83,0xD7,0x02,0xA8,0x7D,
                 0x52,0x87,0x2D,0xF8,0xAC,0x79,0xD3,0x06,0x7B,0xAE,0x04,0xD1,0x85,0x50,0xFA,0x2F,
@@ -167,8 +167,9 @@ class CRSF_Generator:
 
     def _crsf_crc_(self, data: bytes) -> int:
         crc = 0
+        crc_tab = self._crc_tab
         for i in data:
-            crc = self._crc_tab[crc ^ i]
+            crc = crc_tab[crc ^ i]
         return crc
 
     def build_rc_packet(self,
@@ -177,7 +178,7 @@ class CRSF_Generator:
         channel_8, channel_9, channel_10,channel_11,
         channel_12,channel_13,channel_14,channel_15
         ):
-        print(str(time.time_ns()) + " [ Run  ] CRSF build_rc_packet")
+        print(str(time.ticks_us()) + " [ Run  ] CRSF build_rc_packet")
         address_int = 0xC8  # flight controller
         lenth_int = 0x18    # 26
         type_int = 0x16     # RC_CHANNEL_PACKET

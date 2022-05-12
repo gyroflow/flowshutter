@@ -18,13 +18,13 @@ import time
 
 class Task:
     def __init__(self):
-        print(str(time.time_ns()) + " [Create] Task schedular")
+        print(str(time.ticks_us()) + " [Create] Task schedular")
         self.crsf = crsf.CRSF()
         self.oled = oled.screen
         self.battery = peripherals.Battery()
         self.buttons = peripherals.Buttons()
-        print(str(time.time_ns()) + " [  OK  ] Task schedular")
-    
+        print(str(time.ticks_us()) + " [  OK  ] Task schedular")
+
     def schedular(self, t):
 
         # task1
@@ -32,11 +32,10 @@ class Task:
 
         # task2
         if vram.oled_tasklist != []:
+            # print(vram.oled_tasklist)
             i = vram.oled_tasklist[0]
             self.oled.show_sub(i)
             del vram.oled_tasklist[0]
-        else:
-            pass
 
         # task3
         self.battery.read_vol()
