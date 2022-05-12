@@ -35,7 +35,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import network, gc, vars, socket, ure, time, oled
+import network, gc, vram, socket, ure, time, oled
 
 ap_ssid = "Flowshutter"
 ap_password = "ilovehugo"
@@ -352,7 +352,7 @@ def _start_(port=80):
 
 
 def up():
-    vars.wlan_state = "CONNECTED"
+    vram.wlan_state = "CONNECTED"
     wlan = _get_connection_()
     if wlan is None:
         print("Could not niitialized the network connection.")
@@ -361,6 +361,6 @@ def up():
     print("Flowshutter OK")
 
 def down():
-    vars.wlan_state = "DISCONNECTED"
+    vram.wlan_state = "DISCONNECTED"
     wlan_ap.active(False)
     wlan_sta.active(False)

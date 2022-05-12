@@ -13,30 +13,36 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import target, vars
+import target, vram
 
 class Battery:
     def __init__(self):
-        print("peri battery")
+        print("[Create] Battery object")
+        print("[Create] ADC")
         self.adc1, self.adc2 = target.init_adc()
+        print("[  OK  ] ADC")
         self.adc_read_time_count = 0
+        print("[  OK  ] Battery object")
 
     def read_vol(self):
         self.adc_read_time_count += 5
         if self.adc_read_time_count >= 50:
             self.adc_read_time_count = 0
             if self.adc1.read() != 0:
-                vars.vol = (vars.vol + self.adc1.read() * 3.3 / 2048)/2
+                vram.vol = (vram.vol + self.adc1.read() * 3.3 / 2048)/2
             else:
-                vars.vol = (vars.vol + self.adc2.read() * 3.3 / 4096)/2
+                vram.vol = (vram.vol + self.adc2.read() * 3.3 / 4096)/2
 
 
 class Buttons:
     def __init__(self):
-        print("peri button")
+        print("[Create] Buttons object")
+        print("[Create] buttons")
         self.page, self.enter = target.init_buttons()
+        print("[  OK  ] buttons")
         self.page_press_count = 0
         self.enter_press_count = 0
+        print("[  OK  ] Buttons object")
     
     def check(self, t):
         if self.page.value() == 0:
@@ -44,7 +50,7 @@ class Buttons:
                 self.page_press_count += 5
             else:
                 self.page_press_count = 0
-                vars.button_page = "pressed"
+                vram.button_page = "pressed"
         else:
             self.page_press_count = 0
 
@@ -53,6 +59,6 @@ class Buttons:
                 self.enter_press_count += 5
             else:
                 self.enter_press_count = 0
-                vars.button_enter = "pressed"
+                vram.button_enter = "pressed"
         else:
             self.enter_press_count = 0

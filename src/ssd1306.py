@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from micropython import const
 import framebuf
-import vars
+import vram
 
 SET_CONTRAST        = const(0x81)
 SET_ENTIRE_ON       = const(0xA4)
@@ -38,7 +38,7 @@ SET_CHARGE_PUMP     = const(0x8D)
 
 class SSD1306_I2C:
     def __init__(self, width, height, i2c, addr=0x3c, external_vcc=False):
-        print("SSD1306 init called")
+        print("[Create] SSD1306_I2C object")
         self.width = width
         self.height = height
         self.i2c = i2c
@@ -50,6 +50,7 @@ class SSD1306_I2C:
         self.temp = bytearray(2)
         self.poweron()
         self.init_display()
+        print("[  OK  ] SSD1306_I2C object")
     def init_display(self):
         for cmd in (
             SET_DISP, # off
@@ -90,7 +91,7 @@ class SSD1306_I2C:
 
     def show(self):
         for i in range(self.pages):
-            vars.oled_tasklist.append(i)
+            vram.oled_tasklist.append(i)
 
     def show_sub(self,i):
         x0 = 0

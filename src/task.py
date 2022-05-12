@@ -13,30 +13,33 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import camera, crsf, vars, oled, peripherals
+import camera, crsf, vram, oled, peripherals
 
-crsf = crsf.CRSF()
-oled = oled.screen
-battery = peripherals.Battery()
-buttons = peripherals.Buttons()
+class Task:
+    def __init__(self):
+        print("[Create] Task schedular")
+        self.crsf = crsf.CRSF()
+        self.oled = oled.screen
+        self.battery = peripherals.Battery()
+        self.buttons = peripherals.Buttons()
+        print("[  OK  ] Task schedular")
+    
+    def schedular(self, t):
 
-def schedular(t):
-    # task1
-    crsf.send_packet(t)
+        # task1
+        self.crsf.send_packet(t)
 
-    # task2
-    if vars.oled_tasklist != []:
-        # print("oled task not empty!")
-        # print(vars.oled_tasklist)
-        i = vars.oled_tasklist[0]
-        oled.show_sub(i)
-        del vars.oled_tasklist[0]
-    else:
-        pass
-        # print("no oled task")
+        # task2
+        if vram.oled_tasklist != []:
+            i = vram.oled_tasklist[0]
+            self.oled.show_sub(i)
+            del vram.oled_tasklist[0]
+        else:
+            pass
 
-    # task3
-    battery.read_vol()  # read the battery voltage
+        # task3
+        self.battery.read_vol()
 
-    # task4
-    buttons.check(t)    # check the buttons
+        # task4
+        self.buttons.check(t)
+
