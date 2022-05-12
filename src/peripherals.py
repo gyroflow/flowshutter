@@ -14,15 +14,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target, vram
+import time
 
 class Battery:
     def __init__(self):
-        print("[Create] Battery object")
-        print("[Create] ADC")
+        print(str(time.time_ns()) + " [Create] Battery object")
+        print(str(time.time_ns()) + " [Create] ADC")
         self.adc1, self.adc2 = target.init_adc()
-        print("[  OK  ] ADC")
+        print(str(time.time_ns()) + " [  OK  ] ADC")
         self.adc_read_time_count = 0
-        print("[  OK  ] Battery object")
+        print(str(time.time_ns()) + " [  OK  ] Battery object")
 
     def read_vol(self):
         self.adc_read_time_count += 5
@@ -36,13 +37,13 @@ class Battery:
 
 class Buttons:
     def __init__(self):
-        print("[Create] Buttons object")
-        print("[Create] buttons")
+        print(str(time.time_ns()) + " [Create] Buttons object")
+        print(str(time.time_ns()) + " [Create] buttons")
         self.page, self.enter = target.init_buttons()
-        print("[  OK  ] buttons")
+        print(str(time.time_ns()) + " [  OK  ] buttons")
         self.page_press_count = 0
         self.enter_press_count = 0
-        print("[  OK  ] Buttons object")
+        print(str(time.time_ns()) + " [  OK  ] Buttons object")
     
     def check(self, t):
         if self.page.value() == 0:

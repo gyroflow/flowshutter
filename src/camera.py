@@ -15,10 +15,11 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
 import vram, target
+import time
 
 class Sony_multi:
     def __init__(self):
-        print("[Create] Sony MTP object")
+        print(str(time.time_ns()) + " [Create] Sony MTP object")
         self.REC_PRESS = b'#7100*'      # record button pressed
         self.REC_RELEASE = b'#7110*'    # record button released
 
@@ -31,10 +32,10 @@ class Sony_multi:
         self.REC_STOP  = b'%7600*'
         self.REC_STOP_ACK = b'&76000*'
 
-        print("[Create] UART2")
+        print(str(time.time_ns()) + " [Create] UART2")
         self.uart = target.init_uart2()
-        print("[  OK  ] UART2")
-        print("[Create] Sony MTP object")
+        print(str(time.time_ns()) + " [  OK  ] UART2")
+        print(str(time.time_ns()) + " [Create] Sony MTP object")
     
     def rec_press(self):
         self.uart.write(self.REC_PRESS)

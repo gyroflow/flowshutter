@@ -14,15 +14,11 @@
         },
         {
             "name": "camera.py",
-            "sha1": "e0717c203cd16933cc4f8dd7c1881467c5bdb7b7"
+            "sha1": "4c32930c69583cf9ca75c274f823472535b98827"
         },
         {
             "name": "crsf.py",
-            "sha1": "a4b4a35e963506c79795a50a328bf2004d968d1d"
-        },
-        {
-            "name": "crsf_gen.py",
-            "sha1": "ffbb5d890173ccd7a232a73da13eb814fcfd8721"
+            "sha1": "6c3d4e44cccfd54cbb53dce8e217a53e30361473"
         },
         {
             "name": "main.py",
@@ -34,11 +30,11 @@
         },
         {
             "name": "ota.py",
-            "sha1": "562727152711548310dac381062821f3a33d9d74"
+            "sha1": "6126e4775f9234a2254bb5d37b871e2e0b8c0e10"
         },
         {
             "name": "peripherals.py",
-            "sha1": "5741429e06484eed30b36757e6f0c397d001648a"
+            "sha1": "08ac749bf02681dc4f7f099c201a115a44786b27"
         },
         {
             "name": "settings.py",
@@ -46,15 +42,15 @@
         },
         {
             "name": "ssd1306.py",
-            "sha1": "ca4f3f961b8fce4939cad4ccad23056f3b844467"
+            "sha1": "2d543e81474607219b8ca51a637b400b7919b96b"
         },
         {
             "name": "target.py",
-            "sha1": "17973e34698222af0ea1541d73e08afab8003033"
+            "sha1": "5e7960ca755395dc53dbf3f4085e4919822af567"
         },
         {
             "name": "task.py",
-            "sha1": "a5b11723428d7dec53385f5fa453c3030e8adc74"
+            "sha1": "c451376d3223d3a3d321e16a9dbba43719f49646"
         },
         {
             "name": "ui.py",

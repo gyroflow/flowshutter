@@ -14,9 +14,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from machine import UART, Pin, SoftI2C, ADC
+import time
 
 def init_adc():
-    print("[ Init ] ADC")
+    print(str(time.time_ns()) + " [ Init ] ADC")
     adc1 = ADC(Pin(36))
     adc1.atten(ADC.ATTN_11DB)
     adc2 = ADC(Pin(34))
@@ -24,37 +25,37 @@ def init_adc():
     return adc1, adc2
 
 def init_crsf_uart():
-    print("[ Init ] UART1")
+    print(str(time.time_ns()) + " [ Init ] UART1")
     uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 33, rx = 32)
     return uart1
 
 def init_audio():
-    print("[ Init ] AJ pin")
+    print(str(time.time_ns()) + " [ Init ] AJ pin")
     audio_pin = Pin(18, Pin.OUT)
     return audio_pin
 
 def init_i2c():
-    print("[ Init ] I2C")
+    print(str(time.time_ns()) + " [ Init ] I2C")
     i2c = SoftI2C(scl=Pin(22), sda=Pin(21),freq = 800000)
     return i2c
 
 def init_buttons():
-    print("[ Init ] buttons")
+    print(str(time.time_ns()) + " [ Init ] buttons")
     button_page = Pin(15, Pin.IN, Pin.PULL_UP)
     button_enter = Pin(27, Pin.IN, Pin.PULL_UP)
     return button_page, button_enter
 
 def init_uart2():
-    print("[ Init ] UART2")
+    print(str(time.time_ns()) + " [ Init ] UART2")
     uart2 = UART(2, baudrate = 9600, bits = 8, parity = 0,    stop = 1, tx = 25, rx = 26)
     return uart2
 
 def init_momentary_ground_pin():
-    print("[ Init ] MMTRY GND pin")
+    print(str(time.time_ns()) + " [ Init ] MMTRY GND pin")
     switch = Pin(25, Pin.OPEN_DRAIN, value = 1)
     return switch
 
 def init_schmitt_3v3_trigger_pin():
-    print("[ Init ] schmitt")
+    print(str(time.time_ns()) + " [ Init ] schmitt")
     schmitt_3v3 = Pin(26, Pin.OUT, value = 0)
     return schmitt_3v3

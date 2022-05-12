@@ -15,13 +15,14 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import json, urequests, vram, os, gc
 from micropython import mem_info
+import time
 
 class OTA:
     def __init__(self):
-        print("[Create] OTA object")
+        print(str(time.time_ns()) + " [Create] OTA object")
         self.update_list = []
         self.delete_list = []
-        print("[  OK  ] OTA object")
+        print(str(time.time_ns()) + " [  OK  ] OTA object")
 
     def build_url(self, file_name):
         source = ""
