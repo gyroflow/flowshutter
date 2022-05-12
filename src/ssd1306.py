@@ -15,6 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from micropython import const
 import framebuf
+import vars
 
 SET_CONTRAST        = const(0x81)
 SET_ENTIRE_ON       = const(0xA4)
@@ -76,7 +77,9 @@ class SSD1306_I2C:
         ):
             self.write_cmd(cmd)
         self.fill(0)
-        self.show()
+        for i in range(self.pages):
+            self.show_sub(i)
+
     def poweroff(self):
         self.write_cmd(SET_DISP | 0x00)
     def contrast(self, contrast):
@@ -84,21 +87,25 @@ class SSD1306_I2C:
         self.write_cmd(contrast)
     def invert(self, invert):
         self.write_cmd(SET_NORM_INV | (invert & 1))
+
     def show(self):
+        for i in range(self.pages):
+            vars.oled_tasklist.append(i)
+
+    def show_sub(self,i):
         x0 = 0
         x1 = self.width - 1
         if self.width == 64:
             # displays with width of 64 pixels are shifted by 32
             x0 += 32
             x1 += 32
-        for i in range(self.pages):
-            self.write_cmd(SET_COL_ADDR)
-            self.write_cmd(x0)
-            self.write_cmd(x1)
-            self.write_cmd(SET_PAGE_ADDR)
-            self.write_cmd(i)
-            self.write_cmd(i)
-            self.write_data(self.buffer[i*self.width:(i+1)*self.width])
+        self.write_cmd(SET_COL_ADDR)
+        self.write_cmd(x0)
+        self.write_cmd(x1)
+        self.write_cmd(SET_PAGE_ADDR)
+        self.write_cmd(i)
+        self.write_cmd(i)
+        self.write_data(self.buffer[i*self.width:(i+1)*self.width])
 
     def write_cmd(self, cmd):
         self.temp[0] = 0x80 # Co=1, D/C#=0

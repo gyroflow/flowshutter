@@ -34,7 +34,7 @@
         },
         {
             "name": "main.py",
-            "sha1": "f69b945281b850337f299a620dcafe3bbf6e8989"
+            "sha1": "42adfc7030801d7bf3cfb0f2da47477dfadd18f9"
         },
         {
             "name": "oled.py",
@@ -50,11 +50,15 @@
         },
         {
             "name": "ssd1306.py",
-            "sha1": "4df295359b5c9df8354481850e8b1c509b226487"
+            "sha1": "5021a637caafa4a40cbc5b1a75379095c8096edd"
         },
         {
             "name": "target.py",
             "sha1": "428a1d07188c8bcb0ac4534e21514ab781984d5e"
+        },
+        {
+            "name": "task.py",
+            "sha1": "614fb9d8ab139e4b9965cec3586ad8048e69f27a"
         },
         {
             "name": "ui.py",
@@ -62,7 +66,7 @@
         },
         {
             "name": "vars.py",
-            "sha1": "a4658079d26ace0e133a9a479b383a6abf1beaa5"
+            "sha1": "f4e52a25a990e835ab24cb9bada0fce19c05f8be"
         },
         {
             "name": "wlan.py",
