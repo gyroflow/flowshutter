@@ -18,7 +18,7 @@ import framebuf
 
 def _init_():
     i2c = target.init_i2c()
-    screen = ssd1306.SSD1306_I2C(128, 32, i2c)
+    screen = ssd1306.SSD1306_I2C(128, 32, i2c, False)
     return screen
 
 screen = _init_()

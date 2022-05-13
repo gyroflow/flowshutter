@@ -38,11 +38,12 @@ SET_VCOM_DESEL      = const(0xDB)
 SET_CHARGE_PUMP     = const(0x8D)
 
 class SSD1306_I2C:
-    def __init__(self, width, height, i2c, addr=0x3c, external_vcc=False):
-        print(str(time.time_ns()) + " [Create] SSD1306_I2C object")
+    def __init__(self, width, height, i2c, reflash, addr=0x3c, external_vcc=False):
+        print(str(time.ticks_us()) + " [Create] SSD1306_I2C object")
         self.width = width
         self.height = height
         self.i2c = i2c
+        self.reflash = reflash
         self.addr = addr
         self.external_vcc = external_vcc
         self.pages = self.height // 8
@@ -51,7 +52,7 @@ class SSD1306_I2C:
         self.temp = bytearray(2)
         self.poweron()
         self.init_display()
-        print(str(time.time_ns()) + " [  OK  ] SSD1306_I2C object")
+        print(str(time.ticks_us()) + " [  OK  ] SSD1306_I2C object")
     def init_display(self):
         for cmd in (
             SET_DISP, # off
@@ -78,9 +79,12 @@ class SSD1306_I2C:
             SET_DISP | 0x01, # display on
         ):
             self.write_cmd(cmd)
-        self.fill(0)
-        for i in range(self.pages):
-            self.show_sub(i)
+        if self.reflash == True:
+            self.fill(0)
+            for i in range(self.pages):
+                self.show_sub(i)
+        else:
+            pass
 
     def poweroff(self):
         self.write_cmd(SET_DISP | 0x00)
@@ -91,10 +95,33 @@ class SSD1306_I2C:
         self.write_cmd(SET_NORM_INV | (invert & 1))
 
     def show(self):
-        for i in range(self.pages):
+        for i in range(int(self.pages*2)):
             vram.oled_tasklist.append(i)
 
     def show_sub(self,i):
+        page = int(i/2)
+        sub_sec = i%2
+        if sub_sec == 0:
+            x0 = 0
+            x1 = int(self.width/2) - 1
+        else:
+            x0 = int(self.width/2)
+            x1 = self.width - 1
+        # x0 = 0
+        # x1 = self.width - 1
+        # if self.width == 64:
+        #     # displays with width of 64 pixels are shifted by 32
+        #     x0 += 32
+        #     x1 += 32
+        self.write_cmd(SET_COL_ADDR)
+        self.write_cmd(x0)
+        self.write_cmd(x1)
+        self.write_cmd(SET_PAGE_ADDR)
+        self.write_cmd(page)
+        self.write_cmd(page)
+        self.write_data(self.buffer[int(i*self.width/2):int((i+1)*(self.width/2))])
+   
+    def show_all(self):
         x0 = 0
         x1 = self.width - 1
         if self.width == 64:
@@ -105,9 +132,9 @@ class SSD1306_I2C:
         self.write_cmd(x0)
         self.write_cmd(x1)
         self.write_cmd(SET_PAGE_ADDR)
-        self.write_cmd(i)
-        self.write_cmd(i)
-        self.write_data(self.buffer[i*self.width:(i+1)*self.width])
+        self.write_cmd(0)
+        self.write_cmd(self.pages - 1)
+        self.write_data(self.buffer)
 
     def write_cmd(self, cmd):
         self.temp[0] = 0x80 # Co=1, D/C#=0

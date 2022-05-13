@@ -19,10 +19,10 @@ import time
 
 class OTA:
     def __init__(self):
-        print(str(time.time_ns()) + " [Create] OTA object")
+        print(str(time.ticks_us()) + " [Create] OTA object")
         self.update_list = []
         self.delete_list = []
-        print(str(time.time_ns()) + " [  OK  ] OTA object")
+        print(str(time.ticks_us()) + " [  OK  ] OTA object")
 
     def build_url(self, file_name):
         source = ""
