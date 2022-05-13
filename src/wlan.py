@@ -35,8 +35,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import network, gc, vram, socket, ure, time, oled
+import network, gc, vram, socket, ure, time, ui
 
+# canvas1 = ui.canvas
 ap_ssid = "Flowshutter"
 ap_password = "ilovehugo"
 ap_authmode = 3  # WPA2
@@ -65,7 +66,8 @@ def _get_connection_():
     # First check if there already is any connection:
     if wlan_sta.isconnected():
         return wlan_sta
-    oled.show_wlan_connecting()## TODO: add oled hint here
+    # canvas1.show_wlan_connecting()## TODO: add canvas hint here
+    vram.info = "show wlan connecting"
     connected = False
     try:
         # ESP connecting to WiFi takes time, wait a bit and try again:
@@ -75,7 +77,7 @@ def _get_connection_():
 
         # Read known network profiles from file
         profiles = _read_profiles_()
-        ## TODO: add oled hint here
+        ## TODO: add canvas hint here
 
         # Search WiFis in range
         wlan_sta.active(True)
@@ -292,8 +294,9 @@ def _start_(port=80):
     server_socket.bind(addr)
     server_socket.listen(1)
 
-    oled.show_ap_info()
-    ## TODO: add oled hint here
+    # canvas1.show_ap_info()
+    vram.info = "show ap info"
+    ## TODO: add canvas hint here
 
     print('Connect to WiFi ssid ' + ap_ssid + ', default password: ' + ap_password)
     print('and access the ESP via your favorite web browser at 192.168.4.1.')

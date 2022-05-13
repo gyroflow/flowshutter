@@ -35,7 +35,7 @@ shutter_state = "welcome"
 # "menu_device_mode"
 # "menu_inject_mode"
 info = "welcome"
-# this is the oled state
+# this is the canvas state
 # basically just shutter_state
 
 ## button state

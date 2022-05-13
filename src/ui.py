@@ -13,8 +13,10 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan, oled, vram, json, settings, camera, ota
+import wlan, canvas, vram, json, settings, camera, ota
 ota = ota.OTA()
+print("Try to build OLED_OLED")
+canvas = canvas.Canvas()
 welcome_time_count = 0
 udpate_count = 0
 starting_time_count = 0
@@ -34,10 +36,10 @@ def _check_oled_():# check if we need to update the OLED
     if vram.previous_state != vram.shutter_state:
         vram.previous_state = vram.shutter_state
         vram.info = vram.shutter_state
-        oled.update(vram.info)
+        canvas.update(vram.info)
     if vram.oled_need_update == "yes":
         vram.oled_need_update = "no"
-        oled.update(vram.info)
+        canvas.update(vram.info)
 
 def _check_shutter_state_():
     if vram.shutter_state == "welcome":

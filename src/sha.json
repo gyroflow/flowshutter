@@ -17,16 +17,16 @@
             "sha1": "f8455d39e553299b491e7581b8136b73f7ec60b2"
         },
         {
+            "name": "canvas.py",
+            "sha1": "d8ebf6a4c0c055ecb4b524e312bbcbc3e38b457a"
+        },
+        {
             "name": "crsf.py",
             "sha1": "f9645d23fb977c027ec6e861e23040034ea5bba7"
         },
         {
             "name": "main.py",
             "sha1": "ccf15cc4ebf2f742e5a6897c1621911b8aa049d7"
-        },
-        {
-            "name": "oled.py",
-            "sha1": "1418c1d5006cd05e5bb3edb9ccdab029dd06b252"
         },
         {
             "name": "ota.py",
@@ -50,19 +50,19 @@
         },
         {
             "name": "task.py",
-            "sha1": "16991fe26455f1ae92675d070d620b282c881317"
+            "sha1": "9bd6cd01d04954edc637a24c86cc282a04f80e3a"
         },
         {
             "name": "ui.py",
-            "sha1": "f0a3fd58f448ceca343bb080ed7c19d9800711e9"
+            "sha1": "915e1afe1b702d58357672a0fe880a5fc2b258fc"
         },
         {
             "name": "vram.py",
-            "sha1": "f4e52a25a990e835ab24cb9bada0fce19c05f8be"
+            "sha1": "4e076c55c5b3ac3df641f4da3e39397cedc67daa"
         },
         {
             "name": "wlan.py",
-            "sha1": "293e19603b5c29c8c75f9b670d53fdffa899cbd0"
+            "sha1": "161bc3ac0afa020005b346f5b667bb52a74fc443"
         }
     ]
 }
