@@ -54,7 +54,7 @@
         },
         {
             "name": "ui.py",
-            "sha1": "915e1afe1b702d58357672a0fe880a5fc2b258fc"
+            "sha1": "75376879a8f54121a0d324a3a933140ff4d0ce11"
         },
         {
             "name": "vram.py",
@@ -62,7 +62,7 @@
         },
         {
             "name": "wlan.py",
-            "sha1": "161bc3ac0afa020005b346f5b667bb52a74fc443"
+            "sha1": "a35ab2590168abe7c14596e6c0fba751adabee40"
         }
     ]
 }

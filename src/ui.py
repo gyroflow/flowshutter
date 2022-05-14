@@ -15,6 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import wlan, canvas, vram, json, settings, camera, ota
 ota = ota.OTA()
+wlan = wlan.WIFI()
 print("Try to build OLED_OLED")
 canvas = canvas.Canvas()
 welcome_time_count = 0
