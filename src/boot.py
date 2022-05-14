@@ -65,8 +65,8 @@ def update_files():
         except:
             print("Already removed")
 
-    print("delete flag: "+str(del_f_flag))
-    print("update flag: "+str(new_f_flag))
+    print(str(time.ticks_us()) + " [ Boot ] Delete flag: " + str(del_f_flag))
+    print(str(time.ticks_us()) + " [ Boot ] Update flag: " + str(new_f_flag))
 
 
 update_files()

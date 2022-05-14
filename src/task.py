@@ -14,32 +14,44 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import camera, crsf, vram, peripherals, ui
-import time
+import time, gc
 
 class Task:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Task schedular")
         self.crsf = crsf.CRSF()
-        self.canvas = ui.canvas
+        self.mem_opt_interval = 100 # gc per 100ms
         self.battery = peripherals.Battery()
         self.buttons = peripherals.Buttons()
+        self.ui = ui.UI_Logic()
         print(str(time.ticks_us()) + " [  OK  ] Task schedular")
 
-    def schedular(self, t):
+    def mem_opt(self):
+        gc.enable()
+        gc.collect()
+        gc.disable()
 
-        # task1
+    def schedular(self, t):
+        self.mem_opt_interval -= 5
+
+        # task1 - CRSF sender
         self.crsf.send_packet(t)
 
-        # task2
+        # task2 - OLED display or GC
         if vram.oled_tasklist != []:
             # print(vram.oled_tasklist)
             i = vram.oled_tasklist[0]
-            self.canvas.show_sub(i)
+            self.ui.show_sub(i)
             del vram.oled_tasklist[0]
+        elif self.mem_opt_interval < 0:
+            self.mem_opt()
+            self.mem_opt_interval = 100
 
-        # task3
+        # task3 - read voltage
         self.battery.read_vol()
 
-        # task4
+        # task4 - read buttons
         self.buttons.check(t)
 
+        # task5 - update Logic UI
+        self.ui.update(t)
