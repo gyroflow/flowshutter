@@ -13,23 +13,21 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import Timer
 import machine as machine
-import task, vram, camera, ui, settings
-import uasyncio as asyncio
-
 machine.freq(240000000)
-settings.read()
 
+import task, settings
+settings.read()
 task = task.Task()
 
+from machine import Timer
 timer0 = Timer(0) # 200Hz CRSF sender
 timer0.init(period=5, mode=Timer.PERIODIC, callback=task.schedular)
 
-timer1 = Timer(1) # 200Hz update rate
-timer1.init(period=5, mode=Timer.PERIODIC, callback=ui.update)
-
+import vram
 if vram.camera_protocol == "Sony MTP":
+    import camera
+    import uasyncio as asyncio
     camera_uart_handler = camera.Sony_multi().uart_handler()
     loop = asyncio.get_event_loop()
     loop.create_task(camera_uart_handler)

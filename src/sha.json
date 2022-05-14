@@ -10,7 +10,7 @@
         },
         {
             "name": "boot.py",
-            "sha1": "ae57ddce2354ad2e71f1acd973413624d5744dd7"
+            "sha1": "b19378451554f8dcdf08545f52f33905acb83320"
         },
         {
             "name": "camera.py",
@@ -26,7 +26,7 @@
         },
         {
             "name": "main.py",
-            "sha1": "ccf15cc4ebf2f742e5a6897c1621911b8aa049d7"
+            "sha1": "97dfa2dd55deb8853f70cf12fee31429c6663023"
         },
         {
             "name": "ota.py",
@@ -50,11 +50,11 @@
         },
         {
             "name": "task.py",
-            "sha1": "9bd6cd01d04954edc637a24c86cc282a04f80e3a"
+            "sha1": "6b0b102600cce06425dc00e3810bdf320a13d24d"
         },
         {
             "name": "ui.py",
-            "sha1": "75376879a8f54121a0d324a3a933140ff4d0ce11"
+            "sha1": "b9c4bbd910d522379bbbd27abe217e1d93575744"
         },
         {
             "name": "vram.py",
@@ -62,7 +62,7 @@
         },
         {
             "name": "wlan.py",
-            "sha1": "a35ab2590168abe7c14596e6c0fba751adabee40"
+            "sha1": "620bf77c619d3235f607917b40e10fdf74f06043"
         }
     ]
 }
