@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram, ssd1306, target, wlan
+import vram, ssd1306, target
 import framebuf, time
 
 class Canvas():
@@ -22,7 +22,10 @@ class Canvas():
         self.screen = ssd1306.SSD1306_I2C(128, 32, self.i2c, False)
     
     def show_sub(self, i):
-        self.screen.show_sub(i)    
+        self.screen.show_sub(i)  
+
+    def show_all(self):
+        self.screen.show_all()
 
     def update(self, info):
         if info == "welcome":
@@ -352,8 +355,8 @@ class Canvas():
     def show_ap_info(self):
         self.screen.fill_rect(0,3,128,26,1)
         self.screen.fill_rect(1,4,126,24,0)
-        self.screen.text('SSID:'+ wlan.ap_ssid, 3, 6, 1)
-        self.screen.text('Pswd:'+ wlan.ap_password, 3, 16, 1)
+        self.screen.text('SSID:'+ 'Flowshutter', 3, 6, 1)
+        self.screen.text('Pswd:'+ 'ilovehugo', 3, 16, 1)
         self.screen.show()
 
     def _show_sony_mtp_ack_(self):

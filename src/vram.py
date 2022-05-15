@@ -53,7 +53,7 @@ oled_need_update = "no"
 
 
 # user_settings:
-version = "0.53" # when new user settings added, this should be update firstly!
+version = "0.60" # when new user settings added, this should be update firstly!
 device_mode = "SLAVE"
 inject_mode = "OFF"
 camera_protocol = "Sony MTP"
