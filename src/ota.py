@@ -60,9 +60,16 @@ class OTA:
         with open("tmp_sha.json", "r") as f_1:
             upstream = json.load(f_1)
             f_1.close()
-        with open("sha.json", "r") as f_2:
-            local = json.load(f_2)
-            f_2.close()
+        try:
+            with open("sha.json", "r") as f_2:
+                local = json.load(f_2)
+                f_2.close()
+        except:
+            with open("sha.json", "w") as f_2:
+                jinit = {"files":[{"name":"boot.py","sha1":"0"},{"name":"main.py","sha1":"0"}]}
+                json.dump(jinit, f_2)
+                local = json.load(f_2)
+                f_2.close()
 
         # print("upstream: " + str(upstream))
         # print("local: " + str(local))

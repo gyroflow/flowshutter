@@ -10,7 +10,7 @@
         },
         {
             "name": "boot.py",
-            "sha1": "b19378451554f8dcdf08545f52f33905acb83320"
+            "sha1": "93a65da52ba7dbd97787531c7695d4a85807c392"
         },
         {
             "name": "camera.py",
@@ -25,12 +25,16 @@
             "sha1": "f9645d23fb977c027ec6e861e23040034ea5bba7"
         },
         {
+            "name": "entry.py",
+            "sha1": "8230535d7409416cd7bc6d3d5994f71349e60691"
+        },
+        {
             "name": "main.py",
-            "sha1": "97dfa2dd55deb8853f70cf12fee31429c6663023"
+            "sha1": "027357cac8a688dc2833b3cd666c01b9b8831693"
         },
         {
             "name": "ota.py",
-            "sha1": "3a81c6225352b4fc538c7e66c43aaffe0b5bec54"
+            "sha1": "8611e69ca51efb00bc35f4740785bbc795357e7f"
         },
         {
             "name": "peripherals.py",
@@ -45,6 +49,10 @@
             "sha1": "6125326ec8e972f6247a9340363a70a047038339"
         },
         {
+            "name": "startup.py",
+            "sha1": "6fd85fec9940b11da17335e1447420f6d4a54fa0"
+        },
+        {
             "name": "target.py",
             "sha1": "27084cdff9bc9655354e87d5268998176ebe317d"
         },
@@ -54,15 +62,19 @@
         },
         {
             "name": "ui.py",
-            "sha1": "b9c4bbd910d522379bbbd27abe217e1d93575744"
+            "sha1": "fbb3eedd2a8a77cfc9ae0ed99e4c5d5a232dc522"
+        },
+        {
+            "name": "urequests.py",
+            "sha1": "284e075abb2b3b1583bb4d763df64abe5015d3f2"
         },
         {
             "name": "vram.py",
-            "sha1": "4e076c55c5b3ac3df641f4da3e39397cedc67daa"
+            "sha1": "3e79f891a1b3fc880bb56ad11ea3790067b63502"
         },
         {
             "name": "wlan.py",
-            "sha1": "620bf77c619d3235f607917b40e10fdf74f06043"
+            "sha1": "7fd4b0208475ecf2c06334efe47871f832cbecce"
         }
     ]
 }
