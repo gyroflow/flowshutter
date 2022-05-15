@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import canvas, vram, json, settings, camera, ota, time
+import wlan
 
 class UI_Logic:
     def __init__(self):
@@ -201,7 +202,7 @@ class UI_Logic:
             vram.oled_need_update = "yes"
 
     def _menu_internet_(self):
-        import wlan
+
         # self.wlan = wlan.WIFI()
         # enter to set wlan up or down
         if vram.button_enter == "pressed":
