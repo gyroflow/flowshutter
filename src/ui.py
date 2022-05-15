@@ -13,18 +13,19 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import wlan, canvas, vram, json, settings, camera, ota
+import canvas, vram, json, settings, camera, ota, time
 
 class UI_Logic:
     def __init__(self):
+        print(str(time.ticks_us()) + " [Create] UI logic object")
         self.ota = ota.OTA()
-        self.wlan = wlan.WIFI()
-        print("Try to build OLED_OLED")
+        
         self.canvas = canvas.Canvas()
         self.welcome_time_count = 0
         self.udpate_count = 0
         self.starting_time_count = 0
         self.ground_time_count = 0
+        print(str(time.ticks_us()) + " [  OK  ] UI logic object")
 
     def show_sub(self, i):
         self.canvas.show_sub(i)
@@ -200,15 +201,16 @@ class UI_Logic:
             vram.oled_need_update = "yes"
 
     def _menu_internet_(self):
-
+        import wlan
+        # self.wlan = wlan.WIFI()
         # enter to set wlan up or down
         if vram.button_enter == "pressed":
             vram.button_enter = "released"
             if vram.wlan_state == "DISCONNECTED":
-                self.wlan.up()
+                wlan.up()
                 vram.oled_need_update = "yes"
             else:
-                self.wlan.down()
+                wlan.down()
                 vram.oled_need_update = "yes"
 
         ## page button
@@ -248,7 +250,7 @@ class UI_Logic:
             vram.button_page = "released"
             vram.shutter_state = "menu_ota_check"
 
-    def _menu_ota_check_():
+    def _menu_ota_check_(self):
 
         # enter to check ota
         if vram.button_enter == "pressed":
