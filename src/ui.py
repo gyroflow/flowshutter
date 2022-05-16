@@ -20,12 +20,19 @@ class UI_Logic:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] UI logic object")
         self.ota = ota.OTA()
-        
         self.canvas = canvas.Canvas()
         self.welcome_time_count = 0
         self.udpate_count = 0
         self.starting_time_count = 0
         self.ground_time_count = 0
+        if vram.camera_protocol == "Sony MTP":
+            self.camera = camera.Sony_multi()
+        elif vram.camera_protocol == "MMTRY GND":
+            self.camera = camera.Momentary_ground()
+        elif vram.camera_protocol == "3V3 Schmitt":
+            self.camera = camera.Schmitt_3v3()
+        elif vram.camera_protocol == "NO":
+            self.camera = camera.No_Cam()
         print(str(time.ticks_us()) + " [  OK  ] UI logic object")
 
     def show_sub(self, i):
@@ -92,7 +99,9 @@ class UI_Logic:
         # enter to start recording if in master or master/slave mode
         if vram.button_enter == "pressed":
             vram.button_enter = "released"
-            self._rec_enter_()
+            if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
+                vram.shutter_state = "starting"
+                self.camera.rec()
 
         ## page to battery menu
         if vram.button_page == "pressed":
@@ -101,27 +110,7 @@ class UI_Logic:
 
     def _starting_(self):
         self._ignore_buttons_()
-        if vram.camera_protocol == "MMTRY GND":
-            if self.ground_time_count <1000:
-                self.ground_time_count += 5
-            else:
-                camera.Momentary_ground().momentary_ground(1)
-                vram.shutter_state = "recording"
-                vram.arm_state = "arm"
-                self.ground_time_count = 0
-        elif vram.camera_protocol == "Sony MTP":
-            if self.ground_time_count <1000:
-                self.ground_time_count += 5
-            elif self.ground_time_count == 1000:
-                camera.Sony_multi().rec_press()
-                print("called rec press")
-                self.ground_time_count += 5
-            elif self.ground_time_count < 2000 and self.ground_time_count > 1000:
-                self.ground_time_count += 5
-            else:
-                camera.Sony_multi().rec_release()
-                print("called rec release")
-                self.ground_time_count = 0
+        self.camera.rec()
 
         # starting timeout
         if self.starting_time_count <= 5000:
@@ -140,7 +129,9 @@ class UI_Logic:
         # enter to stop recording if in master or master/slave mode
         if vram.button_enter == "pressed":
             vram.button_enter = "released"
-            self._rec_enter_()
+            if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
+                vram.shutter_state = "stopping"
+                self.camera.rec()
         # page cicle between rec_battery and recording
         if vram.button_page == "pressed":
             vram.button_page = "released"
@@ -148,29 +139,9 @@ class UI_Logic:
 
     def _stopping_(self):
         self._ignore_buttons_()
-        if vram.camera_protocol == "MMTRY GND":
-            if self.ground_time_count <1000:
-                self.ground_time_count += 5
-            else:
-                camera.Momentary_ground().momentary_ground(1)
-                vram.shutter_state = "idle"
-                vram.arm_state = "disarm"
-                self.ground_time_count = 0
-        elif vram.camera_protocol == "Sony MTP":
-            if self.ground_time_count <1000:
-                self.ground_time_count += 5
-            elif self.ground_time_count == 1000:
-                camera.Sony_multi().rec_press()
-                print("called rec press")
-                self.ground_time_count += 5
-            elif self.ground_time_count < 2000 and self.ground_time_count > 1000:
-                self.ground_time_count += 5
-            else:
-                camera.Sony_multi().rec_release()
-                print("called rec release")
-                self.ground_time_count = 0
+        self.camera.rec()
         
-            # starting timeout
+        # stopping timeout
         if self.starting_time_count <= 5000:
             self.starting_time_count += 5
         elif ((self.starting_time_count > 5000) & (self.starting_time_count <= 10000)):
@@ -315,42 +286,6 @@ class UI_Logic:
         if vram.button_page == "pressed":
             vram.button_page = "released"
             vram.shutter_state = "idle"
-
-    def _rec_enter_(self):
-        if (vram.device_mode == "MASTER/SLAVE") & (vram.camera_protocol == "Sony MTP"):
-            if vram.shutter_state == "idle":
-                vram.shutter_state = "starting"
-            elif vram.shutter_state == "recording":
-                vram.shutter_state = "stopping"
-
-        elif vram.device_mode == "MASTER":
-
-            if vram.camera_protocol == "MMTRY GND":
-                if vram.shutter_state == "idle":
-                    vram.shutter_state = "starting"
-                    camera.Momentary_ground().momentary_ground(0)
-                elif vram.shutter_state == "recording":
-                    vram.shutter_state = "stopping"
-                    camera.Momentary_ground().momentary_ground(0)
-
-
-            elif vram.camera_protocol == "3V3 Schmitt":
-                if vram.shutter_state == "idle":
-                    vram.shutter_state = "recording"
-                    camera.Schmitt_3v3().toggle_cc_voltage_level()
-                    vram.arm_state = "arm"
-                elif vram.shutter_state == "recording":
-                    vram.shutter_state = "idle"
-                    camera.Schmitt_3v3().toggle_cc_voltage_level()
-                    vram.arm_state = "disarm"
-
-            elif vram.camera_protocol == "NO":
-                if vram.shutter_state == "idle":
-                    vram.shutter_state = "recording"
-                    vram.arm_state = "arm"
-                elif vram.shutter_state == "recording":
-                    vram.shutter_state = "idle"
-                    vram.arm_state = "disarm"
 
     def _rec_page_(self):
         if vram.info == "recording":

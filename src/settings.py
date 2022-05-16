@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import json, os
-import target, vram, camera
+import target, vram
 
 def _load_():
     with open("settings.json", "r") as f:
