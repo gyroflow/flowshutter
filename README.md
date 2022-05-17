@@ -1,3 +1,5 @@
+![](images/flowshutter_logo.png)
+
 <p align="center">
   <a href="https://gyroflow.xyz">Homepage</a> •
   <a href="https://docs.gyroflow.xyz/logging/flowshutter/flowshutter/">Documentation</a> •
@@ -46,7 +48,12 @@ Flowshutter has the following features:
 
 with many more features on the way!
 
-## Supported Hardware
+## Hardwares
+### Basic View
+
+![](images/basic_view.png)
+
+### Supported Hardware
 
 Currently we are wroking with NeutronRC for a small range of sales in China. Subsequent versions are in production, please stay tuned.
 
