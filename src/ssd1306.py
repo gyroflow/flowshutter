@@ -49,7 +49,8 @@ class SSD1306_I2C:
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
         self.framebuf = framebuf.FrameBuffer(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
-        self.temp = bytearray(2)
+        self.cmd_temp = bytearray(2)
+        self.data_temp = bytearray(1)
         self.poweron()
         self.init_display()
         print(str(time.ticks_us()) + " [  OK  ] SSD1306_I2C object")
@@ -95,31 +96,23 @@ class SSD1306_I2C:
         self.write_cmd(SET_NORM_INV | (invert & 1))
 
     def show(self):
-        for i in range(int(self.pages*2)):
+        for i in range(int(self.pages)):
             vram.oled_tasklist.append(i)
 
     def show_sub(self,i):
-        page = int(i/2)
-        sub_sec = i%2
-        if sub_sec == 0:
-            x0 = 0
-            x1 = int(self.width/2) - 1
-        else:
-            x0 = int(self.width/2)
-            x1 = self.width - 1
-        # x0 = 0
-        # x1 = self.width - 1
-        # if self.width == 64:
-        #     # displays with width of 64 pixels are shifted by 32
-        #     x0 += 32
-        #     x1 += 32
+        x0 = 0
+        x1 = self.width - 1
+        if self.width == 64:
+            # displays with width of 64 pixels are shifted by 32
+            x0 += 32
+            x1 += 32
         self.write_cmd(SET_COL_ADDR)
         self.write_cmd(x0)
         self.write_cmd(x1)
         self.write_cmd(SET_PAGE_ADDR)
-        self.write_cmd(page)
-        self.write_cmd(page)
-        self.write_data(self.buffer[int(i*self.width/2):int((i+1)*(self.width/2))])
+        self.write_cmd(i)
+        self.write_cmd(i)
+        self.write_data(self.buffer[int(i*self.width):int((i+1)*(self.width))])
    
     def show_all(self):
         x0 = 0
@@ -137,17 +130,13 @@ class SSD1306_I2C:
         self.write_data(self.buffer)
 
     def write_cmd(self, cmd):
-        self.temp[0] = 0x80 # Co=1, D/C#=0
-        self.temp[1] = cmd
-        self.i2c.writeto(self.addr, self.temp)
+        self.cmd_temp[0] = 0x80 # Co=1, D/C#=0
+        self.cmd_temp[1] = cmd
+        self.i2c.writeto(self.addr, self.cmd_temp)
     def write_data(self, buf):
-        self.temp[0] = self.addr << 1
-        self.temp[1] = 0x40 # Co=0, D/C#=1
-        self.i2c.start()
-        self.i2c.write(self.temp)
-        self.i2c.write(buf)
-        # print(len(buf))
-        self.i2c.stop()
+        self.data_temp[0] = 0x40 # Co=0, D/C#=1
+        gbuf = self.data_temp + buf
+        self.i2c.writeto(self.addr, gbuf)
 
     def fill(self, col):
         self.framebuf.fill(col)

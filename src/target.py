@@ -13,7 +13,10 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from machine import UART, Pin, SoftI2C, ADC
+from machine import ADC
+from machine import I2C
+from machine import Pin
+from machine import UART
 import time
 
 def init_adc():
@@ -36,7 +39,7 @@ def init_audio():
 
 def init_i2c():
     print(str(time.ticks_us()) + " [ Init ] I2C")
-    i2c = SoftI2C(scl=Pin(22), sda=Pin(21), freq = 400000)
+    i2c = I2C(0, scl=Pin(22), sda=Pin(21), freq = 1000000)
     return i2c
 
 def init_buttons():

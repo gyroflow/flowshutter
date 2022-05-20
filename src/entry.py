@@ -13,9 +13,6 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import machine as machine
-machine.freq(240000000)
-
 import settings
 settings.read()
 import task
