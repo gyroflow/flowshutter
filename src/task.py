@@ -18,20 +18,20 @@ import time, gc
 
 class Task:
     def __init__(self):
-        print(str(time.ticks_us()) + " [Create] Task schedular")
+        print(str(time.ticks_us()) + " [Create] Task scheduler")
         self.crsf = crsf.CRSF()
         self.mem_opt_interval = 100 # gc per 100ms
         self.battery = peripherals.Battery()
         self.buttons = peripherals.Buttons()
         self.ui = ui.UI_Logic()
-        print(str(time.ticks_us()) + " [  OK  ] Task schedular")
+        print(str(time.ticks_us()) + " [  OK  ] Task scheduler")
 
     def mem_opt(self):
         gc.enable()
         gc.collect()
         gc.disable()
 
-    def schedular(self, t):
+    def scheduler(self, t):
         self.mem_opt_interval -= 5
 
         # task1 - CRSF sender

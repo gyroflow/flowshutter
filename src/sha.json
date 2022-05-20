@@ -26,7 +26,7 @@
         },
         {
             "name": "entry.py",
-            "sha1": "dcfb9bcf7f914d138474958aafc073df7c1675bc"
+            "sha1": "e7033ef52ddba8682cff3ce0f0234bd9f7ad115a"
         },
         {
             "name": "main.py",
@@ -46,7 +46,7 @@
         },
         {
             "name": "ssd1306.py",
-            "sha1": "1a8acf9f1961c220a3d192cc393e25b0efbe2337"
+            "sha1": "b77e02e21a69cb5fc3eb53571c1a06d69f7fbc41"
         },
         {
             "name": "startup.py",
@@ -58,7 +58,7 @@
         },
         {
             "name": "task.py",
-            "sha1": "a1802ddd20285c220b7150b10d0578edc98fd733"
+            "sha1": "d5b5589e679c82177646c3d4456cb82865d7c311"
         },
         {
             "name": "ui.py",
