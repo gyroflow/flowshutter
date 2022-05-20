@@ -19,8 +19,8 @@ import task
 task = task.Task()
 
 from machine import Timer
-timer0 = Timer(0) # 200Hz CRSF sender
-timer0.init(period=5, mode=Timer.PERIODIC, callback=task.schedular)
+timer0 = Timer(0) # 200Hz task scheduler
+timer0.init(period=5, mode=Timer.PERIODIC, callback=task.scheduler)
 
 import vram
 if vram.camera_protocol == "Sony MTP":

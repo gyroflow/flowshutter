@@ -49,8 +49,8 @@ class SSD1306_I2C:
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
         self.framebuf = framebuf.FrameBuffer(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
-        self.cmd_temp = bytearray(2)
-        self.data_temp = bytearray(1)
+        self.temp = bytearray(2)
+        self.write_list = [b"\x40", None]  # Co=0, D/C#=1
         self.poweron()
         self.init_display()
         print(str(time.ticks_us()) + " [  OK  ] SSD1306_I2C object")
@@ -87,14 +87,6 @@ class SSD1306_I2C:
         else:
             pass
 
-    def poweroff(self):
-        self.write_cmd(SET_DISP | 0x00)
-    def contrast(self, contrast):
-        self.write_cmd(SET_CONTRAST)
-        self.write_cmd(contrast)
-    def invert(self, invert):
-        self.write_cmd(SET_NORM_INV | (invert & 1))
-
     def show(self):
         for i in range(int(self.pages)):
             vram.oled_tasklist.append(i)
@@ -130,13 +122,25 @@ class SSD1306_I2C:
         self.write_data(self.buffer)
 
     def write_cmd(self, cmd):
-        self.cmd_temp[0] = 0x80 # Co=1, D/C#=0
-        self.cmd_temp[1] = cmd
-        self.i2c.writeto(self.addr, self.cmd_temp)
+        self.temp[0] = 0x80 # Co=1, D/C#=0
+        self.temp[1] = cmd
+        self.i2c.writeto(self.addr, self.temp)
     def write_data(self, buf):
-        self.data_temp[0] = 0x40 # Co=0, D/C#=1
-        gbuf = self.data_temp + buf
-        self.i2c.writeto(self.addr, gbuf)
+        self.write_list[1] = buf
+        self.i2c.writevto(self.addr, self.write_list)
+
+    def poweroff(self):
+        self.write_cmd(SET_DISP)
+    def poweron(self):
+        self.write_cmd(SET_DISP | 0x01)
+    def contrast(self, contrast):
+        self.write_cmd(SET_CONTRAST)
+        self.write_cmd(contrast)
+    def invert(self, invert):
+        self.write_cmd(SET_NORM_INV | (invert & 1))
+    def rotate(self, rotate):
+        self.write_cmd(SET_COM_OUT_DIR | ((rotate & 1) << 3))
+        self.write_cmd(SET_SEG_REMAP | (rotate & 1))
 
     def fill(self, col):
         self.framebuf.fill(col)
@@ -156,11 +160,5 @@ class SSD1306_I2C:
         self.framebuf.rect(x, y, w, h, col)
     def fill_rect(self, x, y, w, h, col):
         self.framebuf.fill_rect(x, y, w, h, col)
-    def rotate(self, rotate):
-        self.write_cmd(SET_COM_OUT_DIR | ((rotate & 1) << 3))
-        self.write_cmd(SET_SEG_REMAP | (rotate & 1))
     def blit(self, fbuf, x, y):
         self.framebuf.blit(fbuf, x, y)
-
-    def poweron(self):
-        pass
