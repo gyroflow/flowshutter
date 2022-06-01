@@ -25,14 +25,16 @@ class UI_Logic:
         self.udpate_count = 0
         self.starting_time_count = 0
         self.ground_time_count = 0
-        if vram.camera_protocol == "Sony MTP":
+        if vram.camera_protocol == "NO":
+            self.camera = camera.No_Cam()
+        elif vram.camera_protocol == "Sony MTP":
             self.camera = camera.Sony_multi()
+        elif vram.camera_protocol == "LANC":
+            self.camera = camera.LANC()
         elif vram.camera_protocol == "MMTRY GND":
             self.camera = camera.Momentary_ground()
         elif vram.camera_protocol == "3V3 Schmitt":
             self.camera = camera.Schmitt_3v3()
-        elif vram.camera_protocol == "NO":
-            self.camera = camera.No_Cam()
         print(str(time.ticks_us()) + " [  OK  ] UI logic object")
 
     def show_sub(self, i):
