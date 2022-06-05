@@ -31,6 +31,8 @@ class UI_Logic:
             self.camera = camera.Sony_multi()
         elif vram.camera_protocol == "LANC":
             self.camera = camera.LANC()
+        elif vram.camera_protocol == "ZCAM UART":
+            self.camera = camera.ZCAM_UART()
         elif vram.camera_protocol == "MMTRY GND":
             self.camera = camera.Momentary_ground()
         elif vram.camera_protocol == "3V3 Schmitt":
@@ -104,6 +106,8 @@ class UI_Logic:
             if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                 vram.shutter_state = "starting"
                 self.camera.rec()
+            elif vram.device_mode == "TEST":
+                self.camera.set_mode()
 
         ## page to battery menu
         if vram.button_page == "pressed":
@@ -124,6 +128,7 @@ class UI_Logic:
             self.starting_time_count = 0
             vram.shutter_state = "idle"
             vram.info = vram.shutter_state
+            self.camera.timeout()
 
     def _recording_(self):
         self.starting_time_count = 0
@@ -153,6 +158,7 @@ class UI_Logic:
             self.starting_time_count = 0
             vram.shutter_state = "idle"
             vram.info = vram.shutter_state
+            self.camera.timeout()
 
     def _battery_(self):
 

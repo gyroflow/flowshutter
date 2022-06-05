@@ -60,7 +60,7 @@ inject_mode = "OFF"
 ota_source = "GitHub"
 ota_channel = "stable"
 
-camera_protocol_range = ["NO", "Sony MTP", "LANC", "MMTRY GND", "3V3 Schmitt"]
+camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "Sony MTP", "ZCAM UART", "LANC"]
 device_mode_range = ["MASTER"]
 inject_mode_range = ["OFF", "ON"]
 ota_source_range = ["GitHub", "Gitee"]
@@ -73,6 +73,9 @@ def update_camera_preset():# per camera protocol
     if camera_protocol == "Sony MTP":
         device_mode = "SLAVE"
         device_mode_range = ["SLAVE", "MASTER/SLAVE"]
+    if camera_protocol == "ZCAM UART":
+        device_mode = "TEST"
+        device_mode_range = ["MASTER", "TEST"]
     elif camera_protocol == "NO" or camera_protocol == "MMTRY GND" or camera_protocol == "3V3 Schmitt" or camera_protocol == "LANC":
         device_mode = "MASTER"
         device_mode_range = ["MASTER"]

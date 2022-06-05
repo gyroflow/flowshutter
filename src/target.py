@@ -48,9 +48,14 @@ def init_buttons():
     button_enter = Pin(27, Pin.IN, Pin.PULL_UP)
     return button_page, button_enter
 
-def init_uart2():
-    print(str(time.ticks_us()) + " [ Init ] UART2")
-    uart2 = UART(2, baudrate = 9600, bits = 8, parity = 0,    stop = 1, tx = 25, rx = 26)
+def init_mtp_uart():
+    print(str(time.ticks_us()) + " [ Init ] UART2 sony mtp")
+    uart2 = UART(2, baudrate = 9600,    bits = 8,   parity = 0,     stop = 1,   tx = 25,rx = 26)
+    return uart2
+
+def init_zcam_uart():
+    print(str(time.ticks_us()) + " [ Init ] UART2 zcam uart")
+    uart2 = UART(2, baudrate = 115200,  bits = 8,   parity = None,  stop = 1,   tx = 25,rx = 26)
     return uart2
 
 def init_uart2_tx():
