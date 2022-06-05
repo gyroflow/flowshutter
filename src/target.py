@@ -53,6 +53,22 @@ def init_uart2():
     uart2 = UART(2, baudrate = 9600, bits = 8, parity = 0,    stop = 1, tx = 25, rx = 26)
     return uart2
 
+def init_uart2_tx():
+    print(str(time.ticks_us()) + " [ Init ] UART2 TX")
+    # uart2_tx = UART(2,baudrate = 9600, bits = 8, parity = None, stop =1, tx = 25)
+    uart2_tx = Pin(25, Pin.OUT, value = 1)
+    return uart2_tx
+
+def init_lanc_detect_pin():
+    print(str(time.ticks_us()) + " [ Init ] LANC detect pin")
+    detect = Pin(26, Pin.IN, Pin.PULL_UP)
+    return detect
+
+def init_lanc_test_pin():
+    print(str(time.ticks_us()) + " [ Init ] LANC text pin")
+    test = Pin(2, Pin.OUT, value = 1)
+    return test
+
 def init_momentary_ground_pin():
     print(str(time.ticks_us()) + " [ Init ] MMTRY GND pin")
     switch = Pin(25, Pin.OPEN_DRAIN, value = 1)

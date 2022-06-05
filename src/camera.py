@@ -17,6 +17,32 @@ import uasyncio as asyncio
 import vram, target
 import time
 
+class No_Cam:
+    def __init__(self):
+        print(str(time.ticks_us()) + " [Create] No camera object")
+        self.transation_time = 0
+        print(str(time.ticks_us()) + " [  OK  ] No camera object")
+
+    def rec(self):
+        self.transation_time += 5
+        if self.transation_time <= 1000:
+            pass
+        elif self.transation_time == 1000:
+            pass
+        elif self.transation_time >= 1000:
+            self.no_cam()
+            print(vram.shutter_state)
+            self.transation_time = 0
+
+    def no_cam(self):
+        if vram.shutter_state == "starting":
+            vram.shutter_state = "recording"
+            vram.arm_state = "arm"
+        elif vram.shutter_state == "stopping":
+            vram.shutter_state = "idle"
+            vram.arm_state = "disarm"
+
+
 class Sony_multi:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Sony MTP object")
@@ -57,6 +83,7 @@ class Sony_multi:
         print("shutter send: ", self.REC_RELEASE)
 
     async def uart_handler(self):
+        print("Sony MTP UART handler running")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:
@@ -143,28 +170,85 @@ class Schmitt_3v3:
             vram.arm_state = "arm"
 
 
-class No_Cam:
+
+class LANC:
+    
     def __init__(self):
-        print(str(time.ticks_us()) + " [Create] No camera object")
+        print(str(time.ticks_us()) + " [Create] LANC object")
+        from machine import Pin
+        self.test = target.init_lanc_test_pin()
+        self.tx = target.init_uart2_tx()
+        self.detect = target.init_lanc_detect_pin()
+        self.detect.irq(trigger=Pin.IRQ_FALLING, handler=self.lanc_falling)
+        self.falling_flag = False
+        self.falling_time = time.ticks_us()
+
+        self.byte_flag = "BYTE0"
+        self.rec_trigger = False
+        self.rec_trigger_state = False
+        self.rec_repeat = 0
+
         self.transation_time = 0
-        print(str(time.ticks_us()) + " [  OK  ] No camera object")
+        print(str(time.ticks_us()) + " [  OK  ] LANC object")
+
+    def lanc_falling(self, pin):
+        self.tx.value(0)
+        self.falling_flag = True
+
+    def uart_handler(self):
+        print("LANC UART handler running")
+        while True:
+            if self.falling_flag == True:
+                if self.rec_trigger == True:
+                    # handle LANC falling events
+                    duaration = time.ticks_us() - self.falling_time # calc duaration between two falling events
+                    self.falling_time = time.ticks_us()             # update falling timestamp
+                    if self.byte_flag == "BYTE1":
+                        self.byte_flag = "BYTE0"# next falling event: send byte 0
+                        time.sleep_us(240)
+                        self.tx.value(1)
+                        time.sleep_us(207)
+                        self.tx.value(0)
+                        time.sleep_us(208)
+                        self.tx.value(1)
+                        self.rec_repeat -= 1
+                        if self.rec_repeat <=0:
+                            self.rec_trigger = False
+                            self.rec_repeat = 0
+                            self.rec_trigger_state = True
+                    elif self.byte_flag == "BYTE0" and duaration > 7000:
+                        self.byte_flag = "BYTE1"# next falling event: send byte 1
+                        self.tx.value(1)
+                        time.sleep_us(314)
+                        self.tx.value(0)
+                        time.sleep_us(208)
+                        self.tx.value(1)
+                    else: # elif duaration <= 7000:# LANC is sending other bytes, ignore them
+                        self.tx.value(1)
+                    self.falling_flag = False   # clear falling flag
+                else:
+                    self.tx.value(1)                    
+                    self.falling_flag = False   # clear falling flag
 
     def rec(self):
         self.transation_time += 5
-        if self.transation_time <= 1000:
-            pass
-        elif self.transation_time == 1000:
-            pass
-        elif self.transation_time >= 1000:
-            self.no_cam()
-            print(vram.shutter_state)
-            self.transation_time = 0
+        if self.transation_time == 800:
+            self.rec_trigger = True  # trigger rec
+            self.byte_flag = "BYTE0"
+            self.test.value(0)
+            self.rec_repeat = 7     # repeat 7 times
+            # note that sometimes the first three frames might corrupted,
+            # so we repeat for 7 times to make sure the camera recieves at least 4 valid frames
+        elif self.transation_time > 800:
+            if self.rec_trigger_state == True:
+                self.test.value(1)
+                self.transation_time = 0
+                self.rec_trigger_state = False
+                if vram.shutter_state == "stopping":
+                    vram.arm_state = "disarm"
+                    vram.shutter_state = "idle"
+                elif vram.shutter_state == "starting":
+                    vram.arm_state = "arm"
+                    vram.shutter_state = "recording"
 
-    def no_cam(self):
-        if vram.shutter_state == "starting":
-            vram.shutter_state = "recording"
-            vram.arm_state = "arm"
-        elif vram.shutter_state == "stopping":
-            vram.shutter_state = "idle"
-            vram.arm_state = "disarm"
 

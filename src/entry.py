@@ -29,3 +29,6 @@ if vram.camera_protocol == "Sony MTP":
     loop = asyncio.get_event_loop()
     loop.create_task(camera_uart_handler)
     loop.run_forever()
+elif vram.camera_protocol == "LANC":
+    import _thread
+    _thread.start_new_thread(task.ui.camera.uart_handler, ())

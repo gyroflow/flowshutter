@@ -25,7 +25,8 @@ def _load_():
             f.close()
             update()        # here we should write the default settings
             print("updated settings.json")
-            f = open("settings.json", "r") # then read again, cuz update() closed the file
+            f = open("settings.json", "r")  # then read again, cuz update() closed the file
+            settings = json.load(f)         # and we need to read the new settings
             vram.version = vram.version
         else:
             vram.version = settings["version"]
@@ -61,9 +62,9 @@ def _load_():
 def update(): # update settings.json
     with open("settings.json", "w") as f:
         settings = {"version":vram.version,
+                    "camera_protocol":vram.camera_protocol,
                     "device_mode":vram.device_mode,
                     "inject_mode":vram.inject_mode,
-                    "camera_protocol":vram.camera_protocol,
                     "ota_source":vram.ota_source,
                     "ota_channel":vram.ota_channel}
         json.dump(settings, f)
