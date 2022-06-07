@@ -15,6 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target, vram
 import time
+import uasyncio as asyncio
 
 class CRSF:
     def __init__(self):
@@ -39,6 +40,14 @@ class CRSF:
         self.marker_packet  = self.crsf_gen.build_rc_packet(992,992,1800,992,1800,992,992,992,
                                                             992,992,992,992,992,992,992,992)
         print(str(time.ticks_us()) + " [  OK  ] CRSF object")
+
+    async def uart_handler(self):
+        print(str(time.ticks_us()) + " [  OK  ] CRSF listener running")
+        swriter = asyncio.StreamWriter(self.uart, {})
+        sreader = asyncio.StreamReader(self.uart)
+        while True:
+            data = await sreader.read(n=-1)
+            print("FC sent:", data)
 
     def _toggle_marker_(self):  #toggle the marker
         if self.marker == 'L':

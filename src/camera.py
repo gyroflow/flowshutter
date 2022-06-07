@@ -38,7 +38,6 @@ class No_Cam:
     def timeout(self):
         self.transation_time = 0
 
-
     def no_cam(self):
         if vram.shutter_state == "starting":
             vram.shutter_state = "recording"
@@ -155,7 +154,7 @@ class Sony_multi:
         print("shutter send: ", self.REC_RELEASE)
 
     async def uart_handler(self):
-        print("Sony MTP UART handler running")
+        print(str(time.ticks_us()) + " [  OK  ] Sony MTP UART handler running")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:
@@ -192,7 +191,7 @@ class ZCAM_UART:
         print(str(time.ticks_us()) + " [Create] Zcam UART object")
         self.task_mode = "ASYNC"
         self.ASYNC_MSG_ENABLE = (0xEA02022A01).to_bytes(5, 'big')
-        self.ASYNC_MSG_DISABLE = (0xEA02022A00).to_bytes(5, 'big')
+        self.ASYNC_MSG_DISABLE= (0xEA02022A00).to_bytes(5, 'big')
 
         self.START_REC      = (0xEA020105).to_bytes(4, 'big')
         self.START_REC_ACK  = (0xEA02028500).to_bytes(5, 'big')
@@ -207,7 +206,7 @@ class ZCAM_UART:
 
     async def uart_handler(self):
         import ubinascii
-        print("ZCAM UART handler running")
+        print(str(time.ticks_us()) + " [  OK  ] ZCAM UART handler running")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:
@@ -245,22 +244,17 @@ class ZCAM_UART:
                 ext2 = data[16:20]
                 print("ext2:", ubinascii.hexlify(ext2))
 
-
-
     def set_mode(self):
         self.uart.write(self.ASYNC_MSG_ENABLE)
         # self.uart.write(self.ASYNC_MSG_DISABLE)
-        # print("FS send: ", self.ASYNC_MSG_ENABLE.from_bytes())
 
     def rec(self):
         self.transation_time += 5
         if self.transation_time == 500:
             if vram.shutter_state == "starting":
                 self.uart.write(self.START_REC)
-                print("shutter send: ", self.START_REC)
             elif vram.shutter_state == "stopping":
                 self.uart.write(self.STOP_REC)
-                print("shutter send: ", self.STOP_REC)
         elif self.transation_time > 500:
             pass
 
@@ -289,37 +283,38 @@ class LANC:
         print(str(time.ticks_us()) + " [  OK  ] LANC object")
 
     def lanc_falling(self, pin):
-        self.tx.value(0)
+        # self.tx.value(0)
         self.falling_flag = True
 
     def uart_handler(self):
         print("LANC UART handler running")
         while True:
             if self.falling_flag == True:
+                # self.tx.value(1)
                 if self.rec_trigger == True:
                     # handle LANC falling events
                     duaration = time.ticks_us() - self.falling_time # calc duaration between two falling events
                     self.falling_time = time.ticks_us()             # update falling timestamp
                     if self.byte_flag == "BYTE1":
-                        self.byte_flag = "BYTE0"# next falling event: send byte 0
-                        time.sleep_us(240)
-                        self.tx.value(1)
-                        time.sleep_us(207)
                         self.tx.value(0)
                         time.sleep_us(208)
                         self.tx.value(1)
+                        time.sleep_us(208)
+                        self.tx.value(0)
+                        time.sleep_us(208)
+                        self.tx.value(1)
+                        self.byte_flag = "BYTE0"# next falling event: send byte 0
                         self.rec_repeat -= 1
                         if self.rec_repeat <=0:
                             self.rec_trigger = False
                             self.rec_repeat = 0
                             self.rec_trigger_state = True
                     elif self.byte_flag == "BYTE0" and duaration > 7000:
-                        self.byte_flag = "BYTE1"# next falling event: send byte 1
-                        self.tx.value(1)
-                        time.sleep_us(314)
+                        time.sleep_us(302)
                         self.tx.value(0)
                         time.sleep_us(208)
                         self.tx.value(1)
+                        self.byte_flag = "BYTE1"# next falling event: send bytes 1
                     else: # elif duaration <= 7000:# LANC is sending other bytes, ignore them
                         self.tx.value(1)
                     self.falling_flag = False   # clear falling flag
@@ -329,14 +324,14 @@ class LANC:
 
     def rec(self):
         self.transation_time += 5
-        if self.transation_time == 800:
+        if self.transation_time == 50:
             self.rec_trigger = True  # trigger rec
             self.byte_flag = "BYTE0"
             self.test.value(0)
-            self.rec_repeat = 7     # repeat 7 times
+            self.rec_repeat = 6     # repeat 12 times
             # note that sometimes the first three frames might corrupted,
             # so we repeat for 7 times to make sure the camera recieves at least 4 valid frames
-        elif self.transation_time > 800:
+        elif self.transation_time > 50:
             if self.rec_trigger_state == True:
                 self.test.value(1)
                 self.transation_time = 0

@@ -19,7 +19,7 @@ import time, gc
 class Task:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Task scheduler")
-        self.crsf = crsf.CRSF()
+        self.fc_link = crsf.CRSF()
         self.mem_opt_interval = 100 # gc per 100ms
         self.battery = peripherals.Battery()
         self.buttons = peripherals.Buttons()
@@ -34,8 +34,8 @@ class Task:
     def scheduler(self, t):
         self.mem_opt_interval -= 5
 
-        # task1 - CRSF sender
-        self.crsf.send_packet(t)
+        # task1 - FC RC packeet sender
+        self.fc_link.send_packet(t)
 
         # task2 - OLED display or GC
         if vram.oled_tasklist != []:
