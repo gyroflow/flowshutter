@@ -14,7 +14,7 @@
         },
         {
             "name": "camera.py",
-            "sha1": "80fe5150287ed769406f4afa387222e89dc87030"
+            "sha1": "4bf6bf2dd246f0a8af04b5762d1d94a8eaa59015"
         },
         {
             "name": "canvas.py",
@@ -22,11 +22,11 @@
         },
         {
             "name": "crsf.py",
-            "sha1": "f9645d23fb977c027ec6e861e23040034ea5bba7"
+            "sha1": "212866f53581ee858d28595b425a2549b3d523d6"
         },
         {
             "name": "entry.py",
-            "sha1": "57e0d58313a51e62ebc9fc4383e0d2404b31b096"
+            "sha1": "bef31a2e101d91ca1dea5d285183feae23851c0e"
         },
         {
             "name": "main.py",
@@ -58,7 +58,7 @@
         },
         {
             "name": "task.py",
-            "sha1": "d5b5589e679c82177646c3d4456cb82865d7c311"
+            "sha1": "72aa3d79322250b1096e4309bf9449031d053a5c"
         },
         {
             "name": "ui.py",
@@ -70,7 +70,7 @@
         },
         {
             "name": "vram.py",
-            "sha1": "f91f025f93c90bf29aa5bf4ff7a5cb235ed67539"
+            "sha1": "041eca7b468f11cd11d160a0743c688b1267f16e"
         },
         {
             "name": "wlan.py",

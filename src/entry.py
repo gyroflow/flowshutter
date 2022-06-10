@@ -22,11 +22,16 @@ from machine import Timer
 timer0 = Timer(0) # 200Hz task scheduler
 timer0.init(period=5, mode=Timer.PERIODIC, callback=task.scheduler)
 
-if task.ui.camera.task_mode == "ASYNC":
-    import uasyncio as asyncio
-    loop = asyncio.get_event_loop()
-    loop.create_task(task.ui.camera.uart_handler())
-    loop.run_forever()
-elif task.ui.camera.task_mode == "THREAD":
+if task.ui.camera.task_mode == "THREAD":
     import _thread
+    import machine
+    machine.freq(240000000)
     _thread.start_new_thread(task.ui.camera.uart_handler, ())
+
+import uasyncio as asyncio
+loop = asyncio.get_event_loop()
+loop.create_task(task.fc_link.uart_handler())
+if task.ui.camera.task_mode == "ASYNC":
+    loop.create_task(task.ui.camera.uart_handler())
+loop.run_forever()
+
