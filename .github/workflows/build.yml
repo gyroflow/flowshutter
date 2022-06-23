@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: "3.10.4"
-      
+
       - name: Build modules
         run: |
           python3 tools/build.py
-      
+
       - name: Prepare esp-idf and micropython
         run: |
           git clone -b v4.2 --recursive https://github.com/espressif/esp-idf.git
@@ -33,7 +33,7 @@ jobs:
 
       - name: Install modules
         run: |
-          cp -a build/. micropython/ports/esp32/modules/
+          cp -a obj/. micropython/ports/esp32/modules/
 
       - name: Build ESP32 GENERIC v1.19.1
         run: |
