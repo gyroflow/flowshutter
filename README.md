@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://gyroflow.xyz">Homepage</a> •
-  <a href="https://docs.gyroflow.xyz/logging/flowshutter/flowshutter/">Documentation</a> •
+  <a href="https://docs.gyroflow.xyz/flowshutter/flowshutter/">Documentation</a> •
   <a href="https://discord.gg/WfxZZXjpke">Discord</a> •
   <a href="https://github.com/gyroflow/flowshutter/issues">Report bug</a> •
   <a href="https://github.com/gyroflow/flowshutter/issues">Request feature</a>
@@ -34,7 +34,7 @@
 
 **Flowshutter** is a custom camera remote. When used in conjunction with readily available hardware, this results in a flexible and reliable external camera motion logger for Gyroflow. It can provide precise synchronization of camera video recording and motion logger (betaflight/emuflight FC) recording. 
 
-It was designed to be used with the [Gyroflow](https://github.com/gyroflow/gyroflow) software to provide you one of the best open source video stabilization experiences.
+**Flowshutter** aims to make all cameras ready for stabilization with [Gyroflow](https://github.com/gyroflow/gyroflow) software to provide you with one of the best open-source video stabilization experiences.
 
 
 ## Features
@@ -75,11 +75,12 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 - [x] Sony MULTI Terminal protocol
 - [x] Momentary Ground
 - [x] 3.3V Schmitt trigger
+- [x] ZCAM UART protocol
 - [ ] 5V Schmitt trigger (WIP)
 - [ ] Sony LANC protocol (WIP)
 - [ ] HDMI CEC protocol (WIP)
 
-For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/logging/flowshutter/camera%20list/) on the [documentation website](https://docs.gyroflow.xyz/).
+For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/flowshutter/clist/) on the [documentation website](https://docs.gyroflow.xyz/).
 
 ### Compatible FC
 
@@ -92,7 +93,7 @@ FC is short for flight controller, more specifically with betaflight/emuflight r
 ## Development Guide
 ### Flash micropython firmware
 
-The micropython firmware we used is [v1.18](https://micropython.org/resources/firmware/esp32-20220117-v1.18.bin), You can find a copy in the `/tools` directory. Also, a `uPyCraft` windows version is also provided in the `/tools` directory. You can try to use that to flash your ESP32 without the help of ESP-idf.
+The micropython firmware we used is [v1.19.1](https://micropython.org/resources/firmware/esp32-20220618-v1.19.1.bin), You can find a copy in the `/tools` directory. Also, a `uPyCraft` windows version is also provided in the `/tools` directory. You can try to use that to flash your ESP32 without the help of ESP-idf.
 
 ### Set up environment
 

@@ -13,7 +13,10 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import hashlib, json, os, sys
+import hashlib
+import json
+import os
+import sys
 
 # Script for generating sha file, building check_sha file, and verifying sha files
 # This script does not need to be written to ESP32, 
