@@ -2,3 +2,6 @@ pymakr.conf
 .DS_Store
 *~
 check_sha.json
+build
+micropython
+esp-idf
