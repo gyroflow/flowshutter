@@ -1,0 +1,56 @@
+name: Build Firmware
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10.4"
+      
+      - name: Build modules
+        run: |
+          python3 tools/build.py
+      
+      - name: Prepare esp-idf and micropython
+        run: |
+          git clone -b v4.2 --recursive https://github.com/espressif/esp-idf.git
+          git clone https://github.com/micropython/micropython.git micropython
+
+      - name: Install modules
+        run: |
+          cp -a build/. micropython/ports/esp32/modules/
+
+      - name: Build ESP32 GENERIC v1.19.1
+        run: |
+          cd esp-idf
+          ./install.sh
+          source export.sh
+          cd ..
+          cd micropython
+          git checkout 9b486340da22931cde82872f79e1c34db959548b
+          git submodule update --init --recursive
+          make -C mpy-cross
+          cd ports/esp32
+          make submodules
+          make
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: flowshutter-${{ github.run_number }}
+          path: micropython/ports/esp32/build-GENERIC/firmware.bin
