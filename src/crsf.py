@@ -31,7 +31,7 @@ class CRSF:
         self.audio          = target.init_audio()
         print(str(time.ticks_us()) + " [  OK  ] AJ pin")
         print(str(time.ticks_us()) + " [Create] CRSF Generator")
-        self.crsf_gen = CRSF_Generator()
+        self.crsf_gen = CRSF_RC_Generator()
         print(str(time.ticks_us()) + " [  OK  ] CRSF Generator")
         self.disarm_packet  = self.crsf_gen.build_rc_packet(992,992,189,992,189,992,992,992,
                                                             992,992,992,992,992,992,992,992)
@@ -86,7 +86,7 @@ class CRSF:
             self.marker = "L"
 
 
-class CRSF_Generator:
+class CRSF_RC_Generator:
     def __init__(self):
         print(str(time.ticks_us()) + " [ Init ] CRSF Generator")
         self._crc_tab = [

@@ -15,6 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target, vram
 import time
+import uasyncio as asyncio
 
 class Battery:
     def __init__(self):
@@ -22,44 +23,55 @@ class Battery:
         print(str(time.ticks_us()) + " [Create] ADC")
         self.adc1, self.adc2 = target.init_adc()
         print(str(time.ticks_us()) + " [  OK  ] ADC")
-        self.adc_read_time_count = 0
         print(str(time.ticks_us()) + " [  OK  ] Battery object")
 
-    def read_vol(self):
-        self.adc_read_time_count += 5
-        if self.adc_read_time_count >= 50:
-            self.adc_read_time_count = 0
+    async def adc_handler(self):
+        print(str(time.ticks_us()) + " [  OK  ] ADC listener running")
+        while True:
             if self.adc1.read() != 0:
                 vram.vol = (vram.vol + self.adc1.read() * 3.3 / 2048)/2
             else:
                 vram.vol = (vram.vol + self.adc2.read() * 3.3 / 4096)/2
-
+            await asyncio.sleep_ms(50)
 
 class Buttons:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Buttons object")
         print(str(time.ticks_us()) + " [Create] buttons")
-        self.page, self.enter = target.init_buttons()
+        self.pgup, self.pgdn, self.enter = target.init_buttons()
+        self.state = ["RLS", "RLS", "RLS"]
+        # 0 pageup, 1 pagedown, 2 enter
         print(str(time.ticks_us()) + " [  OK  ] buttons")
-        self.page_press_count = 0
-        self.enter_press_count = 0
         print(str(time.ticks_us()) + " [  OK  ] Buttons object")
-    
-    def check(self, t):
-        if self.page.value() == 0:
-            if self.page_press_count <= 100:
-                self.page_press_count += 5
-            else:
-                self.page_press_count = 0
-                vram.button_page = "pressed"
-        else:
-            self.page_press_count = 0
 
-        if self.enter.value() == 0:
-            if self.enter_press_count <= 100:
-                self.enter_press_count += 5
-            else:
-                self.enter_press_count = 0
-                vram.button_enter = "pressed"
-        else:
-            self.enter_press_count = 0
+    async def checker(self, name):
+        print(str(time.ticks_us()) + " [  OK  ] "+ name +" checker running")
+        if name == 'PAGE UP':
+            index, button = 0, self.pgup
+        elif name == 'PAGE DOWN':
+            index, button = 1, self.pgdn
+        elif name == 'ENTER':
+            index, button = 2, self.enter
+        start,end,dura,flag = 0,0,0,"rls"
+        while True:
+            if button.value() == 0 and flag == "rls":
+                start = time.ticks_ms()
+                await asyncio.sleep_ms(30)
+                # block value reading for 30ms
+                flag = "prs"
+            if button.value() == 1 and flag == "prs":
+                end = time.ticks_ms()
+                await asyncio.sleep_ms(30)
+                # block value reading for 30ms
+                dura = end - start
+                if dura < 100:
+                    pass
+                elif dura >=100 and dura < 500:
+                    # print(name+"short")
+                    self.state[index] = "SHORT"
+                    flag = "rls"
+                elif dura >= 500:
+                    # print(name+"long")
+                    self.state[index] = "LONG"
+                    flag = "rls"
+            await asyncio.sleep_ms(0)

@@ -123,6 +123,8 @@ class WIFIManager:
         self.server_socket = socket.socket()
         self.server_socket.bind(addr)
         self.server_socket.listen(1)
+        import entry
+        wlan_canvas = entry.task.ui.canvas# wlan_canvas = entry.task
 
         wlan_canvas.show_ap_info()
         wlan_canvas.show_all()
