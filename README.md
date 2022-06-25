@@ -1,4 +1,4 @@
-![](images/flowshutter_logo.png)
+![](images/flowshutter.png)
 
 <p align="center">
   <a href="https://gyroflow.xyz">Homepage</a> •
@@ -51,7 +51,7 @@ with many more features on the way!
 ## Hardwares
 ### Basic View
 
-![](images/basic_view.png)
+![](images/basic_inner_structure.png)
 
 ### Supported Hardware
 
@@ -76,11 +76,13 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 - [x] Momentary Ground
 - [x] 3.3V Schmitt trigger
 - [x] ZCAM UART protocol
+- [x] Sony LANC protocol *
 - [ ] 5V Schmitt trigger (WIP)
-- [ ] Sony LANC protocol (WIP)
 - [ ] HDMI CEC protocol (WIP)
 
 For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/flowshutter/clist/) on the [documentation website](https://docs.gyroflow.xyz/).
+
+_*Note:_ We need an extra Arduino board to send the Sony LANC protocol, triggering mechnisms is based on momentary ground, but needs to add opto-coupling module between arduino and flowshutter to prevent overvoltage.
 
 ### Compatible FC
 
