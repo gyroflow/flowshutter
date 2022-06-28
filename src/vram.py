@@ -38,10 +38,6 @@ info = "welcome"
 # this is the canvas state
 # basically just shutter_state
 
-## button state
-button_page = "released"
-button_enter = "released"
-
 ## WLAN state
 wlan_state = "DISCONNECTED"
 # "CONNECTED"

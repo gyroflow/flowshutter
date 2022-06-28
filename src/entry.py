@@ -31,6 +31,10 @@ if task.ui.camera.task_mode == "THREAD":
 import uasyncio as asyncio
 loop = asyncio.get_event_loop()
 loop.create_task(task.fc_link.uart_handler())
+loop.create_task(task.ui.buttons.checker('PAGE UP'))
+loop.create_task(task.ui.buttons.checker('PAGE DOWN'))
+loop.create_task(task.ui.buttons.checker('ENTER'))
+loop.create_task(task.ui.battery.adc_handler())
 if task.ui.camera.task_mode == "ASYNC":
     loop.create_task(task.ui.camera.uart_handler())
 loop.run_forever()

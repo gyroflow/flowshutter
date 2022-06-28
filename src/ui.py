@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import canvas, vram, json, settings, camera, ota, time
+import canvas, vram, json, settings, camera, ota, peripherals, time
 import wlan
 
 class UI_Logic:
@@ -21,6 +21,8 @@ class UI_Logic:
         print(str(time.ticks_us()) + " [Create] UI logic object")
         self.ota = ota.OTA()
         self.canvas = canvas.Canvas()
+        self.buttons = peripherals.Buttons()
+        self.battery = peripherals.Battery()
         self.welcome_time_count = 0
         self.udpate_count = 0
         self.starting_time_count = 0
@@ -101,8 +103,8 @@ class UI_Logic:
     def _idle_(self):
 
         # enter to start recording if in master or master/slave mode
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                 vram.shutter_state = "starting"
                 self.camera.rec()
@@ -110,8 +112,8 @@ class UI_Logic:
                 self.camera.set_mode()
 
         ## page to battery menu
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "battery"
 
     def _starting_(self):
@@ -134,14 +136,14 @@ class UI_Logic:
         self.starting_time_count = 0
         
         # enter to stop recording if in master or master/slave mode
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                 vram.shutter_state = "stopping"
                 self.camera.rec()
         # page cicle between rec_battery and recording
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             self._rec_page_()
 
     def _stopping_(self):
@@ -169,14 +171,14 @@ class UI_Logic:
             self.udpate_count += 5
 
         # page to camera protocol menu
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "menu_camera_protocol"
             vram.oled_need_update = "yes"
 
         # enter to hidden wlan mode menu
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             vram.shutter_state = "menu_internet"
             vram.oled_need_update = "yes"
 
@@ -184,8 +186,8 @@ class UI_Logic:
 
         # self.wlan = wlan.WIFI()
         # enter to set wlan up or down
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             if vram.wlan_state == "DISCONNECTED":
                 wlan.up()
                 vram.oled_need_update = "yes"
@@ -194,8 +196,8 @@ class UI_Logic:
                 vram.oled_need_update = "yes"
 
         ## page button
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             if vram.wlan_state == "CONNECTED":
                 vram.shutter_state = "menu_ota_source"
             else:
@@ -204,95 +206,95 @@ class UI_Logic:
     def _menu_ota_source_(self):
 
         # enter to set wlan up or down
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             vram.ota_source = vram.next(vram.ota_source_range, vram.ota_source)
             vram.oled_need_update = "yes"
             settings.update()
 
         ## page to ota channel menu
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "menu_ota_channel"
 
     def _menu_ota_channel_(self):
 
         # enter to set ota channel
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             vram.ota_channel = vram.next(vram.ota_channel_range, vram.ota_channel)
             vram.oled_need_update = "yes"
             settings.update()
             print(vram.ota_channel)
 
         ## page to back to battery menu
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "menu_ota_check"
 
     def _menu_ota_check_(self):
 
         # enter to check ota
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             # vram.info = "menu_ota_check_hint"
             self.ota.check()
             vram.oled_need_update = "yes"
         
         ## page to back to battery menu
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "battery"
 
 
     def _menu_camera_protocol_(self):
 
         # enter to set camera protocol
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             vram.camera_protocol = vram.next(vram.camera_protocol_range, vram.camera_protocol)
             vram.update_camera_preset()
             vram.shutter_state = "menu_reboot_hint"
             settings.update()
 
         # page to device mode
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "menu_device_mode"
 
     def _menu_reboot_hint_(self):
         
-        if (vram.button_enter == "pressed") or (vram.button_page == "pressed"):
-            vram.button_enter = "released"
-            vram.button_page = "released"
+        if (self.buttons.state[2] == "SHORT") or (self.buttons.state[1] == "SHORT"):
+            self.buttons.state[2] = "RLS"
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "menu_camera_protocol"
 
     def _menu_device_mode_(self):
 
         # enter to set device mode
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             vram.device_mode = vram.next(vram.device_mode_range, vram.device_mode)
             vram.oled_need_update = "yes"
             settings.update()
 
         # page to inject mode menu
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "menu_inject_mode"
 
     def _menu_inject_mode_(self):
 
         # enter to set inject mode
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
             vram.inject_mode = vram.next(vram.inject_mode_range, vram.inject_mode)
             vram.oled_need_update = "yes"
             settings.update()
 
         ## page to save and back to idle
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
             vram.shutter_state = "idle"
 
     def _rec_page_(self):
@@ -305,9 +307,9 @@ class UI_Logic:
 
     def _ignore_buttons_(self):
         # enter do nonthing
-        if vram.button_enter == "pressed":
-            vram.button_enter = "released"
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
 
         # page do nonthing
-        if vram.button_page == "pressed":
-            vram.button_page = "released"
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"

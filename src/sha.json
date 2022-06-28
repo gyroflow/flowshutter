@@ -22,11 +22,11 @@
         },
         {
             "name": "crsf.py",
-            "sha1": "212866f53581ee858d28595b425a2549b3d523d6"
+            "sha1": "d1d03fd3198f423818ce272d471857aa293959d0"
         },
         {
             "name": "entry.py",
-            "sha1": "bef31a2e101d91ca1dea5d285183feae23851c0e"
+            "sha1": "8264dde78d93c2d8f06e90f563ad9c7abcad20d2"
         },
         {
             "name": "main.py",
@@ -38,7 +38,7 @@
         },
         {
             "name": "peripherals.py",
-            "sha1": "d0760a6330e9ce2cae5c2cdcbf927e2507d66fb2"
+            "sha1": "b14ac34d360ae940f24ec8b36dee680e98148129"
         },
         {
             "name": "settings.py",
@@ -54,15 +54,15 @@
         },
         {
             "name": "target.py",
-            "sha1": "43dbccfa05a301da4e90c3e28227cbba549a63c5"
+            "sha1": "1d2d20fe670cb31c20f7aaf1d58cd929b5d86c03"
         },
         {
             "name": "task.py",
-            "sha1": "72aa3d79322250b1096e4309bf9449031d053a5c"
+            "sha1": "aaf46c573947c5792da32becf23f5373b6892409"
         },
         {
             "name": "ui.py",
-            "sha1": "05640825e4718bf13ec099fb1187022a84bf931e"
+            "sha1": "6e7028c5897a3263a542f069b5eee2434a62b97f"
         },
         {
             "name": "urequests.py",
@@ -70,11 +70,11 @@
         },
         {
             "name": "vram.py",
-            "sha1": "4ee0de5f1487c2ca9bf2aca951dd8b6bb43126a7"
+            "sha1": "68294aeacd100582b3e387d4039ec3bd1ad2b3df"
         },
         {
             "name": "wlan.py",
-            "sha1": "fcfdfc1e3d7bf457e5b83d4b7b553f2921246659"
+            "sha1": "a1d766305bc1aeaffd3f1b16420971c86e3364ea"
         }
     ]
 }

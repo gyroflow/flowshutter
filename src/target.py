@@ -44,9 +44,10 @@ def init_i2c():
 
 def init_buttons():
     print(str(time.ticks_us()) + " [ Init ] buttons")
-    button_page = Pin(15, Pin.IN, Pin.PULL_UP)
+    button_page_up = Pin(2, Pin.IN, Pin.PULL_UP)
+    button_page_down = Pin(15, Pin.IN, Pin.PULL_UP)
     button_enter = Pin(27, Pin.IN, Pin.PULL_UP)
-    return button_page, button_enter
+    return button_page_up, button_page_down, button_enter
 
 def init_mtp_uart():
     print(str(time.ticks_us()) + " [ Init ] UART2 sony mtp")
