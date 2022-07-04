@@ -18,11 +18,11 @@
         },
         {
             "name": "canvas.py",
-            "sha1": "0f8f941827b42740548f6884dc68696369256ae8"
+            "sha1": "ba24c32f58a486a098a9e59ca51fd1e47edb9311"
         },
         {
             "name": "crsf.py",
-            "sha1": "d1d03fd3198f423818ce272d471857aa293959d0"
+            "sha1": "624075496f3fdbd970f8bf0d2670f29dc507f2ae"
         },
         {
             "name": "entry.py",
@@ -62,7 +62,7 @@
         },
         {
             "name": "ui.py",
-            "sha1": "6e7028c5897a3263a542f069b5eee2434a62b97f"
+            "sha1": "e3ce0c4ed421db82225c3c6ac6c9370347bfd9d2"
         },
         {
             "name": "urequests.py",
@@ -70,7 +70,7 @@
         },
         {
             "name": "vram.py",
-            "sha1": "68294aeacd100582b3e387d4039ec3bd1ad2b3df"
+            "sha1": "786bed962d3cb5361e30c23d02baacba0fc64248"
         },
         {
             "name": "wlan.py",

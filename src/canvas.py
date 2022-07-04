@@ -56,6 +56,8 @@ class Canvas():
             self._display_menu_device_mode_()
         elif info == "menu_inject_mode":
             self._display_menu_inject_mode_()
+        elif info == "menu_erase_blackbox":
+            self._display_menu_erase_blackbox_()
         elif info == "menu_reboot_hint":
             self._display_menu_reboot_hint_()
         elif info == "sony mtp ack":
@@ -332,6 +334,17 @@ class Canvas():
             self._draw_audio_on_()
         elif vram.inject_mode == "OFF":
             self._draw_audio_off_()
+        self.screen.show()
+
+    def _display_menu_erase_blackbox_(self):
+        self.screen.fill(0)
+        # draw blackbox icon here, leave if for blank now
+        self.screen.text('Blackbox', 34, 0, 1)
+        if vram.erase_flag == True:
+            self.screen.text('Erasing...', 34, 12, 1)
+        elif vram.erase_flag == False:
+            self.screen.text('Erase stop', 34, 12, 1)
+        self.screen.text('NEXT HOME', 34, 24, 1)
         self.screen.show()
 
     def show_settings_fault(self):

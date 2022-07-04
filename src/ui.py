@@ -89,6 +89,8 @@ class UI_Logic:
             self._menu_device_mode_()
         elif vram.shutter_state == "menu_inject_mode":
             self._menu_inject_mode_()
+        elif vram.shutter_state == "menu_erase_blackbox":
+            self._menu_erase_blackbox_()
         else:
             print("Unknown UI state")
 
@@ -246,7 +248,6 @@ class UI_Logic:
             self.buttons.state[1] = "RLS"
             vram.shutter_state = "battery"
 
-
     def _menu_camera_protocol_(self):
 
         # enter to set camera protocol
@@ -291,6 +292,25 @@ class UI_Logic:
             vram.inject_mode = vram.next(vram.inject_mode_range, vram.inject_mode)
             vram.oled_need_update = "yes"
             settings.update()
+
+        ## page to erase menu
+        if self.buttons.state[1] == "SHORT":
+            self.buttons.state[1] = "RLS"
+            vram.shutter_state = "menu_erase_blackbox"
+
+    def _menu_erase_blackbox_(self):
+
+        # enter to erase blackbox
+        if self.buttons.state[2] == "SHORT":
+            self.buttons.state[2] = "RLS"
+            if vram.erase_flag == False:
+                vram.erase_flag = True
+                print("erasing...")
+            else:
+                vram.erase_flag = False
+                print("stop erase...")
+            vram.oled_need_update = "yes"
+            # self.erase.erase()
 
         ## page to save and back to idle
         if self.buttons.state[1] == "SHORT":

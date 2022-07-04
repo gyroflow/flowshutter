@@ -28,7 +28,8 @@ files = os.listdir("src/")
 
 try:
     files.remove("sha.json")
-    # No need to generate sha for sha.json
+    files.remove("__init__.py")
+    # No need to generate sha for sha.json and __init__.py
 except ValueError:
     pass
 
