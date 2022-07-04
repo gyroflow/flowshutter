@@ -27,9 +27,10 @@ class Battery:
 
     async def adc_handler(self):
         print(str(time.ticks_us()) + " [  OK  ] ADC listener running")
+        offset = 250
         while True:
             if self.adc1.read() != 0:
-                vram.vol = (vram.vol + self.adc1.read() * 3.3 / 2048)/2
+                vram.vol = (vram.vol + (self.adc1.read()+offset) * 3.3 / 2048)/2
             else:
                 vram.vol = (vram.vol + self.adc2.read() * 3.3 / 4096)/2
             await asyncio.sleep_ms(50)
