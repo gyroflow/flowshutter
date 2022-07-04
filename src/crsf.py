@@ -39,6 +39,8 @@ class CRSF:
                                                             992,992,992,992,992,992,992,992)
         self.marker_packet  = self.crsf_gen.build_rc_packet(992,992,1800,992,1800,992,992,992,
                                                             992,992,992,992,992,992,992,992)
+        self.erase_packet   = self.crsf_gen.build_rc_packet(992,992,189,992,189,1800,992,992,
+                                                            992,992,992,992,992,992,992,992)
         print(str(time.ticks_us()) + " [  OK  ] CRSF object")
 
     async def uart_handler(self):
@@ -81,7 +83,10 @@ class CRSF:
 
         elif vram.arm_state == "disarm":
             self.arm_time = 0
-            self.uart.write(self.disarm_packet)
+            if vram.erase_flag == False:
+                self.uart.write(self.disarm_packet)
+            elif vram.erase_flag == True:
+                self.uart.write(self.erase_packet)
             self.packets_count = 0
             self.marker = "L"
 

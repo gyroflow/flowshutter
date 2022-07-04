@@ -17,6 +17,7 @@
 vol = 4.0
 ## ARM and DISARM global flag
 arm_state = "disarm" #the state of the ARM/DISARM
+erase_flag = False
 oled_tasklist = []
 # "arm"
 
@@ -34,6 +35,7 @@ shutter_state = "welcome"
 # "menu_camera_protocol"
 # "menu_device_mode"
 # "menu_inject_mode"
+# "menu_erase_blackbox"
 info = "welcome"
 # this is the canvas state
 # basically just shutter_state

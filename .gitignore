@@ -5,3 +5,4 @@ check_sha.json
 obj
 micropython
 esp-idf
+__pycache__

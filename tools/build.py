@@ -17,30 +17,27 @@ import os
 import shutil
 import sys
 
-def build():
-    try:
-        print('MKDIR obj ..')
-        os.mkdir("obj")
-        print('obj/ created')
-    except:
-        pass
+def move(argv):
+    modules = os.listdir('src/')
+    modules.remove('__init__.py')
 
-    prefix_modules = os.listdir("build/")
-    print('..\nCOPY prefix')
-    for f in prefix_modules:
-        shutil.copyfile('build/'+f, 'obj/'+f)
-        print('CP '+f+' ..')
-
-    modules = os.listdir("src/")
-
-    try:
-        # these files should/can not be compiled as frozen modle
-        modules.remove("boot.py")
-        modules.remove("LICENSE")
-        modules.remove("main.py")
-        modules.remove("README.md")
-        modules.remove("sha.json")
-    except ValueError:
+    if argv == 'COMPLIE':
+        try:
+            # these files should/can not be compiled as frozen modle
+            modules.remove('boot.py')
+            print('RM '+'boot.py')
+            modules.remove('LICENSE')
+            print('RM '+'LICENSE')
+            modules.remove('main.py')
+            print('RM '+'main.py')
+            modules.remove('README.md')
+            print('RM '+'README.md')
+            modules.remove('sha.json')
+            print('RM '+'sha.json')
+        except ValueError:
+            print('RM error')
+            pass
+    elif argv == 'DEBUG':
         pass
 
     modules = sorted(modules)
@@ -49,21 +46,49 @@ def build():
         shutil.copyfile('src/'+f, 'obj/'+f)
         print('CP '+f+' ..')
 
-if len(sys.argv) == 1:
-    build()
-else:
-    if sys.argv[1] == "clean":
-        print('Performing full clean')
-        try:
-            shutil.rmtree('obj')
-            print('Full clean completed!')
-        except:
-            print('obj does not exist, no need to clean.')
-    elif sys.argv[1] == "build":
-        print('Build started!')
-        build()
-        print('Build complete!')
+def build(argv):
+    # create obj folder
+    try:
+        print('MKDIR obj ..')
+        os.mkdir('obj')
+        print('obj/ created')
+    except:
+        print('obj/ already exists')
+        pass
+
+    if argv == 'COMPLIE':
+        # copy necessary modules
+        prefix_modules = os.listdir('build/')
+        print('..\nCOPY prefix')
+        for f in prefix_modules:
+            shutil.copyfile('build/'+f, 'obj/'+f)
+            print('CP '+f+' ..')
+        # copy flowshutter modules
+        move(argv)
+    elif argv == 'DEBUG':
+        # copy flowshutter modules
+        move(argv)
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        build('COMPLIE')
     else:
-        print('Invalid Command!\n')
-        print('- `build.py` or\n  `build.py build` for building modules\n')
-        print('- `build.py clean` for full clean\n')
+        if sys.argv[1] == 'clean':
+            print('Performing full clean')
+            try:
+                shutil.rmtree('obj')
+                print('Full clean completed!')
+            except:
+                print('obj does not exist, no need to clean.')
+        elif sys.argv[1] == 'build':
+            print('Build started!')
+            build('COMPLIE')
+            print('Build complete!')
+        elif sys.argv[1] == 'debug':
+            print('Preparation for debug mode...')
+            build('DEBUG')
+            print('Debug ready!')
+        else:
+            print('Invalid Command!\n')
+            print('- `build.py` or\n  `build.py build` for building modules\n')
+            print('- `build.py clean` for full clean\n')
