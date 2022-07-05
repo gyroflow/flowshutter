@@ -85,10 +85,22 @@ if __name__ == '__main__':
             build('COMPLIE')
             print('Build complete!')
         elif sys.argv[1] == 'debug':
-            print('Preparation for debug mode...')
-            build('DEBUG')
-            print('Debug ready!')
+            if len(sys.argv) == 2:
+                print('Preparing for debug mode...')
+                build('DEBUG')
+                print('Debug ready!')
+            elif sys.argv[2] == 'clean':
+                print('Performing clean')
+                try:
+                    shutil.rmtree('obj')
+                    print('Clean completed!')
+                except:
+                    print('obj does not exist')
+                os.mkdir('obj')
+                print('Remove ready!')
         else:
             print('Invalid Command!\n')
             print('- `build.py` or\n  `build.py build` for building modules\n')
             print('- `build.py clean` for full clean\n')
+            print('- `build.py debug` for debug mode\n')
+            print('- `build.py debug clean` for cleaning files on the device\n')

@@ -24,7 +24,7 @@ class CRSF:
         self.packets_count  = 0     # number of packets sent 
         self.marker         = 'L'   # marker
         print(str(time.ticks_us()) + " [Create] UART1")
-        self.uart           = target.init_crsf_uart()
+        self.uart           = target.init_fc_uart()
         print(str(time.ticks_us()) + " [  OK  ] UART1")
 
         print(str(time.ticks_us()) + " [Create] AJ pin")
@@ -44,7 +44,7 @@ class CRSF:
         print(str(time.ticks_us()) + " [  OK  ] CRSF object")
 
     async def uart_handler(self):
-        print(str(time.ticks_us()) + " [  OK  ] CRSF listener running")
+        print(str(time.ticks_us()) + " [  OK  ] Async CRSF listener")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:

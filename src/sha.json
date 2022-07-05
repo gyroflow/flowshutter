@@ -14,7 +14,7 @@
         },
         {
             "name": "camera.py",
-            "sha1": "4bf6bf2dd246f0a8af04b5762d1d94a8eaa59015"
+            "sha1": "698c68c29f738b93369cdee3482f012bb8ab84cf"
         },
         {
             "name": "canvas.py",
@@ -22,7 +22,7 @@
         },
         {
             "name": "crsf.py",
-            "sha1": "624075496f3fdbd970f8bf0d2670f29dc507f2ae"
+            "sha1": "6f55de54bf332d5065fcb025e7ad566b77552ae4"
         },
         {
             "name": "entry.py",
@@ -38,7 +38,7 @@
         },
         {
             "name": "peripherals.py",
-            "sha1": "b58d1b375bafce8c98427891fdd652b590b34b33"
+            "sha1": "68d87773e4e07332af561032d0abfd1c19bc255a"
         },
         {
             "name": "settings.py",
@@ -54,7 +54,7 @@
         },
         {
             "name": "target.py",
-            "sha1": "1d2d20fe670cb31c20f7aaf1d58cd929b5d86c03"
+            "sha1": "500223682dc5b2108edf16806bd68bacfedcb966"
         },
         {
             "name": "task.py",
@@ -62,7 +62,7 @@
         },
         {
             "name": "ui.py",
-            "sha1": "e3ce0c4ed421db82225c3c6ac6c9370347bfd9d2"
+            "sha1": "59dda27f595d19959a6920b839c9e87c547d9ad0"
         },
         {
             "name": "urequests.py",
