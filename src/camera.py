@@ -43,7 +43,7 @@ class No_Cam:
             vram.shutter_state = "recording"
             vram.arm_state = "arm"
         elif vram.shutter_state == "stopping":
-            vram.shutter_state = "idle"
+            vram.shutter_state = "home"
             vram.arm_state = "disarm"
 
 
@@ -75,7 +75,7 @@ class Momentary_ground:
         self.pin.value(value)
         if value == 1:
             if vram.shutter_state == "stopping":
-                vram.shutter_state = "idle"
+                vram.shutter_state = "home"
                 vram.arm_state = "disarm"
             elif vram.shutter_state == "starting":
                 vram.shutter_state = "recording"
@@ -101,7 +101,7 @@ class Schmitt_3v3:
 
     def toggle_cc_voltage_level(self):
         if vram.shutter_state == "stopping":
-            vram.shutter_state = "idle"
+            vram.shutter_state = "home"
             self.pin.value(0)
             vram.arm_state = "disarm"
         elif vram.shutter_state == "starting":
@@ -154,7 +154,7 @@ class Sony_multi:
         print("shutter send: ", self.REC_RELEASE)
 
     async def uart_handler(self):
-        print(str(time.ticks_us()) + " [  OK  ] Sony MTP UART handler running")
+        print(str(time.ticks_us()) + " [  OK  ] Async Sony MTP UART handler")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:
@@ -182,7 +182,7 @@ class Sony_multi:
                 await asyncio.sleep_ms(8)
                 vram.arm_state = "disarm"
                 await swriter.awrite(self.REC_STOP_ACK)
-                vram.shutter_state = "idle"
+                vram.shutter_state = "home"
                 self.transation_time = 0
 
 
@@ -206,7 +206,7 @@ class ZCAM_UART:
 
     async def uart_handler(self):
         import ubinascii
-        print(str(time.ticks_us()) + " [  OK  ] ZCAM UART handler running")
+        print(str(time.ticks_us()) + " [  OK  ] Async ZCAM UART handler")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:
@@ -221,7 +221,7 @@ class ZCAM_UART:
                 self.transation_time = 0
             elif data == self.STOP_REC_ACK:
                 print("STOP_REC_ACK")
-                vram.shutter_state = "idle"
+                vram.shutter_state = "home"
                 vram.arm_state = "disarm"
                 self.transation_time = 0
             elif data == (0xEA02112900000001000000090000000900000000).to_bytes(20, 'big'):
@@ -338,7 +338,7 @@ class LANC:
                 self.rec_trigger_state = False
                 if vram.shutter_state == "stopping":
                     vram.arm_state = "disarm"
-                    vram.shutter_state = "idle"
+                    vram.shutter_state = "home"
                 elif vram.shutter_state == "starting":
                     vram.arm_state = "arm"
                     vram.shutter_state = "recording"

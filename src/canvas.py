@@ -30,7 +30,7 @@ class Canvas():
     def update(self, info):
         if info == "welcome":
             self._display_welcome_()
-        elif info == "idle":
+        elif info == "home":
             self._display_idle_()
         elif info == "starting":
             self._display_starting_()

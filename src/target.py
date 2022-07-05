@@ -27,7 +27,7 @@ def init_adc():
     adc2.atten(ADC.ATTN_11DB)
     return adc1, adc2
 
-def init_crsf_uart():
+def init_fc_uart():
     print(str(time.ticks_us()) + " [ Init ] UART1")
     uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 33, rx = 32)
     return uart1
@@ -44,10 +44,10 @@ def init_i2c():
 
 def init_buttons():
     print(str(time.ticks_us()) + " [ Init ] buttons")
-    button_page_up = Pin(2, Pin.IN, Pin.PULL_UP)
-    button_page_down = Pin(15, Pin.IN, Pin.PULL_UP)
-    button_enter = Pin(27, Pin.IN, Pin.PULL_UP)
-    return button_page_up, button_page_down, button_enter
+    button_page_up  = Pin(2, Pin.IN, Pin.PULL_UP)
+    button_enter    = Pin(27, Pin.IN, Pin.PULL_UP)
+    button_page_down= Pin(15, Pin.IN, Pin.PULL_UP)
+    return button_page_up, button_enter, button_page_down
 
 def init_mtp_uart():
     print(str(time.ticks_us()) + " [ Init ] UART2 sony mtp")
