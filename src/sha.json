@@ -17,16 +17,24 @@
             "sha1": "698c68c29f738b93369cdee3482f012bb8ab84cf"
         },
         {
-            "name": "canvas.py",
-            "sha1": "51c062920841d1d33015899eab6252949e3601c3"
-        },
-        {
             "name": "crsf.py",
-            "sha1": "6f55de54bf332d5065fcb025e7ad566b77552ae4"
+            "sha1": "0fb338cdc695eaaef3d98610916a80afee59620c"
         },
         {
             "name": "entry.py",
             "sha1": "8264dde78d93c2d8f06e90f563ad9c7abcad20d2"
+        },
+        {
+            "name": "gui/canvas.py",
+            "sha1": "3246705a48511937ac2e1e61df3693233d5e3dc2"
+        },
+        {
+            "name": "gui/driver/ssd1306.py",
+            "sha1": "b77e02e21a69cb5fc3eb53571c1a06d69f7fbc41"
+        },
+        {
+            "name": "gui/menu.py",
+            "sha1": "1fb89e0da7367fa56e50e2805f51221b753a6dfd"
         },
         {
             "name": "main.py",
@@ -38,39 +46,51 @@
         },
         {
             "name": "peripherals.py",
-            "sha1": "68d87773e4e07332af561032d0abfd1c19bc255a"
+            "sha1": "4263c8cb761439808bfc468d80141a3f5741108f"
+        },
+        {
+            "name": "protocols/crsf.py",
+            "sha1": "33e54f9b0e791906da72be5188d9d97816565e88"
+        },
+        {
+            "name": "protocols/msp.py",
+            "sha1": "27ca81d3fba8353a083b7fba74fb9697b1835f95"
         },
         {
             "name": "settings.py",
-            "sha1": "4d673ed03f5b9c8b68b620b5ce5b2f0ce7b87629"
-        },
-        {
-            "name": "ssd1306.py",
-            "sha1": "b77e02e21a69cb5fc3eb53571c1a06d69f7fbc41"
+            "sha1": "62c73b9493fc637b7a43deb36a9a9961e4603b9b"
         },
         {
             "name": "startup.py",
-            "sha1": "6fd85fec9940b11da17335e1447420f6d4a54fa0"
+            "sha1": "3ab8bd7b36a793d475d8e469c01ecbee769fc9d4"
         },
         {
-            "name": "target.py",
-            "sha1": "500223682dc5b2108edf16806bd68bacfedcb966"
+            "name": "targets/diy_card.py",
+            "sha1": "7b5736d70ee43aa0263370b1fe7ee33e937e307a"
+        },
+        {
+            "name": "targets/diy_fc.py",
+            "sha1": "393fcf64a9fb1bbd6aa09f1171b82abfaa6cecc9"
+        },
+        {
+            "name": "targets/generic.py",
+            "sha1": "570d036ae9b89810c6743b3d30f1de978b3f6446"
+        },
+        {
+            "name": "targets/neutronrc_sdb.py",
+            "sha1": "8341055828ff2122044492544806fa9b667e42bc"
         },
         {
             "name": "task.py",
-            "sha1": "aaf46c573947c5792da32becf23f5373b6892409"
+            "sha1": "53ef981dd7f7c5a560a6326e845589963e50500a"
         },
         {
             "name": "ui.py",
-            "sha1": "59dda27f595d19959a6920b839c9e87c547d9ad0"
-        },
-        {
-            "name": "urequests.py",
-            "sha1": "284e075abb2b3b1583bb4d763df64abe5015d3f2"
+            "sha1": "e5b3999edc85c2f76e8d90e29f3af0ccaf824cc1"
         },
         {
             "name": "vram.py",
-            "sha1": "786bed962d3cb5361e30c23d02baacba0fc64248"
+            "sha1": "43b6ab2a8fc04b12f718f15b257d36742fdf3afa"
         },
         {
             "name": "wlan.py",

@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import json, os
-import target, vram
+import vram
+import target
 
 def _load_():
     with open("settings.json", "r") as f:
@@ -55,6 +56,7 @@ def _load_():
             vram.inject_mode    = settings["inject_mode"]
             vram.ota_source     = settings["ota_source"]
             vram.ota_channel    = settings["ota_channel"]
+            target.target       = settings["target"]
             
         print("settings.json loaded")
         f.close()
@@ -66,7 +68,8 @@ def update(): # update settings.json
                     "device_mode":vram.device_mode,
                     "inject_mode":vram.inject_mode,
                     "ota_source":vram.ota_source,
-                    "ota_channel":vram.ota_channel}
+                    "ota_channel":vram.ota_channel,
+                    "target":target.target}
         json.dump(settings, f)
         f.close()
 

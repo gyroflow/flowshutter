@@ -28,19 +28,19 @@ jobs:
       - name: Build (check) SHA on Windows
         if: ${{ matrix.targets == 'windows-latest' }}
         run: |
-          python tools/gen_sha.py build
+          python tools/build.py sha build
         continue-on-error: false
       
       - name: Build (check) SHA on Ubuntu
         if: ${{ matrix.targets == 'ubuntu-latest' }}
         run: |
-          python3 tools/gen_sha.py build
+          python3 tools/build.py sha build
         continue-on-error: false
       
       - name: Build (check) SHA on MacOS
         if: ${{ matrix.targets == 'macos-latest' }}
         run: |
-          python3 tools/gen_sha.py build
+          python3 tools/build.py sha build
         continue-on-error: false
 
       - name: Upload SHA
