@@ -19,13 +19,15 @@ from machine import Pin
 from machine import UART
 import time
 
+target="NEUTRONRC_SDB"
+
 def init_adc():
     print(str(time.ticks_us()) + " [ Init ] ADC")
-    adc1 = ADC(Pin(36))
-    adc1.atten(ADC.ATTN_11DB)
-    adc2 = ADC(Pin(34))
-    adc2.atten(ADC.ATTN_11DB)
-    return adc1, adc2
+    adc = ADC(Pin(36))
+    adc.atten(ADC.ATTN_11DB)
+    scale = 0.5
+    offset = 200
+    return adc, scale, offset
 
 def init_fc_uart():
     print(str(time.ticks_us()) + " [ Init ] UART1")

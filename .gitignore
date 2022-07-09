@@ -6,3 +6,4 @@ obj
 micropython
 esp-idf
 __pycache__
+.vscode

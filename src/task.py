@@ -13,7 +13,8 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import crsf, vram, ui
+import crsf
+import vram, ui
 import time, gc
 
 class Task:

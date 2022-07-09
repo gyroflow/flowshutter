@@ -24,7 +24,13 @@ import sys
 # to generate a new files verification information,
 # for use during subsequent OTA upgrades
 
-files = os.listdir("src/")
+modules = []
+for subdir, dirs, files in os.walk('src'):
+    for file in files:
+        filepath = subdir + '/' + file
+        modules.append(filepath)
+temp = {x.replace('src/','').replace('src\\','').replace('\\','/') for x in modules}
+files = temp
 
 try:
     files.remove("sha.json")

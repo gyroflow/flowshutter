@@ -13,7 +13,8 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import canvas, vram, json, settings, camera, ota, peripherals, time
+import gui.canvas as canvas
+import vram, json, settings, camera, ota, peripherals, time
 import wlan
 
 class UI_Logic:
@@ -160,7 +161,8 @@ class UI_Logic:
             vram.oled_need_update = "yes"
         else:
             self.udpate_count += 5
-        self.bind_btn(1, "SHORT", "MENU", 0, 0, "menu_internet")
+        # self.bind_btn(1, "SHORT", "MENU", 0, 0, "menu_internet")
+        self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "MENU", 0, 0, "menu_camera_protocol")
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)

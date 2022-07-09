@@ -13,7 +13,8 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram, ssd1306, target
+import gui.driver.ssd1306 as ssd1306
+import vram, target
 import framebuf, time
 
 class Canvas():

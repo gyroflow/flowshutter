@@ -21,18 +21,21 @@ class Battery:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Battery object")
         print(str(time.ticks_us()) + " [Create] ADC")
-        self.adc1, self.adc2 = target.init_adc()
+        self.adc, self.scale, self.offset = target.init_adc()
         print(str(time.ticks_us()) + " [  OK  ] ADC")
         print(str(time.ticks_us()) + " [  OK  ] Battery object")
 
     async def adc_handler(self):
         print(str(time.ticks_us()) + " [  OK  ] Async ADC listener running")
-        offset = 250
         while True:
-            if self.adc1.read() != 0:
-                vram.vol = (vram.vol + (self.adc1.read()+offset) * 3.3 / 2048)/2
-            else:
-                vram.vol = (vram.vol + self.adc2.read() * 3.3 / 4096)/2
+            voltage_uint = (self.adc.read()+self.offset)
+            voltage_raw = voltage_uint * 3.3 / (4096*self.scale)
+            vram.vol = 0.5* (vram.vol + voltage_raw)
+            # current = 0.5* (pre + current.raw)
+            # if self.adc1.read() != 0:
+            #     vram.vol = (vram.vol + (self.adc1.read()+self.offset) * 3.3 / 2048)/2
+            # else:
+            #     vram.vol = (vram.vol + self.adc2.read() * 3.3 / 4096)/2
             await asyncio.sleep_ms(50)
 
 class Buttons:
