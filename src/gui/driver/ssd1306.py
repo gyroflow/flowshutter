@@ -37,7 +37,7 @@ SET_PRECHARGE       = const(0xD9)
 SET_VCOM_DESEL      = const(0xDB)
 SET_CHARGE_PUMP     = const(0x8D)
 
-class SSD1306_I2C:
+class SSD1306_I2C(framebuf.FrameBuffer):
     def __init__(self, width, height, i2c, reflash, addr=0x3c, external_vcc=False):
         print(str(time.ticks_us()) + " [Create] SSD1306_I2C object")
         self.width = width
@@ -48,7 +48,7 @@ class SSD1306_I2C:
         self.external_vcc = external_vcc
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
-        self.framebuf = framebuf.FrameBuffer(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
+        super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
         self.temp = bytearray(2)
         self.write_list = [b"\x40", None]  # Co=0, D/C#=1
         self.poweron()
@@ -141,24 +141,3 @@ class SSD1306_I2C:
     def rotate(self, rotate):
         self.write_cmd(SET_COM_OUT_DIR | ((rotate & 1) << 3))
         self.write_cmd(SET_SEG_REMAP | (rotate & 1))
-
-    def fill(self, col):
-        self.framebuf.fill(col)
-    def pixel(self, x, y, col):
-        self.framebuf.pixel(x, y, col)
-    def scroll(self, dx, dy):
-        self.framebuf.scroll(dx, dy)
-    def text(self, string, x, y, col=1):
-        self.framebuf.text(string, x, y, col)
-    def hline(self, x, y, w, col):
-        self.framebuf.hline(x, y, w, col)
-    def vline(self, x, y, h, col):
-        self.framebuf.vline(x, y, h, col)
-    def line(self, x1, y1, x2, y2, col):
-        self.framebuf.line(x1, y1, x2, y2, col)
-    def rect(self, x, y, w, h, col):
-        self.framebuf.rect(x, y, w, h, col)
-    def fill_rect(self, x, y, w, h, col):
-        self.framebuf.fill_rect(x, y, w, h, col)
-    def blit(self, fbuf, x, y):
-        self.framebuf.blit(fbuf, x, y)

@@ -45,6 +45,3 @@ class Task:
         elif self.mem_opt_interval < 0:
             self.mem_opt()
             self.mem_opt_interval = 100
-
-        # task3 - update Logic UI
-        self.ui.update(t)

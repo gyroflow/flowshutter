@@ -31,11 +31,6 @@ class Battery:
             voltage_uint = (self.adc.read()+self.offset)
             voltage_raw = voltage_uint * 3.3 / (4096*self.scale)
             vram.vol = 0.5* (vram.vol + voltage_raw)
-            # current = 0.5* (pre + current.raw)
-            # if self.adc1.read() != 0:
-            #     vram.vol = (vram.vol + (self.adc1.read()+self.offset) * 3.3 / 2048)/2
-            # else:
-            #     vram.vol = (vram.vol + self.adc2.read() * 3.3 / 4096)/2
             await asyncio.sleep_ms(50)
 
 class Buttons:

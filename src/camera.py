@@ -32,18 +32,19 @@ class No_Cam:
             pass
         elif self.transation_time >= 1000:
             self.no_cam()
-            print(vram.shutter_state)
+            vram.oled_need_update = 'yes'
+            print(vram.sub_state)
             self.transation_time = 0
 
     def timeout(self):
         self.transation_time = 0
 
     def no_cam(self):
-        if vram.shutter_state == "starting":
-            vram.shutter_state = "recording"
+        if vram.sub_state == "STARTING":
+            vram.sub_state = "RECORDING"
             vram.arm_state = "arm"
-        elif vram.shutter_state == "stopping":
-            vram.shutter_state = "home"
+        elif vram.sub_state == "STOPPING":
+            vram.sub_state = "HOME"
             vram.arm_state = "disarm"
 
 
@@ -63,7 +64,8 @@ class Momentary_ground:
             pass
         elif self.transation_time >= 1000:
             self.momentary_ground(1) # OD
-            print(vram.shutter_state)
+            vram.oled_need_update = 'yes'
+            print(vram.sub_state)
             self.transation_time = 0
 
     def timeout(self):
@@ -74,13 +76,12 @@ class Momentary_ground:
         # 0 Low voltage (tied to ground)
         self.pin.value(value)
         if value == 1:
-            if vram.shutter_state == "stopping":
-                vram.shutter_state = "home"
+            if vram.sub_state == "STOPPING":
+                vram.sub_state = "HOME"
                 vram.arm_state = "disarm"
-            elif vram.shutter_state == "starting":
-                vram.shutter_state = "recording"
+            elif vram.sub_state == "STARTING":
+                vram.sub_state = "RECORDING"
                 vram.arm_state = "arm"
-
 
 class Schmitt_3v3:
     def __init__(self):
@@ -95,24 +96,25 @@ class Schmitt_3v3:
         if self.transation_time >= 1000:
             self.transation_time = 0
             toggle_cc_voltage_level()
+            vram.oled_need_update = 'yes'
 
     def timeout(self):
         self.transation_time = 0
 
     def toggle_cc_voltage_level(self):
-        if vram.shutter_state == "stopping":
-            vram.shutter_state = "home"
+        if vram.sub_state == "STOPPING":
+            vram.sub_state = "HOME"
             self.pin.value(0)
             vram.arm_state = "disarm"
-        elif vram.shutter_state == "starting":
-            vram.shutter_state = "recording"
+        elif vram.sub_state == "STARTING":
+            vram.sub_state = "RECORDING"
             self.pin.value(1)
             vram.arm_state = "arm"
 
 
 class Sony_multi:
     def __init__(self):
-        print(str(time.ticks_us()) + " [Create] Sony MTP object")
+        print(str(time.ticks_us()) + " [Create] SONY MTP object")
         self.task_mode      = "ASYNC"
         self.REC_PRESS      = b'#7100*'    # record button pressed
         self.REC_RELEASE    = b'#7110*'    # record button released
@@ -130,7 +132,7 @@ class Sony_multi:
         self.uart = target.init_mtp_uart()
         print(str(time.ticks_us()) + " [  OK  ] UART2")
         self.transation_time = 0
-        print(str(time.ticks_us()) + " [  OK  ] Sony MTP object")
+        print(str(time.ticks_us()) + " [  OK  ] SONY MTP object")
 
     def rec(self):
         self.transation_time += 5
@@ -140,6 +142,7 @@ class Sony_multi:
             pass
         elif self.transation_time >= 1000:
             self.rec_release()
+            vram.oled_need_update = 'yes'
             self.transation_time = 0
 
     def timeout(self):
@@ -154,7 +157,7 @@ class Sony_multi:
         print("shutter send: ", self.REC_RELEASE)
 
     async def uart_handler(self):
-        print(str(time.ticks_us()) + " [  OK  ] Async Sony MTP UART handler")
+        print(str(time.ticks_us()) + " [  OK  ] Async SONY MTP UART handler")
         swriter = asyncio.StreamWriter(self.uart, {})
         sreader = asyncio.StreamReader(self.uart)
         while True:
@@ -165,7 +168,8 @@ class Sony_multi:
                 await asyncio.sleep_ms(8)
                 await swriter.awrite(self.HANDSHAKE_ACK)
                 tmp = vram.info
-                vram.info = "sony mtp ack"
+                vram.info = 'hint'
+                vram.sub_hint = 'SONY_MTP_ACK'
                 vram.oled_need_update = "yes"
                 await asyncio.sleep_ms(2000)
                 vram.info = tmp
@@ -175,14 +179,16 @@ class Sony_multi:
                 await asyncio.sleep_ms(8)
                 vram.arm_state = "arm"
                 await swriter.awrite(self.REC_START_ACK)
-                vram.shutter_state = "recording"
+                vram.sub_state = "RECORDING"
+                vram.oled_need_update = 'yes'
                 self.transation_time = 0
 
             elif data == self.REC_STOP:
                 await asyncio.sleep_ms(8)
                 vram.arm_state = "disarm"
                 await swriter.awrite(self.REC_STOP_ACK)
-                vram.shutter_state = "home"
+                vram.sub_state = "HOME"
+                vram.oled_need_update = 'yes'
                 self.transation_time = 0
 
 
@@ -216,13 +222,15 @@ class ZCAM_UART:
 
             if data == self.START_REC_ACK:
                 print("START_REC_ACK")
-                vram.shutter_state = "recording"
+                vram.sub_state = "RECORDING"
                 vram.arm_state = "arm"
+                vram.oled_need_update = 'yes'
                 self.transation_time = 0
             elif data == self.STOP_REC_ACK:
                 print("STOP_REC_ACK")
-                vram.shutter_state = "home"
+                vram.sub_state = "HOME"
                 vram.arm_state = "disarm"
+                vram.oled_need_update = 'yes'
                 self.transation_time = 0
             elif data == (0xEA02112900000001000000090000000900000000).to_bytes(20, 'big'):
                 print("REC MSG")
@@ -251,9 +259,9 @@ class ZCAM_UART:
     def rec(self):
         self.transation_time += 5
         if self.transation_time == 500:
-            if vram.shutter_state == "starting":
+            if vram.sub_state == "STARTING":
                 self.uart.write(self.START_REC)
-            elif vram.shutter_state == "stopping":
+            elif vram.sub_state == "STOPPING":
                 self.uart.write(self.STOP_REC)
         elif self.transation_time > 500:
             pass
@@ -336,12 +344,14 @@ class LANC:
                 self.test.value(1)
                 self.transation_time = 0
                 self.rec_trigger_state = False
-                if vram.shutter_state == "stopping":
+                if vram.sub_state == "STOPPING":
                     vram.arm_state = "disarm"
-                    vram.shutter_state = "home"
-                elif vram.shutter_state == "starting":
+                    vram.sub_state = "HOME"
+                    vram.oled_need_update = 'yes'
+                elif vram.sub_state == "STARTING":
                     vram.arm_state = "arm"
-                    vram.shutter_state = "recording"
+                    vram.sub_state = "RECORDING"
+                    vram.oled_need_update = 'yes'
 
     def timeout(self):
         self.transation_time = 0
