@@ -13,9 +13,11 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import gui.canvas as canvas
+import gui.core.canvas as canvas
 import uasyncio as asyncio
-import vram, json, settings, camera, ota, peripherals, time
+import internet.ota as ota
+import vram, json, settings, time
+import gui.peripherals as peripherals
 
 class UI_Logic:
     def __init__(self):
@@ -28,19 +30,23 @@ class UI_Logic:
         self.udpate_count = 0
         self.starting_time_count = 0
         self.ground_time_count = 0
-        if vram.camera_protocol == "NO":
-            self.camera = camera.No_Cam()
-        elif vram.camera_protocol == "SONY MTP":
-            self.camera = camera.Sony_multi()
-        elif vram.camera_protocol == "LANC":
-            self.camera = camera.LANC()
-        elif vram.camera_protocol == "ZCAM UART":
-            self.camera = camera.ZCAM_UART()
-        elif vram.camera_protocol == "MMTRY GND":
-            self.camera = camera.Momentary_ground()
-        elif vram.camera_protocol == "3V3 Schmitt":
-            self.camera = camera.Schmitt_3v3()
+        self.init_camera()
         print(str(time.ticks_us()) + " [  OK  ] UI logic object")
+
+    def init_camera(self):
+        if vram.camera_protocol == "NO":
+            from camera.no import No_Cam as camera
+        elif vram.camera_protocol == "SONY MTP":
+            from camera.sony import Sony_multi as camera
+        elif vram.camera_protocol == "LANC":
+            from camera.lanc import LANC as camera
+        elif vram.camera_protocol == "ZCAM UART":
+            from camera.zcam import ZCAM_UART as camera
+        elif vram.camera_protocol == "MMTRY GND":
+            from camera.momentary_ground import Momentary_ground as camera
+        elif vram.camera_protocol == "3V3 Schmitt":
+            from camera.schmitt_3v3 import Schmitt_3v3 as camera
+        self.camera = camera()
 
     def show_sub(self, i):
         self.canvas.show_sub(i)
@@ -285,7 +291,7 @@ class UI_Logic:
                 vram.oled_need_update = "yes"
             elif dest == 'SHUTTER':
                 if vram.sub_state == "internet":
-                    import wlan
+                    import internet.wlan as wlan
                     if vram.wlan_state == "DISCONNECTED":
                         wlan.up()
                         vram.oled_need_update = "yes"
