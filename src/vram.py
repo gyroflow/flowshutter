@@ -26,17 +26,11 @@ previous_state = "blank"
 shutter_state = "welcome"
 # "starting"
 # "recording"
-# "stopping"
-# "battery"
-# "menu_internet"
-# "menu_ota_source"
-# "menu_ota_channel"
-# "menu_ota_check"
-# "menu_camera_protocol"
-# "menu_device_mode"
-# "menu_inject_mode"
-# "menu_erase_blackbox"
-info = "welcome"
+# "menu"
+info = 'welcome'
+sub_state = 'HOME'
+sub_menu = "camera_protocol"
+sub_hint = ''
 # this is the canvas state
 # basically just shutter_state
 
@@ -58,8 +52,8 @@ inject_mode = "OFF"
 ota_source = "GitHub"
 ota_channel = "stable"
 
-camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "Sony MTP", "ZCAM UART"]
-# camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "Sony MTP", "ZCAM UART", "LANC"]
+camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "SONY MTP", "ZCAM UART"]
+# camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "SONY MTP", "ZCAM UART", "LANC"]
 device_mode_range = ["MASTER"]
 inject_mode_range = ["OFF", "ON"]
 ota_source_range = ["GitHub", "Gitee"]
@@ -69,7 +63,7 @@ def update_camera_preset():# per camera protocol
     global camera_protocol
     global device_mode
     global device_mode_range
-    if camera_protocol == "Sony MTP":
+    if camera_protocol == "SONY MTP":
         device_mode = "SLAVE"
         device_mode_range = ["SLAVE", "MASTER/SLAVE"]
     # if camera_protocol == "ZCAM UART":

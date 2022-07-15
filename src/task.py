@@ -13,14 +13,15 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import crsf
-import vram, ui
+import protocols.common as common
+import vram
+import gui.core.ui as ui
 import time, gc
 
 class Task:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Task scheduler")
-        self.fc_link = crsf.CRSF()
+        self.fc_link = common.CRSF()
         self.mem_opt_interval = 100 # gc per 100ms
         self.ui = ui.UI_Logic()
         print(str(time.ticks_us()) + " [  OK  ] Task scheduler")
@@ -45,6 +46,3 @@ class Task:
         elif self.mem_opt_interval < 0:
             self.mem_opt()
             self.mem_opt_interval = 100
-
-        # task3 - update Logic UI
-        self.ui.update(t)

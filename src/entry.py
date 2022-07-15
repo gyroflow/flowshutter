@@ -35,6 +35,7 @@ loop.create_task(task.ui.buttons.checker('PAGE UP'))
 loop.create_task(task.ui.buttons.checker('PAGE DOWN'))
 loop.create_task(task.ui.buttons.checker('ENTER'))
 loop.create_task(task.ui.battery.adc_handler())
+loop.create_task(task.ui.update())
 if task.ui.camera.task_mode == "ASYNC":
     loop.create_task(task.ui.camera.uart_handler())
 loop.run_forever()

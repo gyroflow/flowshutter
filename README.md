@@ -21,6 +21,9 @@
   <a href="https://github.com/gyroflow/flowshutter/">
     <img src="https://img.shields.io/github/languages/code-size/gyroflow/flowshutter">
   </a>
+    <a href="https://github.com/gyroflow/flowshutter/tree/master">
+    <img src="https://github.com/gyroflow/flowshutter/actions/workflows/build.yml/badge.svg?branch=master">
+  </a>
   <a href="https://github.com/gyroflow/flowshutter/tree/master">
     <img src="https://github.com/gyroflow/flowshutter/actions/workflows/check.yml/badge.svg?branch=master">
   </a>
@@ -44,6 +47,7 @@ Flowshutter has the following features:
 - '1-click' - (1) start/stop camera recording and (2) arm/disarm FC, via one click 
 - Camera recording start/stop control
 - FC arm/disarm control
+- FC blackbox flash chip erasion
 - OLED display
 
 with many more features on the way!
@@ -82,7 +86,7 @@ At the same time you can try to DIY your own flowshutter hardware. We have two o
 
 For more information about support camera list, please check the [list](https://docs.gyroflow.xyz/flowshutter/clist/) on the [documentation website](https://docs.gyroflow.xyz/).
 
-_*Note:_ We need an extra Arduino board to send the Sony LANC protocol, triggering mechnisms is based on momentary ground, but needs to add opto-coupling module between arduino and flowshutter to prevent overvoltage.
+_*Note:_ We need an extra Arduino board to send the Sony LANC protocol, triggering mechnism is based on momentary ground, but needs to add opto-coupling module between arduino and flowshutter to prevent overvoltage.
 
 ### Compatible FC
 
@@ -97,7 +101,10 @@ FC is short for flight controller, more specifically with betaflight/emuflight r
 
 The micropython firmware we used is [v1.19.1](https://micropython.org/resources/firmware/esp32-20220618-v1.19.1.bin), You can find a copy in the `/tools` directory. Also, a `uPyCraft` windows version is also provided in the `/tools` directory. You can try to use that to flash your ESP32 without the help of ESP-idf.
 
-### Set up environment
+### Set up debug environment
+
+Pre-requisite:
+- Python3
 
 #### Visual Studio Code with Pymakr extension
 
@@ -110,6 +117,21 @@ The micropython firmware we used is [v1.19.1](https://micropython.org/resources/
 
 #### Thonny IDE
 TBD
+
+### Start debugging
+
+1. Modify the `pymakr.conf` to match up with your flowshutter's COM port
+2. `python tools/build.py debug` to prepare the debug environment (move modules to `/obj` directory)
+3. Upload all modules to the hardware and reboot it.
+
+Note:
+- `python tools/build.py debug`: copy modules to `/obj` directory
+- `python tools/build.py debug clean`: clean the `/obj` directory. Useful when you are suffering from memory leak.
+
+### Compile flowshutter firmware (single bin)
+
+There's a CI that can help us to this. For compiling it locally, please check `tools/build.py` for more information.
+
 
 ## License
 

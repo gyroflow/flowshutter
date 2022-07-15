@@ -59,10 +59,9 @@ class WIFIManager:
         # First check if there already is any connection:
         if wlan_sta.isconnected():
             return wlan_sta
-        # canvas.show_wlan_connecting()
-        # canvas1.show_wlan_connecting()## TODO: add canvas hint here
-        wlan_canvas.show_wlan_connecting()
-        wlan_canvas.show_all()
+        vram.info = 'hint'
+        vram.sub_hint = 'WLAN_CONNECTING'
+        vram.oled_need_update = 'yes'
         # vram.info = "show wlan connecting"
         connected = False
         try:
@@ -126,8 +125,11 @@ class WIFIManager:
         import entry
         wlan_canvas = entry.task.ui.canvas# wlan_canvas = entry.task
 
-        wlan_canvas.show_ap_info()
-        wlan_canvas.show_all()
+        vram.info = 'hint'
+        vram.sub_hint = 'AP_HINT'
+        vram.oled_need_update = 'yes'
+        # wlan_canvas.show_ap_info()
+        # wlan_canvas.show_all()
         # vram.info = "show ap info"
         ## TODO: add canvas hint here
 
