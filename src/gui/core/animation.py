@@ -13,12 +13,4 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import target
-
-if target.oled_height == 64:
-    import gui.lib.canvas_128x64 as c
-    Canvas = c.Canvas_128x64()
-elif target.oled_height == 32:
-    import gui.lib.canvas_128x32 as c
-    Canvas = c.canvas_128x32()
-
+# from framebuf import FrameBuffer as Buffer

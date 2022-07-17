@@ -15,7 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import protocols.common as common
 import vram
-import gui.core.ui as ui
+import gui.logic as ui
 import time, gc
 
 class Task:
@@ -23,7 +23,7 @@ class Task:
         print(str(time.ticks_us()) + " [Create] Task scheduler")
         self.fc_link = common.CRSF()
         self.mem_opt_interval = 100 # gc per 100ms
-        self.ui = ui.UI_Logic()
+        self.ui = ui.Logic()
         print(str(time.ticks_us()) + " [  OK  ] Task scheduler")
 
     def mem_opt(self):

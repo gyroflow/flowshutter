@@ -19,11 +19,11 @@ import internet.ota as ota
 import vram, json, settings, time
 import gui.peripherals as peripherals
 
-class UI_Logic:
+class Logic:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] UI logic object")
         self.ota = ota.OTA()
-        self.canvas = canvas.Canvas()
+        self.canvas = canvas.Canvas
         self.buttons = peripherals.Buttons()
         self.battery = peripherals.Battery()
         self.welcome_time_count = 0
@@ -109,6 +109,8 @@ class UI_Logic:
             print("Unknown UI state")
 
     def welcome(self):
+        self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
@@ -120,12 +122,16 @@ class UI_Logic:
             vram.shutter_state = "home"
 
     def home(self):
-        self.bind_btn(1, "SHORT", "FC", 0, 0, 0)
+        self.bind_btn(0, "SHORT", "INFO", 0, 0, "battery_info")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "menu")
+        self.bind_btn(1, "SHORT", "SHUTTER", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "INFO", 0, 0, "battery_info")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "menu")
 
     def starting(self):
+        self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
@@ -153,12 +159,16 @@ class UI_Logic:
 
     def recording(self):
         self.starting_time_count = 0
-        self.bind_btn(1, "SHORT", "FC", 0, 0, 0)
+        self.bind_btn(0, "SHORT", "INFO", 0, 0, 0)
+        self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
+        self.bind_btn(1, "SHORT", "SHUTTER", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "INFO",0, 0, 0)
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
     def stopping(self):
+        self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
@@ -190,42 +200,56 @@ class UI_Logic:
         else:
             self.udpate_count += 5
         # self.bind_btn(1, "SHORT", "MENU", 0, 0, "menu_internet")
+        self.bind_btn(0, "SHORT", "MENU", 0, 0, "home")
+        self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "MENU", 0, 0, "home")
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
     def menu_camera_protocol(self):
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "erase_blackbox")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "SETTING", vram.camera_protocol, vram.camera_protocol_range, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "device_mode")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_device_mode(self):
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "SETTING", vram.device_mode, vram.device_mode_range, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "inject_mode")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_inject_mode(self):
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "device_mode")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "SETTING", vram.inject_mode, vram.inject_mode_range, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "erase_blackbox")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_erase_blackbox(self):
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "inject_mode")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "FC", 0,0,0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def hint_reboot(self):
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_root(self):
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "erase_blackbox")
+        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "BLANK", 0,0,0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
@@ -275,15 +299,7 @@ class UI_Logic:
                 vram.oled_need_update = "yes"
                 settings.update()
             elif dest == 'FC':
-                if vram.sub_state == "HOME":
-                    if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
-                        vram.sub_state = "STARTING"
-                    elif vram.device_mode == "TEST":
-                        self.camera.set_mode()
-                elif vram.sub_state == "RECORDING":
-                    if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
-                        vram.sub_state = "STOPPING"
-                elif vram.sub_menu == "erase_blackbox":
+                if vram.sub_menu == "erase_blackbox":
                     if vram.erase_flag == False:
                         vram.erase_flag = True
                     else:
@@ -300,3 +316,11 @@ class UI_Logic:
                 elif vram.sub_state == "ota_check":
                     self.ota.check()
                     vram.oled_need_update = "yes"
+                elif vram.sub_state == "HOME":
+                    if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
+                        vram.sub_state = "STARTING"
+                    elif vram.device_mode == "TEST":
+                        self.camera.set_mode()
+                elif vram.sub_state == "RECORDING":
+                    if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
+                        vram.sub_state = "STOPPING"

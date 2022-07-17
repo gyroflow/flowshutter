@@ -45,7 +45,7 @@ oled_need_update = "no"
 
 
 # user_settings:
-version = "0.65" # when new user settings added, this should be update firstly!
+version = "0.66" # when new user settings added, this should be update firstly!
 camera_protocol = "NO"
 device_mode = "MASTER"
 inject_mode = "OFF"

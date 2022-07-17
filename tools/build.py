@@ -113,6 +113,8 @@ def build(argv1, argv2):
         source_address = 'obj/targets/diy_fc.py'
     elif argv2 == 'NEUTRONRC_SDB':
         source_address = 'obj/targets/neutronrc_sdb.py'
+    elif argv2 == 'G12864':
+        source_address = 'obj/targets/g12864.py'
     else:
         print('ERROR: target not found')
         sys.exit()
@@ -165,17 +167,7 @@ if __name__ == '__main__':
                 # `build.py build TARGET XXXX`
                 target = sys.argv[3]
                 print('Build started!')
-                if target == 'GENERIC':
-                    build('COMPLIE','GENERIC')
-                elif target == 'DIY_CARD':
-                    build('COMPLIE','DIY_CARD')
-                elif target == 'DIY_FC':
-                    build('COMPLIE','DIY_FC')
-                elif target == 'NEUTRONRC_SDB':
-                    build('COMPLIE','NEUTRONRC_SDB')
-                else:
-                    print('ERROR: target not found')
-                    sys.exit()
+                build('COMPILE', target)
                 print('Build complete!')
 
         elif sys.argv[1] == 'debug':
@@ -188,17 +180,7 @@ if __name__ == '__main__':
                 # `build.py debug TARGET XXXX`
                 target = sys.argv[3]
                 print('Preparing for debug mode...')
-                if target == 'GENERIC':
-                    build('DEBUG','GENERIC')
-                elif target == 'DIY_FC':
-                    build('DEBUG','DIY_FC')
-                elif target == 'DIY_CARD':
-                    build('DEBUG','DIY_CARD')
-                elif target == 'NEUTRONRC_SDB':
-                    build('DEBUG','NEUTRONRC_SDB')
-                else:
-                    print('ERROR: target not found')
-                    sys.exit()
+                build('DEBUG', target)
                 print('Debug ready!')
             elif sys.argv[2] == 'clean':
                 print('Performing clean')
