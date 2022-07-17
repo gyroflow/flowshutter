@@ -109,6 +109,7 @@ class Logic:
             print("Unknown UI state")
 
     def welcome(self):
+        self.welcome_time_count += 5
         self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
@@ -116,9 +117,7 @@ class Logic:
         self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
         # welcome auto switch
-        if self.welcome_time_count <= 2500:
-            self.welcome_time_count += 5
-        else:
+        if self.welcome_time_count == 2500:
             vram.shutter_state = "home"
 
     def home(self):
@@ -130,6 +129,7 @@ class Logic:
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "menu")
 
     def starting(self):
+        self.starting_time_count += 5
         self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
@@ -140,16 +140,11 @@ class Logic:
         # starting timeout
         if self.starting_time_count < 5000:
             self.camera.rec()
-            self.starting_time_count += 5
-            # print(self.starting_time_count)
         elif self.starting_time_count == 5000:
-            self.starting_time_count += 5
             vram.info = "hint"
             vram.sub_hint = "STARTING_TIMEOUT"
             vram.oled_need_update = "yes"
-        elif ((self.starting_time_count > 5000) & (self.starting_time_count <= 10000)):
-            self.starting_time_count += 5
-        elif self.starting_time_count > 10000:
+        elif self.starting_time_count == 10000:
             self.starting_time_count = 0
             vram.shutter_state = "home"
             vram.sub_state = "HOME"
@@ -167,6 +162,7 @@ class Logic:
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
     def stopping(self):
+        self.starting_time_count += 5
         self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
@@ -177,15 +173,11 @@ class Logic:
         # stopping timeout
         if self.starting_time_count < 5000:
             self.camera.rec()
-            self.starting_time_count += 5
         elif self.starting_time_count == 5000:
-            self.starting_time_count += 5
             vram.info = "hint"
             vram.sub_hint = "STARTING_TIMEOUT"
             vram.oled_need_update = "yes"
-        elif ((self.starting_time_count > 5000) & (self.starting_time_count <= 10000)):
-            self.starting_time_count += 5
-        elif self.starting_time_count > 10000:
+        elif self.starting_time_count == 10000:
             self.starting_time_count = 0
             vram.shutter_state = "home"
             vram.sub_state = "HOME"
@@ -194,11 +186,11 @@ class Logic:
             self.camera.timeout()
 
     def info_battery(self):
-        if self.udpate_count >=5000:
+        self.udpate_count += 5
+        if self.udpate_count ==5000:
             self.udpate_count = 0
             vram.oled_need_update = "yes"
-        else:
-            self.udpate_count += 5
+
         # self.bind_btn(1, "SHORT", "MENU", 0, 0, "menu_internet")
         self.bind_btn(0, "SHORT", "MENU", 0, 0, "home")
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
@@ -260,11 +252,9 @@ class Logic:
             self.buttons.state[button] = "RLS"
             if dest == 'MENU':
                 vram.shutter_state = next_state
-                vram.oled_need_update = "yes"
             elif dest == 'SUBMENU':
                 vram.shutter_state = 'menu'
                 vram.sub_menu = next_state
-                vram.oled_need_update = "yes"
             elif dest == 'INFO':
                 if vram.shutter_state == "recording":
                     if vram.info == "recording":
@@ -276,7 +266,6 @@ class Logic:
                         vram.info = "battery_info"
                     elif vram.info == "battery_info":
                         vram.info = "home"
-                vram.oled_need_update = "yes"
             elif dest == 'BLANK':
                 pass
             elif dest == "SETTING":
@@ -296,7 +285,6 @@ class Logic:
                     vram.ota_channel = setting
                 else:
                     print("Hey what's this?")
-                vram.oled_need_update = "yes"
                 settings.update()
             elif dest == 'FC':
                 if vram.sub_menu == "erase_blackbox":
@@ -304,18 +292,15 @@ class Logic:
                         vram.erase_flag = True
                     else:
                         vram.erase_flag = False
-                vram.oled_need_update = "yes"
             elif dest == 'SHUTTER':
                 if vram.sub_state == "internet":
                     import internet.wlan as wlan
                     if vram.wlan_state == "DISCONNECTED":
                         wlan.up()
-                        vram.oled_need_update = "yes"
                     else:
                         wlan.down()
                 elif vram.sub_state == "ota_check":
                     self.ota.check()
-                    vram.oled_need_update = "yes"
                 elif vram.sub_state == "HOME":
                     if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                         vram.sub_state = "STARTING"
@@ -324,3 +309,4 @@ class Logic:
                 elif vram.sub_state == "RECORDING":
                     if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                         vram.sub_state = "STOPPING"
+            vram.oled_need_update = "yes"

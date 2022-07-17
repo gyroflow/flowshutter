@@ -20,6 +20,7 @@ from machine import UART
 import time
 
 target = "GENERIC"
+oled_height = 32
 
 def init_adc():
     print(str(time.ticks_us()) + " [ Init ] ADC")

@@ -20,5 +20,5 @@ if target.oled_height == 64:
     Canvas = c.Canvas_128x64()
 elif target.oled_height == 32:
     import gui.lib.canvas_128x32 as c
-    Canvas = c.canvas_128x32()
+    Canvas = c.Canvas_128x32()
 

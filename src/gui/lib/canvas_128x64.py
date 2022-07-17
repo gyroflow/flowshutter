@@ -88,7 +88,7 @@ class Canvas_128x64(Icons):
 
     def display_welcome(self):
         self.screen.fill(0)
-        self.screen.blit(self.icon_gyroflow, 0, 2)
+        self.screen.blit(self.icon_gyroflow, 0, 2+16)
         # screen.invert(1)
         self.screen.show()
 
@@ -143,12 +143,12 @@ class Canvas_128x64(Icons):
         else:
             print('Unknown sub_menu:', sub_cat)
         self.screen.fill(0)
-        self.screen.blit(fb, 95, 0)
-        self.a10.set_textpos(self.screen,0,0)
+        # self.screen.blit(fb, 95, 0)
+        self.a10.set_textpos(self.screen,0,int(64-self.a10.stringlen(head)/2))
         self.a10.printstring(head)
-        self.screen.hline(0,10,94,1)
-        self.screen.text(content, 0, 14, 1)
-        self.screen.text('<<  '+str(index)+'/4   >>', 0, 24, 1)
+        # self.screen.hline(0,10,94,1)
+        # self.screen.text(content, 0, 14, 1)
+        # self.screen.text('<<  '+str(index)+'/4   >>', 0, 24, 1)
         self.screen.show()
 
     def display_hint(self, sub_hint):

@@ -32,7 +32,7 @@ def init_adc():
 
 def init_fc_uart():
     print(str(time.ticks_us()) + " [ Init ] UART1")
-    uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 2, rx = 4)
+    uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 4, rx = 2)
     return uart1
 
 def init_audio():

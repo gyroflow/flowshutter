@@ -15,6 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import gui.driver.ssd1306 as ssd1306
 from gui.core.writer import Writer
+from gui.fonts.icons import Icons
 import gui.fonts.arial10 as a10
 import vram, target
 import framebuf, time
