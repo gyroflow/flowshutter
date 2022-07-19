@@ -10,71 +10,115 @@
         },
         {
             "name": "boot.py",
-            "sha1": "93a65da52ba7dbd97787531c7695d4a85807c392"
+            "sha1": "c85b047013eb35114e4690c79e9355ba1ab22001"
         },
         {
-            "name": "camera/common.py",
-            "sha1": "aaf1e2b3b53aea65e3db19b4e16be67e2edb701e"
+            "name": "bootc.py",
+            "sha1": "d2029049f9beb4234ccea948d14015a88695d983"
         },
         {
-            "name": "camera/lanc.py",
-            "sha1": "963911ce048526f959b75c3e1550747528d2e4ae"
-        },
-        {
-            "name": "camera/momentary_ground.py",
-            "sha1": "512368ae6607f842156b3d5d6e6f4c1dfcff67d7"
-        },
-        {
-            "name": "camera/no.py",
-            "sha1": "32cf39f44e6860634330df6d36eb949df7db6079"
-        },
-        {
-            "name": "camera/schmitt_3v3.py",
-            "sha1": "f696d2613d9c21c2d42941837460874cfc820321"
-        },
-        {
-            "name": "camera/sony.py",
-            "sha1": "e597c74da07ffd452b0e2f81baaddf90aea2581d"
-        },
-        {
-            "name": "camera/zcam.py",
-            "sha1": "6ceb86304b9834e8d68c4df0a896aef3a5aed9c0"
-        },
-        {
-            "name": "entry.py",
-            "sha1": "130bc91df595a64c894e3141867c2d29ff308138"
+            "name": "gui/core/animation.py",
+            "sha1": "326b71ef1e348e87b2a9484b3364d147bdd0b662"
         },
         {
             "name": "gui/core/canvas.py",
-            "sha1": "0ce302661d57dfe1d37484c76d83b32310b6f8ec"
+            "sha1": "cc78e7d8c1bceae41d4dc8af66aeedb0c6f391f4"
         },
         {
-            "name": "gui/core/ui.py",
-            "sha1": "1580903f425dce22b489042f46279d601da226e8"
-        },
-        {
-            "name": "gui/driver/ssd1306.py",
-            "sha1": "f67840f845b02d1f53866d7d7033719ca9fd9688"
-        },
-        {
-            "name": "gui/lib/arial10.py",
-            "sha1": "ab54e3cc6107264243c94a015baf3145c1197452"
-        },
-        {
-            "name": "gui/lib/font10.py",
-            "sha1": "eba3531d7767f7e6c72cacc73d9096fccf737048"
-        },
-        {
-            "name": "gui/lib/font6.py",
-            "sha1": "b7db1a6a2ed9164f03a039b43d21e1b06d546001"
-        },
-        {
-            "name": "gui/lib/writer.py",
+            "name": "gui/core/writer.py",
             "sha1": "0f2c18c81181021d931dec2ce398df338e11cfec"
         },
         {
-            "name": "gui/peripherals.py",
+            "name": "gui/fonts/arial10.py",
+            "sha1": "ab54e3cc6107264243c94a015baf3145c1197452"
+        },
+        {
+            "name": "gui/fonts/font10.py",
+            "sha1": "eba3531d7767f7e6c72cacc73d9096fccf737048"
+        },
+        {
+            "name": "gui/fonts/font6.py",
+            "sha1": "b7db1a6a2ed9164f03a039b43d21e1b06d546001"
+        },
+        {
+            "name": "gui/fonts/icons.py",
+            "sha1": "9bd7a96cfca27313c9dc9954b3299d754b58bdb0"
+        },
+        {
+            "name": "gui/lib/canvas_128x32.py",
+            "sha1": "9d14584083e8581fa2477d16b3f7351451d90c88"
+        },
+        {
+            "name": "gui/lib/canvas_128x64.py",
+            "sha1": "a189330d7c2e32d5d211944476c0f8a40519e377"
+        },
+        {
+            "name": "gui/logic.py",
+            "sha1": "57eb77117bb2d6922c3483f539586586db405905"
+        },
+        {
+            "name": "gui/settings.py",
+            "sha1": "c7ec8ac0c1595aaebca98d8dd7281cda4f45dd2d"
+        },
+        {
+            "name": "hal/ahal.py",
+            "sha1": "837493e5010f421e5842749e987e2dc1b84d4393"
+        },
+        {
+            "name": "hal/camera/common.py",
+            "sha1": "aaf1e2b3b53aea65e3db19b4e16be67e2edb701e"
+        },
+        {
+            "name": "hal/camera/lanc.py",
+            "sha1": "963911ce048526f959b75c3e1550747528d2e4ae"
+        },
+        {
+            "name": "hal/camera/momentary_ground.py",
+            "sha1": "92b8e49e00c9b82b5ce7c68a5befa3091a0590c0"
+        },
+        {
+            "name": "hal/camera/no.py",
+            "sha1": "d440751baf77b9dc090f6ea6ea0cf5ecb4100b74"
+        },
+        {
+            "name": "hal/camera/schmitt_3v3.py",
+            "sha1": "8d0a4b6b1afc24b9b9c6062ee477ec0c79a9b593"
+        },
+        {
+            "name": "hal/camera/sony.py",
+            "sha1": "a0f97090159bf7b10627cdc09ac0f5f653674fa4"
+        },
+        {
+            "name": "hal/camera/zcam.py",
+            "sha1": "5773516096af07165a42a3ab77a02a45aed69b91"
+        },
+        {
+            "name": "hal/driver/painter.py",
+            "sha1": "0ee4e7b1cd72eb0e710798232f010e048ddd1a9c"
+        },
+        {
+            "name": "hal/driver/ssd1306.py",
+            "sha1": "7ea8f3365f3165267df139bd3bd2041a8163562a"
+        },
+        {
+            "name": "hal/peripherals.py",
             "sha1": "abb3f6c8d7ccab179229da5f57a61659b914f5fe"
+        },
+        {
+            "name": "hal/protocols/common.py",
+            "sha1": "3b4ca0d0a71cf92891b4392a2a31482fbd27b14e"
+        },
+        {
+            "name": "hal/protocols/crsf.py",
+            "sha1": "33e54f9b0e791906da72be5188d9d97816565e88"
+        },
+        {
+            "name": "hal/protocols/msp.py",
+            "sha1": "27ca81d3fba8353a083b7fba74fb9697b1835f95"
+        },
+        {
+            "name": "hal/shal.py",
+            "sha1": "98d02d1e44256a35525cf0b804ba3df7ccc05c8b"
         },
         {
             "name": "internet/ota.py",
@@ -86,51 +130,35 @@
         },
         {
             "name": "main.py",
-            "sha1": "027357cac8a688dc2833b3cd666c01b9b8831693"
+            "sha1": "7b93a1f1a6e687db67435c548076993727ff19fc"
         },
         {
-            "name": "protocols/common.py",
-            "sha1": "0fb338cdc695eaaef3d98610916a80afee59620c"
-        },
-        {
-            "name": "protocols/crsf.py",
-            "sha1": "33e54f9b0e791906da72be5188d9d97816565e88"
-        },
-        {
-            "name": "protocols/msp.py",
-            "sha1": "27ca81d3fba8353a083b7fba74fb9697b1835f95"
-        },
-        {
-            "name": "settings.py",
-            "sha1": "62c73b9493fc637b7a43deb36a9a9961e4603b9b"
-        },
-        {
-            "name": "startup.py",
-            "sha1": "3ab8bd7b36a793d475d8e469c01ecbee769fc9d4"
+            "name": "mainc.py",
+            "sha1": "84c83ac5f1b5f6e13ad264cc986d2e7a45d72143"
         },
         {
             "name": "targets/diy_card.py",
-            "sha1": "7b5736d70ee43aa0263370b1fe7ee33e937e307a"
+            "sha1": "a5fd1d49da8ef21cf1552200264d172b542dea5f"
         },
         {
             "name": "targets/diy_fc.py",
-            "sha1": "393fcf64a9fb1bbd6aa09f1171b82abfaa6cecc9"
+            "sha1": "ad7c1d1fc2944cf04faa0b54e76e6a63e787df27"
+        },
+        {
+            "name": "targets/g12864.py",
+            "sha1": "817cdfdfeb0297b6d24791cf585123f9a97bf264"
         },
         {
             "name": "targets/generic.py",
-            "sha1": "570d036ae9b89810c6743b3d30f1de978b3f6446"
+            "sha1": "9683795a8d62ddc0199470652dd93add2c28fe8d"
         },
         {
             "name": "targets/neutronrc_sdb.py",
-            "sha1": "8341055828ff2122044492544806fa9b667e42bc"
-        },
-        {
-            "name": "task.py",
-            "sha1": "c9cd2a93019ccbaa6d3418acf2d27d44ad65a2c7"
+            "sha1": "ea5a506fba8e079eeb56962ee6c77d447b3dd429"
         },
         {
             "name": "vram.py",
-            "sha1": "59d2819002d20d7f0ee20ae4ba3943a72cfbcce9"
+            "sha1": "5260b24d5dc6c547d460d657556dce23c00dd7aa"
         }
     ]
 }

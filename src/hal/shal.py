@@ -14,15 +14,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import hal.protocols.common as common
-import gui.core.canvas as canvas
+import hal.driver.ssd1306 as ssd1306
 import vram
 import time, gc
+import target
 
 class SyncPeripherals:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Task scheduler")
-        self.canvas = canvas.init_canvas()
-        # self.ui = ui.Logic()
+        i2c = target.init_i2c()
+        self.screen = ssd1306.SSD1306_I2C(128, target.oled_height, i2c, False)
         self.fc_link = common.CRSF()
         self.mem_opt_interval = 100 # gc per 100ms
         print(str(time.ticks_us()) + " [  OK  ] Task scheduler")
@@ -42,7 +43,7 @@ class SyncPeripherals:
         if vram.oled_tasklist != []:
             # print(vram.oled_tasklist)
             i = vram.oled_tasklist[0]
-            self.canvas.show_sub(i)
+            self.screen.show_sub(i)
             # self.ui.show_sub(i)
             del vram.oled_tasklist[0]
         elif self.mem_opt_interval < 0:

@@ -15,6 +15,7 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
 import vram, settings, time
+import gui.core.canvas as canvas
 import gui.settings as settings
 import hal.ahal as ahal
 import hal.shal as shal
@@ -26,7 +27,7 @@ class Logic:
         self.update_count = 0
         self.settings = settings.UserSettings()
         self.sync_hal = shal.SyncPeripherals()
-        # self.canvas = canvas.init_canvas(painter)
+        self.canvas = canvas.init_canvas(self.sync_hal.screen)
         self.async_hal = ahal.AsnycPeripherals(camera = vram.camera_protocol)
         print(str(time.ticks_us()) + " [ SYNC ] UI logic HAL")
         self.init_sync_hal()
@@ -65,10 +66,10 @@ class Logic:
         if vram.previous_state != vram.shutter_state:
             vram.previous_state = vram.shutter_state
             vram.info = vram.shutter_state
-            self.sync_hal.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
+            self.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
         if vram.oled_need_update == "yes":
             vram.oled_need_update = "no"
-            self.sync_hal.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
+            self.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
 
     def check_shutter_state(self):
         if vram.shutter_state == "welcome":

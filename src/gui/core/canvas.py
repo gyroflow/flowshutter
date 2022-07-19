@@ -15,11 +15,11 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import target
 
-def init_canvas():
+def init_canvas(screen):
     if target.oled_height == 64:
         import gui.lib.canvas_128x64 as c
-        Canvas = c.Canvas_128x64()
+        Canvas = c.Canvas_128x64(screen)
     elif target.oled_height == 32:
         import gui.lib.canvas_128x32 as c
-        Canvas = c.Canvas_128x32()
+        Canvas = c.Canvas_128x32(screen)
     return Canvas

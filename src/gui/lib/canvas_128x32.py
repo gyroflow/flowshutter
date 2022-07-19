@@ -13,7 +13,6 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import hal.driver.ssd1306 as ssd1306
 from gui.core.writer import Writer
 from gui.fonts.icons import Icons
 import gui.fonts.arial10 as a10
@@ -21,18 +20,11 @@ import vram, target
 import framebuf, time
 
 class Canvas_128x32(Icons):
-    def __init__(self):
-        self.i2c = target.init_i2c()
-        self.screen = ssd1306.SSD1306_I2C(128, 32, self.i2c, False)
+    def __init__(self,screen):
+        self.screen = screen
         self.a10 = Writer(self.screen, a10)
         self.animation = False
         super().__init__()
-
-    def show_sub(self, i):
-        self.screen.show_sub(i)  
-
-    def show_all(self):
-        self.screen.show_all()
 
     def update(self, info, sub_state, sub_menu, sub_hint):
         if info == "welcome":
