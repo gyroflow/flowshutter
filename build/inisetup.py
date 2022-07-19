@@ -37,11 +37,11 @@ def setup():
     vfs = uos.VfsLfs2(bdev)
     uos.mount(vfs, "/")
     with open("boot.py", "w") as f0:
-        f0.write("import startup")
+        f0.write("import bootc")
     f0.close()
 
     with open("main.py", "w") as f1:
-        f1.write("import entry")
+        f1.write("import mainc")
     f1.close()
 
     return vfs

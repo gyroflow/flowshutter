@@ -13,17 +13,18 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import protocols.common as common
+import hal.protocols.common as common
+import gui.core.canvas as canvas
 import vram
-import gui.logic as ui
 import time, gc
 
-class Task:
+class SyncPeripherals:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Task scheduler")
+        self.canvas = canvas.init_canvas()
+        # self.ui = ui.Logic()
         self.fc_link = common.CRSF()
         self.mem_opt_interval = 100 # gc per 100ms
-        self.ui = ui.Logic()
         print(str(time.ticks_us()) + " [  OK  ] Task scheduler")
 
     def mem_opt(self):
@@ -41,7 +42,8 @@ class Task:
         if vram.oled_tasklist != []:
             # print(vram.oled_tasklist)
             i = vram.oled_tasklist[0]
-            self.ui.show_sub(i)
+            self.canvas.show_sub(i)
+            # self.ui.show_sub(i)
             del vram.oled_tasklist[0]
         elif self.mem_opt_interval < 0:
             self.mem_opt()

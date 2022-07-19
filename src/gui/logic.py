@@ -13,43 +13,46 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import gui.core.canvas as canvas
 import uasyncio as asyncio
-import internet.ota as ota
-import vram, json, settings, time
-import gui.peripherals as peripherals
+import vram, settings, time
+import gui.settings as settings
+import hal.ahal as ahal
+import hal.shal as shal
+from machine import Timer
 
 class Logic:
     def __init__(self):
-        print(str(time.ticks_us()) + " [Create] UI logic object")
-        self.ota = ota.OTA()
-        self.canvas = canvas.Canvas
-        self.buttons = peripherals.Buttons()
-        self.battery = peripherals.Battery()
-        self.welcome_time_count = 0
-        self.udpate_count = 0
-        self.starting_time_count = 0
-        self.ground_time_count = 0
-        self.init_camera()
-        print(str(time.ticks_us()) + " [  OK  ] UI logic object")
+        print(str(time.ticks_us()) + " [ INIT ] UI logic object")
+        self.update_count = 0
+        self.settings = settings.UserSettings()
+        self.sync_hal = shal.SyncPeripherals()
+        # self.canvas = canvas.init_canvas(painter)
+        self.async_hal = ahal.AsnycPeripherals(camera = vram.camera_protocol)
+        print(str(time.ticks_us()) + " [ SYNC ] UI logic HAL")
+        self.init_sync_hal()
+        print(str(time.ticks_us()) + " [ ASYNC] UI logic HAL")
+        self.init_async_hal()
 
-    def init_camera(self):
-        if vram.camera_protocol == "NO":
-            from camera.no import No_Cam as camera
-        elif vram.camera_protocol == "SONY MTP":
-            from camera.sony import Sony_multi as camera
-        elif vram.camera_protocol == "LANC":
-            from camera.lanc import LANC as camera
-        elif vram.camera_protocol == "ZCAM UART":
-            from camera.zcam import ZCAM_UART as camera
-        elif vram.camera_protocol == "MMTRY GND":
-            from camera.momentary_ground import Momentary_ground as camera
-        elif vram.camera_protocol == "3V3 Schmitt":
-            from camera.schmitt_3v3 import Schmitt_3v3 as camera
-        self.camera = camera()
+    def init_sync_hal(self):
+        timer0 = Timer(0)
+        timer0.init(period=5, mode=Timer.PERIODIC, callback=self.sync_hal.scheduler)
 
-    def show_sub(self, i):
-        self.canvas.show_sub(i)
+    def init_async_hal(self):
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.sync_hal.fc_link.uart_handler())
+        loop.create_task(self.async_hal.buttons.checker('PAGE UP'))
+        loop.create_task(self.async_hal.buttons.checker('PAGE DOWN'))
+        loop.create_task(self.async_hal.buttons.checker('ENTER'))
+        loop.create_task(self.async_hal.battery.adc_handler())
+        loop.create_task(self.update())
+        if self.async_hal.camera.task_mode == "THREAD":
+            import _thread
+            import machine
+            machine.freq(240000000)
+            _thread.start_new_thread(self.async_hal.camera.uart_handler, ())
+        elif self.async_hal.camera.task_mode == "ASYNC":
+            loop.create_task(self.async_hal.camera.uart_handler())
+        loop.run_forever()
 
     async def update(self):          # UI tasks controller
         print(str(time.ticks_us()) + " [  OK  ] Async UI state machine")
@@ -62,10 +65,10 @@ class Logic:
         if vram.previous_state != vram.shutter_state:
             vram.previous_state = vram.shutter_state
             vram.info = vram.shutter_state
-            self.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
+            self.sync_hal.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
         if vram.oled_need_update == "yes":
             vram.oled_need_update = "no"
-            self.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
+            self.sync_hal.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
 
     def check_shutter_state(self):
         if vram.shutter_state == "welcome":
@@ -109,7 +112,7 @@ class Logic:
             print("Unknown UI state")
 
     def welcome(self):
-        self.welcome_time_count += 5
+        self.update_count += 5
         self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
@@ -117,7 +120,8 @@ class Logic:
         self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
         # welcome auto switch
-        if self.welcome_time_count == 2500:
+        if self.update_count == 2500:
+            self.update_count = 0
             vram.shutter_state = "home"
 
     def home(self):
@@ -129,7 +133,7 @@ class Logic:
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "menu")
 
     def starting(self):
-        self.starting_time_count += 5
+        self.update_count += 5
         self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
@@ -138,22 +142,22 @@ class Logic:
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
         # starting timeout
-        if self.starting_time_count < 5000:
-            self.camera.rec()
-        elif self.starting_time_count == 5000:
+        if self.update_count < 5000:
+            self.async_hal.camera.rec()
+        elif self.update_count == 5000:
             vram.info = "hint"
             vram.sub_hint = "STARTING_TIMEOUT"
             vram.oled_need_update = "yes"
-        elif self.starting_time_count == 10000:
-            self.starting_time_count = 0
+        elif self.update_count == 10000:
+            self.update_count = 0
             vram.shutter_state = "home"
             vram.sub_state = "HOME"
             vram.info = vram.shutter_state
             vram.oled_need_update = "yes"
-            self.camera.timeout()
+            self.async_hal.camera.timeout()
 
     def recording(self):
-        self.starting_time_count = 0
+        self.update_count = 0
         self.bind_btn(0, "SHORT", "INFO", 0, 0, 0)
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "SHUTTER", 0, 0, 0)
@@ -162,7 +166,7 @@ class Logic:
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
     def stopping(self):
-        self.starting_time_count += 5
+        self.update_count += 5
         self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
@@ -171,24 +175,24 @@ class Logic:
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
         # stopping timeout
-        if self.starting_time_count < 5000:
-            self.camera.rec()
-        elif self.starting_time_count == 5000:
+        if self.update_count < 5000:
+            self.async_hal.camera.rec()
+        elif self.update_count == 5000:
             vram.info = "hint"
             vram.sub_hint = "STARTING_TIMEOUT"
             vram.oled_need_update = "yes"
-        elif self.starting_time_count == 10000:
-            self.starting_time_count = 0
+        elif self.update_count == 10000:
+            self.update_count = 0
             vram.shutter_state = "home"
             vram.sub_state = "HOME"
             vram.info = vram.shutter_state
             vram.oled_need_update = "yes"
-            self.camera.timeout()
+            self.async_hal.camera.timeout()
 
     def info_battery(self):
-        self.udpate_count += 5
-        if self.udpate_count ==5000:
-            self.udpate_count = 0
+        self.update_count += 5
+        if self.update_count ==5000:
+            self.update_count = 0
             vram.oled_need_update = "yes"
 
         # self.bind_btn(1, "SHORT", "MENU", 0, 0, "menu_internet")
@@ -248,8 +252,8 @@ class Logic:
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def bind_btn(self, button, event, dest, setting, setting_range, next_state):
-        if self.buttons.state[button] == event:
-            self.buttons.state[button] = "RLS"
+        if self.async_hal.buttons.state[button] == event:
+            self.async_hal.buttons.state[button] = "RLS"
             if dest == 'MENU':
                 vram.shutter_state = next_state
             elif dest == 'SUBMENU':
@@ -285,7 +289,7 @@ class Logic:
                     vram.ota_channel = setting
                 else:
                     print("Hey what's this?")
-                settings.update()
+                self.settings.update()
             elif dest == 'FC':
                 if vram.sub_menu == "erase_blackbox":
                     if vram.erase_flag == False:
@@ -300,12 +304,14 @@ class Logic:
                     else:
                         wlan.down()
                 elif vram.sub_state == "ota_check":
+                    import internet.ota as ota
+                    self.ota = ota.OTA()
                     self.ota.check()
                 elif vram.sub_state == "HOME":
                     if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                         vram.sub_state = "STARTING"
                     elif vram.device_mode == "TEST":
-                        self.camera.set_mode()
+                        self.async_hal.camera.set_mode()
                 elif vram.sub_state == "RECORDING":
                     if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
                         vram.sub_state = "STOPPING"

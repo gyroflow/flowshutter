@@ -75,8 +75,8 @@ def move(argv):
     try:
         shutil.rmtree(path='obj/__pycache__')
         print('RM '+'obj/__pycache__')
-        shutil.rmtree(path='obj/protocols/__pycache__')
-        print('RM '+'obj/protocols/__pycache__')
+        shutil.rmtree(path='obj/hal/protocols/__pycache__')
+        print('RM '+'obj/hal/protocols/__pycache__')
     except FileNotFoundError:
         pass
 

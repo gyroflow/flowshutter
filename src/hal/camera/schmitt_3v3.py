@@ -1,4 +1,4 @@
- # Flowshutter
+# Flowshutter
 # Copyright (C) 2021  Hugo Chiang
 
 # Flowshutter is free software: you can redistribute it and/or modify
@@ -15,26 +15,26 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import vram, target
 import time
-from camera.common import Camera
+from hal.camera.common import Camera
 
-class Momentary_ground(Camera):
+class Schmitt_3v3(Camera):
     def __init__(self):
-        print(str(time.ticks_us()) + " [Create] Momentary ground object")
-        self.pin = target.init_momentary_ground_pin()
+        print(str(time.ticks_us()) + " [Create] Schmitt 3v3 object")
+        self.pin = target.init_schmitt_3v3_trigger_pin()
         super().__init__("NO")
-        print(str(time.ticks_us()) + " [  OK  ] Momentary ground object")
+        print(str(time.ticks_us()) + " [  OK  ] Schmitt 3v3 object")
 
-    def momentary_ground(self,value):
-        # 1 High impedance (open drain)
-        # 0 Low voltage (tied to ground)
-        self.pin.value(value)
-        if value == 1:
-            if vram.sub_state == "STOPPING":
-                vram.sub_state = "HOME"
-                vram.arm_state = "disarm"
-            elif vram.sub_state == "STARTING":
-                vram.sub_state = "RECORDING"
-                vram.arm_state = "arm"
+    def toggle_cc_voltage_level(self, argv):
+        if argv == "pass":
+            pass
+        elif vram.sub_state == "STOPPING":
+            vram.sub_state = "HOME"
+            self.pin.value(0)
+            vram.arm_state = "disarm"
+        elif vram.sub_state == "STARTING":
+            vram.sub_state = "RECORDING"
+            self.pin.value(1)
+            vram.arm_state = "arm"
 
     def rec(self):
-        self.rec_event(self.momentary_ground, 0, self.momentary_ground, 1)
+        self.rec_event(self.toggle_cc_voltage_level, 'pass', self.toggle_cc_voltage_level,'react')

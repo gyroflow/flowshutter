@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from protocols.crsf import CRSF_RC_Generator
+from hal.protocols.crsf import CRSF_RC_Generator
 import target, vram
 import time
 import uasyncio as asyncio

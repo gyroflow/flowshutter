@@ -16,7 +16,7 @@
 import uasyncio as asyncio
 import vram, target
 import time
-from camera.common import Camera
+from hal.camera.common import Camera
 
 class Sony_multi(Camera):
     def __init__(self):

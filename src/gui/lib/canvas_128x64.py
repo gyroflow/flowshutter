@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import gui.driver.ssd1306 as ssd1306
+
 from gui.core.writer import Writer
 from gui.fonts.icons import Icons
 import gui.fonts.arial10 as a10

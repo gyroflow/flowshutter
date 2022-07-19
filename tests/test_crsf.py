@@ -1,5 +1,5 @@
 import unittest
-from src.protocols.crsf import CRSF_RC_Generator
+from src.hal.protocols.crsf import CRSF_RC_Generator
 
 class TestCRSF(unittest.TestCase):
     crsf = CRSF_RC_Generator()
