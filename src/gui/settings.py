@@ -14,13 +14,27 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import json, os
-import vram
 import target
 import time
 
 class UserSettings:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] User Settings")
+        self.settings = {
+            'version':          '0.66',# when new user settings added, this should be update firstly!
+            'camera_protocol':  'NO',
+            'device_mode':      'MASTER',
+            'inject_mode':      'OFF',
+            'ota_source':       'GitHub',
+            'ota_channel':      'stable',
+            'target_name':      target.name
+        }
+        self.camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "SONY MTP", "ZCAM UART"]
+        # camera_protocol_range = ["NO", "MMTRY GND", "3V3 Schmitt", "SONY MTP", "ZCAM UART", "LANC"]
+        self.device_mode_range = ["MASTER"]
+        self.inject_mode_range = ["OFF", "ON"]
+        self.ota_source_range = ["GitHub", "Gitee"]
+        self.ota_channel_range = ["stable", "beta", "dev"]
         self.read()
         print(str(time.ticks_us()) + " [  OK  ] User Settings")
 
@@ -38,55 +52,49 @@ class UserSettings:
 
     def update(self):
         with open("settings.json", "w") as f:
-            settings = {"version":vram.version,
-                        "camera_protocol":vram.camera_protocol,
-                        "device_mode":vram.device_mode,
-                        "inject_mode":vram.inject_mode,
-                        "ota_source":vram.ota_source,
-                        "ota_channel":vram.ota_channel,
-                        "target":target.target}
-            json.dump(settings, f)
+            json.dump(self.settings, f)
             f.close()
 
     def verify(self,content):
         with open("settings.json", "r") as f:
-            settings = json.load(f)
+            local_settings = json.load(f)
 
             if content == 'version':
-                if vram.version != settings["version"]:
+                if self.settings['version'] != local_settings["version"]:
                     print(str(time.ticks_us()) + " [ ERROR] User Settings: Version changed. Overwriting default settings")
                     f.close()
                     self.update()        # here we should write the default settings
                     print(str(time.ticks_us()) + " [ ERROR] User Settings: Default settings overwritten")
                 else:
-                    vram.version = settings["version"]
+                    self.settings['version'] = local_settings["version"]
 
             if content == 'rest_settings':
                 try:
-                    index1              = vram.camera_protocol_range.index( settings["camera_protocol"] )
-                    vram.camera_protocol= settings["camera_protocol"]
-                    vram.update_camera_preset()
-                    index2              = vram.device_mode_range.index(     settings["device_mode"]     )
-                    vram.device_mode    = settings["device_mode"]
-                    index3              = vram.inject_mode_range.index(     settings["inject_mode"]     )
-                    vram.inject_mode    = settings["inject_mode"]
-                    index4              = vram.ota_source_range.index(      settings["ota_source"]      )
-                    vram.ota_source     = settings["ota_source"]
-                    index5              = vram.ota_channel_range.index(     settings["ota_channel"]     )
-                    vram.ota_channel    = settings["ota_channel"]
+                    index1              = self.camera_protocol_range.index( local_settings["camera_protocol"] )
+                    self.settings['camera_protocol'] = local_settings["camera_protocol"]
+                    self.update_camera_preset()
+                    index2              = self.device_mode_range.index(     local_settings["device_mode"]     )
+                    self.settings['device_mode']     = local_settings["device_mode"]
+                    index3              = self.inject_mode_range.index(     local_settings["inject_mode"]     )
+                    self.settings['inject_mode']     = local_settings["inject_mode"]
+                    index4              = self.ota_source_range.index(      local_settings["ota_source"]      )
+                    self.settings['ota_source']      = local_settings["ota_source"]
+                    index5              = self.ota_channel_range.index(     local_settings["ota_channel"]     )
+                    self.settings['ota_channel']     = local_settings["ota_channel"]
                 except ValueError: # one of the current settings is not in the valid range
                     print("settings.json is invalid")
                     f.close()
                     self.update()
                     print("updated settings.json")
                     f = open("settings.json", "r")  # then read again, cuz update() closed the file
-                    vram.version        = settings["version"]
-                    vram.camera_protocol= settings["camera_protocol"]
-                    vram.device_mode    = settings["device_mode"]
-                    vram.inject_mode    = settings["inject_mode"]
-                    vram.ota_source     = settings["ota_source"]
-                    vram.ota_channel    = settings["ota_channel"]
-                    target.target       = settings["target"]
+                    local_settings = json.load(f)
+                    self.settings['version']        = local_settings["version"]
+                    self.settings['camera_protocol']= local_settings["camera_protocol"]
+                    self.settings['device_mode']    = local_settings["device_mode"]
+                    self.settings['inject_mode']    = local_settings["inject_mode"]
+                    self.settings['ota_source']     = local_settings["ota_source"]
+                    self.settings['ota_channel']    = local_settings["ota_channel"]
+                    self.settings['target_name']    = local_settings["target_name"]
 
     def load_json(self,argv):
         if argv == 'force':
@@ -99,3 +107,27 @@ class UserSettings:
         self.verify('rest_settings')
         print("settings.json loaded")
 
+    def update_camera_preset(self):# per camera protocol
+        if self.settings['camera_protocol'] == "SONY MTP":
+            self.settings['device_mode'] = "SLAVE"
+            self.device_mode_range = ["SLAVE", "MASTER/SLAVE"]
+        # if camera_protocol == "ZCAM UART":
+        #     device_mode = "MASTER"
+        #     device_mode_range = ["MASTER", "TEST"]
+        # elif camera_protocol == "NO" or camera_protocol == "MMTRY GND" or camera_protocol == "3V3 Schmitt" or camera_protocol == "LANC":
+        elif self.settings['camera_protocol'] == ("NO" or  "MMTRY GND" or "3V3 Schmitt" or "ZCAM UART"):
+            self.settings['device_mode'] = "MASTER"
+            self.device_mode_range = ["MASTER"]
+
+    def cycle(self,direction,range,current):
+        index = range.index(current)
+        if direction == 'nxt':
+            if index == len(range) - 1:
+                return range[0]
+            else:
+                return range[index + 1]
+        elif direction == 'prv':
+            if index == 0:
+                return range[len(range) - 1]
+            else:
+                return range[index - 1]

@@ -13,13 +13,17 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import json, urequests, vram, os, gc
+import json, urequests, os, gc
 from micropython import mem_info
 import time
 
 class OTA:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] OTA object")
+        self.settings = {
+            "ota_source": "GitHub",
+            "ota_channel": "stable"
+        }
         self.update_list = []
         self.delete_list = []
         print(str(time.ticks_us()) + " [  OK  ] OTA object")
@@ -27,16 +31,16 @@ class OTA:
     def build_url(self, file_name):
         source = ""
         channel = ""
-        if vram.ota_source == "GitHub":
+        if self.settings['ota_source'] == "GitHub":
             source = "https://raw.githubusercontent.com/gyroflow/flowshutter/"
-        elif vram.ota_source == "Gitee":
+        elif self.settings['ota_source'] == "Gitee":
             source = "https://gitee.com/dusking1/flowshutter/raw/"
 
-        if vram.ota_channel == "stable":
+        if self.settings['ota_channel'] == "stable":
             channel = "stable"
-        elif vram.ota_channel == "beta":
+        elif self.settings['ota_channel'] == "beta":
             channel = "beta"
-        elif vram.ota_channel == "dev":
+        elif self.settings['ota_channel'] == "dev":
             channel = "master"
         remote_url = source + channel + "/src/" + file_name
         return remote_url

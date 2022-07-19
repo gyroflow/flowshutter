@@ -19,7 +19,7 @@ from machine import Pin
 from machine import UART
 import time
 
-target="DIY_CARD"
+name="DIY_CARD"
 oled_height = 32
 
 def init_adc():

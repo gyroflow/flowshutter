@@ -16,28 +16,37 @@
 from gui.core.writer import Writer
 from gui.fonts.icons import Icons
 import gui.fonts.arial10 as a10
-import vram, target
+import target
 import framebuf, time
 
 class Canvas_128x32(Icons):
     def __init__(self,screen):
+        self.settings = {
+            'version':          '0.66',
+            'camera_protocol':  'NO',
+            'device_mode':      'MASTER',
+            'inject_mode':      'OFF',
+            'ota_source':       'GitHub',
+            'ota_channel':      'stable',
+            'target_name':           target.name
+        }
+        self.vol = 0
+        self.erase_flag = False
         self.screen = screen
         self.a10 = Writer(self.screen, a10)
         self.animation = False
         super().__init__()
 
-    def update(self, info, sub_state, sub_menu, sub_hint):
-        if info == "welcome":
-            self.display_welcome()
+    def update(self, info, sub_state, sub_menu, sub_info):
+        if sub_info != '':
+            if sub_info == 'BATTERY':
+                self.display_battery()
+            else:
+                self.display_hint(sub_info)
         elif info == "home":
             self.display_state(sub_state)
-        elif info == "battery_info":
-            self.display_battery()
         elif info == "menu":
             self.display_menu(sub_menu)
-        elif info == 'hint':
-            self.display_hint(sub_hint)
-
         else:
             print(str(time.ticks_us()) + " [ Error] Unkown info: " + info)
 
@@ -74,35 +83,34 @@ class Canvas_128x32(Icons):
             self.screen.fill_rect(5,5,108,22,0)
         # else: # less than 0%, then do nothing
 
-    def display_welcome(self):
-        self.screen.fill(0)
-        self.screen.blit(self.icon_gyroflow, 0, 2)
-        # screen.invert(1)
-        self.screen.show()
-
     def display_state(self, state):
-        if state == 'HOME':
-            fb, header, content1, content2, content3 = self.icon_cam, 'Flowshutter', 'Powered by', 'DusKing', ''.join(tuple(vram.version))
-        elif state == 'STARTING':
-            fb, header, content1, content2, content3 = self.icon_cam, 'Starting', 'FC Disarmed', 'Camera start', ''
-        elif state == 'RECORDING':
-            fb, header, content1, content2, content3 = self.icon_cam_wk, 'Flowshutter', 'FC Armed', 'Recording', ''
-        elif state == 'STOPPING':
-            fb, header, content1, content2, content3 = self.icon_cam_wk, 'Stopping', 'FC Armed', 'Camera stop', ''
+        if state == 'WELCOME':
+            self.screen.fill(0)
+            self.screen.blit(self.icon_gyroflow, 0, 2)
+            self.screen.show()
         else:
-            print('Unkown state: ' + state)
-        self.screen.fill(0)
-        self.screen.blit(fb, 0, 0)
-        self.screen.text(header, 34, 0, 1)
-        self.screen.text(content1, 34, 12, 1)
-        self.screen.text(content2, 34, 24, 1)
-        self.screen.text(content3, 94, 24, 1)
-        self.screen.show()
+            if state == 'HOME':
+                fb, header, content1, content2, content3 = self.icon_cam, 'Flowshutter', 'Powered by', 'DusKing', ''.join(tuple(self.settings['version']))
+            elif state == 'STARTING':
+                fb, header, content1, content2, content3 = self.icon_cam, 'Starting', 'FC Disarmed', 'Camera start', ''
+            elif state == 'RECORDING':
+                fb, header, content1, content2, content3 = self.icon_cam_wk, 'Flowshutter', 'FC Armed', 'Recording', ''
+            elif state == 'STOPPING':
+                fb, header, content1, content2, content3 = self.icon_cam_wk, 'Stopping', 'FC Armed', 'Camera stop', ''
+            else:
+                print('Unkown state: ' + state)
+            self.screen.fill(0)
+            self.screen.blit(fb, 0, 0)
+            self.screen.text(header, 34, 0, 1)
+            self.screen.text(content1, 34, 12, 1)
+            self.screen.text(content2, 34, 24, 1)
+            self.screen.text(content3, 94, 24, 1)
+            self.screen.show()
 
     def display_battery(self):
         self.screen.blit(self.icon_big_bat, 0, 0)
-        self.draw_batterymask(vram.vol)
-        voltage_str = "%.2fV" % vram.vol
+        self.draw_batterymask(self.vol)
+        voltage_str = "%.2fV" % self.vol
         for i in range(5):
             for j in range(5):
                 self.screen.text(voltage_str,42+i, 11+j,0)
@@ -111,21 +119,22 @@ class Canvas_128x32(Icons):
 
     def display_menu(self, sub_cat):
         if sub_cat == 'camera_protocol':
-            index, head, content, fb = 1, 'Camera Protocol',''.join(tuple(vram.camera_protocol)),               self.icon_settings
+            index, head, content, fb = 1, 'Camera Protocol',''.join(tuple(self.settings['camera_protocol'])),               self.icon_settings
         elif sub_cat == 'device_mode':
-            index, head, content, fb = 2, 'Device Mode',    ''.join(tuple(vram.device_mode)),                   self.icon_settings
+            index, head, content, fb = 2, 'Device Mode',    ''.join(tuple(self.settings['device_mode'])),                   self.icon_settings
         elif sub_cat == 'inject_mode':
-            index, head, content, fb = 3, 'Audio Injection',''.join(tuple(vram.inject_mode)),                   (self.icon_audio if vram.inject_mode == "ON" else self.icon_audio_off)
+            index, head, content, fb = 3, 'Audio Injection',''.join(tuple(self.settings['inject_mode'])),       (self.icon_audio if self.settings['inject_mode'] == "ON" else self.icon_audio_off)
         elif sub_cat == 'erase_blackbox':
-            index, head, content, fb = 4, 'Blackbox Erase', ('Erasing...' if vram.erase_flag else 'Erase stop'),self.icon_blackbox
+            index, head, content, fb = 4, 'Blackbox Erase', ('Erasing...' if self.erase_flag else 'Erase stop'),self.icon_blackbox
         elif sub_cat == 'internet':
-            index, head, content, fb = 5, 'Internet',       ''.join(tuple(vram.wlan_state)),                    (self.self.icon_wifi if vram.wlan_state == "CONNECTED" else self.self.icon_wifi_dis)
+            import mwlan
+            index, head, content, fb = 5, 'Internet',       ''.join(tuple(mwlan.wlan_state)),                   (self.self.icon_wifi if mwlan.wlan_state == "CONNECTED" else self.self.icon_wifi_dis)
         elif sub_cat == 'ota_source':
-            index, head, content, fb = 6, 'OTA Source',     ''.join(tuple(vram.ota_source)),                    (self.icon_github if vram.ota_source == "GitHub" else self.icon_gitee)
+            index, head, content, fb = 6, 'OTA Source',     ''.join(tuple(self.settings['ota_source'])),                    (self.icon_github if self.settings['ota_source'] == "GitHub" else self.icon_gitee)
         elif sub_cat == 'ota_channel':
-            index, head, content, fb = 7, 'OTA Channel',    ''.join(tuple(vram.ota_channel)),                   self.icon_settings
+            index, head, content, fb = 7, 'OTA Channel',    ''.join(tuple(self.settings['ota_channel'])),                   self.icon_settings
         elif sub_cat == 'ota_check':
-            index, head, content, fb = 8, 'OTA Check',      "".join(tuple(vram.ota_source))+"/"+"".join(tuple(vram.ota_channel)),self.icon_settings
+            index, head, content, fb = 8, 'OTA Check',      "".join(tuple(self.settings['ota_source']))+"/"+"".join(tuple(self.settings['ota_channel'])),self.icon_settings
         elif sub_cat == 'ota_update':
             index, head, content, fb = 9, 'OTA Update',     'ENT = START',                                      self.icon_settings
         else:
@@ -139,26 +148,26 @@ class Canvas_128x32(Icons):
         self.screen.text('<<  '+str(index)+'/4   >>', 0, 24, 1)
         self.screen.show()
 
-    def display_hint(self, sub_hint):
+    def display_hint(self, sub_info):
         self.screen.fill(0)
         self.screen.fill_rect(2,1,124,30,1)
         self.screen.fill_rect(6,4,116,24,0)
-        if sub_hint == 'REBOOT':
+        if sub_info == 'REBOOT':
             self.screen.text('Please reboot', 9, 6, 1)
             self.screen.text('to apply', 32, 16, 1)
-        elif sub_hint == 'SONY_MTP_ACK':
+        elif sub_info == 'SONY_MTP_ACK':
             self.screen.text('SONY Remote', 21, 6, 1)
             self.screen.text('Registered', 21, 16, 1)
-        elif sub_hint == 'STARTING_TIMEOUT':
+        elif sub_info == 'STARTING_TIMEOUT':
             self.screen.text('No ACK back', 17, 6, 1)
             self.screen.text('Start failed', 17, 16, 1)
-        elif sub_hint == 'AP_HINT':
+        elif sub_info == 'AP_HINT':
             self.screen.text('SSID:'+ 'Flowshutter', 3, 6, 1)
             self.screen.text('Pswd:'+ 'ilovehugo', 3, 16, 1)
-        elif sub_hint == 'WLAN_CONNECTING':
+        elif sub_info == 'WLAN_CONNECTING':
             self.screen.text('Connecting', 21, 6, 1)
             self.screen.text('Please wait', 21, 16, 1)
-        elif sub_hint == 'SETTINGS_FAULT':
+        elif sub_info == 'SETTINGS_FAULT':
             self.screen.text('Settings Fault', 26, 8, 1)
             self.screen.text('Please Reboot', 26, 20, 1)
         self.screen.show()

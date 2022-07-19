@@ -19,7 +19,7 @@ from machine import Pin
 from machine import UART
 import time
 
-target="g12864"
+name="g12864"
 oled_height = 64
 
 def init_adc():

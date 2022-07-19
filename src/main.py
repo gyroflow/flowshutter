@@ -13,5 +13,5 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-
-import mainc
+import gui.logic as logic
+gui = logic.Logic()

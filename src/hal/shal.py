@@ -15,7 +15,6 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import hal.protocols.common as common
 import hal.driver.ssd1306 as ssd1306
-import vram
 import time, gc
 import target
 
@@ -40,12 +39,10 @@ class SyncPeripherals:
         self.fc_link.send_packet(t)
 
         # task2 - OLED display or GC
-        if vram.oled_tasklist != []:
-            # print(vram.oled_tasklist)
-            i = vram.oled_tasklist[0]
+        if self.screen.oled_tasklist != []:
+            i = self.screen.oled_tasklist[0]
             self.screen.show_sub(i)
-            # self.ui.show_sub(i)
-            del vram.oled_tasklist[0]
+            del self.screen.oled_tasklist[0]
         elif self.mem_opt_interval < 0:
             self.mem_opt()
             self.mem_opt_interval = 100

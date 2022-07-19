@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram, target
+import target
 import time
 
 class LANC:
@@ -90,14 +90,12 @@ class LANC:
                 self.test.value(1)
                 self.transation_time = 0
                 self.rec_trigger_state = False
-                if vram.sub_state == "STOPPING":
-                    vram.arm_state = "disarm"
-                    vram.sub_state = "HOME"
-                    vram.oled_need_update = 'yes'
-                elif vram.sub_state == "STARTING":
-                    vram.arm_state = "arm"
-                    vram.sub_state = "RECORDING"
-                    vram.oled_need_update = 'yes'
+                if self.state == True:
+                    self.state = False
+                    self.oled_update_flag = True
+                elif self.state == False:
+                    self.state = True
+                    self.oled_update_flag = True
 
     def timeout(self):
         self.transation_time = 0

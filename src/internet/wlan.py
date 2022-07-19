@@ -35,7 +35,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import network, gc, vram, socket, ure, time
+import network, gc, mwlan, socket, ure, time
 
 NETWORK_PROFILES = 'wifi.dat'
 
@@ -44,11 +44,19 @@ wlan_sta = network.WLAN(network.STA_IF)
 
 class WIFIManager:
     def __init__(self):
+        self.sub_info = ''
         self.ap_ssid = "Flowshutter"
         self.ap_password = "ilovehugo"
         self.ap_authmode = 3  # WPA2
         self.connect_to_open_wifis = False
         self.server_socket = None
+        self.oled_update_flag = False
+
+    def exc_oled_flags(self,react):
+        if react == 'reset':
+            self.oled_update_flag = False
+        elif react == 'get':
+            return self.oled_update_flag
 
     def get_connection(self):
         # return a working WLAN(STA_IF) instance or None
@@ -59,10 +67,9 @@ class WIFIManager:
         # First check if there already is any connection:
         if wlan_sta.isconnected():
             return wlan_sta
-        vram.info = 'hint'
-        vram.sub_hint = 'WLAN_CONNECTING'
-        vram.oled_need_update = 'yes'
-        # vram.info = "show wlan connecting"
+        self.sub_info = 'WLAN_CONNECTING'
+        self.oled_update_flag = True
+        # mwlan.info = "show wlan connecting"
         connected = False
         try:
             # ESP connecting to WiFi takes time, wait a bit and try again:
@@ -125,12 +132,11 @@ class WIFIManager:
         import entry
         wlan_canvas = entry.task.ui.canvas# wlan_canvas = entry.task
 
-        vram.info = 'hint'
-        vram.sub_hint = 'AP_HINT'
-        vram.oled_need_update = 'yes'
+        self.sub_info = 'AP_HINT'
+        self.oled_update_flag = True
         # wlan_canvas.show_ap_info()
         # wlan_canvas.show_all()
-        # vram.info = "show ap info"
+        # mwlan.info = "show ap info"
         ## TODO: add canvas hint here
 
         print('Connect to WiFi ssid ' + self.ap_ssid + ', default password: ' + self.ap_password)
@@ -371,17 +377,15 @@ def handle_not_found(client, url):
     send_response(client, "Path not found: {}".format(url), status_code=404)
 
 def up():
-    vram.wlan_state = "CONNECTED"
+    mwlan.wlan_state = "CONNECTED"
     wlan = WIFIManager().get_connection()
     if wlan is None:
         print("Could not niitialized the network connection.")
         while True:
             pass
     print("Flowshutter OK")
-    # vram.oled_need_update = "yes"
 
 def down():
-    vram.wlan_state = "DISCONNECTED"
+    mwlan.wlan_state = "DISCONNECTED"
     wlan_ap.active(False)
     wlan_sta.active(False)
-    # vram.oled_need_update = "yes"

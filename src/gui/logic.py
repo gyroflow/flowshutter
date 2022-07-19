@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
-import vram, settings, time
+import settings, time
 import gui.core.canvas as canvas
 import gui.settings as settings
 import hal.ahal as ahal
@@ -24,15 +24,28 @@ from machine import Timer
 class Logic:
     def __init__(self):
         print(str(time.ticks_us()) + " [ INIT ] UI logic object")
-        self.update_count = 0
+        self.init_variables()
         self.settings = settings.UserSettings()
         self.sync_hal = shal.SyncPeripherals()
         self.canvas = canvas.init_canvas(self.sync_hal.screen)
-        self.async_hal = ahal.AsnycPeripherals(camera = vram.camera_protocol)
+        self.async_hal = ahal.AsnycPeripherals(camera = self.settings.settings['camera_protocol'])
         print(str(time.ticks_us()) + " [ SYNC ] UI logic HAL")
         self.init_sync_hal()
         print(str(time.ticks_us()) + " [ ASYNC] UI logic HAL")
         self.init_async_hal()
+
+    def init_variables(self):
+        self.shutter_state = "home"
+        self.sub_state = "WELCOME"
+        self.sub_info = ''
+        self.update_count = 0
+        self.refresh = [False, False] # native flag, flag from camera
+        self.prev_state = 'blank'
+        self.substate_index = 0
+        self.substate = ['HOME', 'STARTING', 'RECORDING', 'STOPPING']
+        self.submenu_index = 0
+        self.submenu = ['camera_protocol', 'device_mode', 'inject_mode', 'erase_blackbox']
+        # self.submenu = ['camera_protocol', 'device_mode', 'inject_mode', 'erase_blackbox', 'internet', 'ota_source', 'ota_channel', 'ota_check', 'ota_update']
 
     def init_sync_hal(self):
         timer0 = Timer(0)
@@ -55,60 +68,81 @@ class Logic:
             loop.create_task(self.async_hal.camera.uart_handler())
         loop.run_forever()
 
+    def exchange_data(self):
+        self.sync_hal.fc_link.inject_mode = self.settings.settings['inject_mode']
+        self.canvas.settings = self.settings.settings
+        self.async_hal.camera.oled_update_flag = False
+        self.canvas.vol = self.async_hal.battery.vol
+
+    def check_camera(self):
+        self.sync_hal.fc_link.arm_state = self.async_hal.camera.state
+        self.refresh[1] = self.async_hal.camera.oled_update_flag
+        if self.async_hal.camera.state == True and (self.sub_state == "HOME" or self.sub_state == "STARTING"):
+            self.sub_state = 'RECORDING'
+        elif self.async_hal.camera.state == False and (self.sub_state == "RECORDING" or self.sub_state == "STOPPING"):
+            self.sub_state = 'HOME'
+        if self.async_hal.camera.notification != "":
+            self.sub_info = self.async_hal.camera.notification
+
     async def update(self):          # UI tasks controller
         print(str(time.ticks_us()) + " [  OK  ] Async UI state machine")
         while True:
             self.check_shutter_state() # check working state and assign handler
+            self.check_camera()
             self.check_oled()      # check if OLED needs update
             await asyncio.sleep_ms(5)
 
     def check_oled(self):# check if we need to update the OLED
-        if vram.previous_state != vram.shutter_state:
-            vram.previous_state = vram.shutter_state
-            vram.info = vram.shutter_state
-            self.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
-        if vram.oled_need_update == "yes":
-            vram.oled_need_update = "no"
-            self.canvas.update(vram.info,vram.sub_state,vram.sub_menu,vram.sub_hint)
+        if self.prev_state != self.shutter_state:
+            self.prev_state = self.shutter_state
+            self.refresh[0] = True
+        if self.refresh[0] or self.refresh[1]:
+            self.refresh = [False, False]
+            self.exchange_data()
+            self.canvas.update(self.shutter_state,self.sub_state,self.submenu[self.submenu_index],self.sub_info)
 
     def check_shutter_state(self):
-        if vram.shutter_state == "welcome":
-            self.welcome()
-        elif vram.shutter_state == "home":
-            if vram.sub_state == "HOME":
+        if self.sub_info != '':
+            if self.sub_info == 'REBOOT':
+                self.info_reboot()
+            elif self.sub_info == 'BATTERY':
+                self.info_battery()
+            elif self.sub_info == 'STARTING_TIMEOUT':
+                self.info_starting_timeout()
+            elif self.sub_info == 'SONY_MTP_ACK':
+                self.info_sony_mtp_ack()
+        elif self.shutter_state == "home":
+            if self.sub_state == "WELCOME":
+                self.welcome()
+            elif self.sub_state == "HOME":
                 self.home()
-            elif vram.sub_state == "STARTING":
+            elif self.sub_state == "STARTING":
                 self.starting()
-            elif vram.sub_state == "RECORDING":
+            elif self.sub_state == "RECORDING":
                 self.recording()
-            elif vram.sub_state == "STOPPING":
+            elif self.sub_state == "STOPPING":
                 self.stopping()
-        elif vram.shutter_state == "battery_info":
-            self.info_battery()
-        elif vram.shutter_state == "hint":
-            if vram.sub_hint == "REBOOT":
-                self.hint_reboot()
-        elif vram.shutter_state == "menu":
-            if vram.sub_menu == "menu_root":
+        elif self.shutter_state == "menu":
+            if self.submenu[self.submenu_index] == "menu_root":
                 self.menu_root()
-            elif vram.sub_menu == "camera_protocol":
+            elif self.submenu[self.submenu_index] == "camera_protocol":
                 self.menu_camera_protocol()
-            elif vram.sub_menu == "device_mode":
+            elif self.submenu[self.submenu_index] == "device_mode":
                 self.menu_device_mode()
-            elif vram.sub_menu == "inject_mode":
+            elif self.submenu[self.submenu_index] == "inject_mode":
                 self.menu_inject_mode()
-            elif vram.sub_menu == "erase_blackbox":
+            elif self.submenu[self.submenu_index] == "erase_blackbox":
                 self.menu_erase_blackbox()
-            elif vram.sub_menu == "internet":
+            elif self.submenu[self.submenu_index] == "internet":
                 self.menu_internet()
-            elif vram.sub_menu == "ota_source":
+            elif self.submenu[self.submenu_index] == "ota_source":
                 self.menu_ota_source()
-            elif vram.sub_menu == "ota_channel":
+            elif self.submenu[self.submenu_index] == "ota_channel":
                 self.menu_ota_channel()
-            elif vram.sub_menu == "ota_check":
+            elif self.submenu[self.submenu_index] == "ota_check":
                 self.menu_ota_check()
             else:
-                print('Unkown menu!' + vram.sub_menu)
+                print('Unkown menu!' + self.submenu[self.submenu_index])
         else:
             print("Unknown UI state")
 
@@ -123,14 +157,15 @@ class Logic:
         # welcome auto switch
         if self.update_count == 2500:
             self.update_count = 0
-            vram.shutter_state = "home"
+            self.sub_state = "HOME"
+            self.refresh[0] = True
 
     def home(self):
-        self.bind_btn(0, "SHORT", "INFO", 0, 0, "battery_info")
+        self.bind_btn(0, "SHORT", "INFO", 0, 0, "BATTERY")
         self.bind_btn(0, "LONG",  "MENU", 0, 0, "menu")
         self.bind_btn(1, "SHORT", "SHUTTER", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "INFO", 0, 0, "battery_info")
+        self.bind_btn(2, "SHORT", "INFO", 0, 0, "BATTERY")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "menu")
 
     def starting(self):
@@ -146,16 +181,8 @@ class Logic:
         if self.update_count < 5000:
             self.async_hal.camera.rec()
         elif self.update_count == 5000:
-            vram.info = "hint"
-            vram.sub_hint = "STARTING_TIMEOUT"
-            vram.oled_need_update = "yes"
-        elif self.update_count == 10000:
-            self.update_count = 0
-            vram.shutter_state = "home"
-            vram.sub_state = "HOME"
-            vram.info = vram.shutter_state
-            vram.oled_need_update = "yes"
-            self.async_hal.camera.timeout()
+            self.sub_info = "STARTING_TIMEOUT"
+            self.refresh[0] = True
 
     def recording(self):
         self.update_count = 0
@@ -179,70 +206,95 @@ class Logic:
         if self.update_count < 5000:
             self.async_hal.camera.rec()
         elif self.update_count == 5000:
-            vram.info = "hint"
-            vram.sub_hint = "STARTING_TIMEOUT"
-            vram.oled_need_update = "yes"
-        elif self.update_count == 10000:
-            self.update_count = 0
-            vram.shutter_state = "home"
-            vram.sub_state = "HOME"
-            vram.info = vram.shutter_state
-            vram.oled_need_update = "yes"
-            self.async_hal.camera.timeout()
+            self.sub_info = "STARTING_TIMEOUT"
+            self.async_hal.camera.state = False
+            self.sync_hal.fc_link.state = False
+            self.refresh[0] = True
 
     def info_battery(self):
         self.update_count += 5
         if self.update_count ==5000:
             self.update_count = 0
-            vram.oled_need_update = "yes"
+            self.refresh[0] = True
 
         # self.bind_btn(1, "SHORT", "MENU", 0, 0, "menu_internet")
-        self.bind_btn(0, "SHORT", "MENU", 0, 0, "home")
+        self.bind_btn(0, "SHORT", "INFO",  0, 0, 0)
         self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
         self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "MENU", 0, 0, "home")
+        self.bind_btn(2, "SHORT", "INFO",  0, 0, 0)
         self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
 
     def menu_camera_protocol(self):
-        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "erase_blackbox")
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, 3)
         self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
-        self.bind_btn(1, "SHORT", "SETTING", vram.camera_protocol, vram.camera_protocol_range, 0)
+        self.bind_btn(1, "SHORT", "SETTING", self.settings.settings['camera_protocol'], self.settings.camera_protocol_range, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "device_mode")
+        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, 1)
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_device_mode(self):
-        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, 0)
         self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
-        self.bind_btn(1, "SHORT", "SETTING", vram.device_mode, vram.device_mode_range, 0)
+        self.bind_btn(1, "SHORT", "SETTING", self.settings.settings['device_mode'], self.settings.device_mode_range, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "inject_mode")
+        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, 2)
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_inject_mode(self):
-        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "device_mode")
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, 1)
         self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
-        self.bind_btn(1, "SHORT", "SETTING", vram.inject_mode, vram.inject_mode_range, 0)
+        self.bind_btn(1, "SHORT", "SETTING", self.settings.settings['inject_mode'], self.settings.inject_mode_range, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "erase_blackbox")
+        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, 3)
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
     def menu_erase_blackbox(self):
-        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "inject_mode")
+        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, 2)
         self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
         self.bind_btn(1, "SHORT", "FC", 0,0,0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
+        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, 0)
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
-    def hint_reboot(self):
-        self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
-        self.bind_btn(0, "LONG",  "MENU", 0, 0, "home")
-        self.bind_btn(1, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
+    def info_sony_mtp_ack(self):
+        self.update_count += 5
+        self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
+        self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
         self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
-        self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
-        self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
+        self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
+
+        if self.update_count == 2000:
+            self.update_count = 0
+            self.async_hal.camera.notification = ''
+            self.sub_info = ''
+            self.refresh[0] = True
+
+    def info_reboot(self):
+        self.bind_btn(0, "SHORT", "INFO", 0, 0, 0)
+        self.bind_btn(0, "LONG",  "INFO", 0, 0, 0)
+        self.bind_btn(1, "SHORT", "INFO", 0, 0, 0)
+        self.bind_btn(1, "LONG",  "INFO", 0, 0, 0)
+        self.bind_btn(2, "SHORT", "INFO", 0, 0, 0)
+        self.bind_btn(2, "LONG",  "INFO", 0, 0, 0)
+
+    def info_starting_timeout(self):
+        self.update_count += 5
+        self.bind_btn(0, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(0, "LONG",  "BLANK", 0, 0, 0)
+        self.bind_btn(1, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(1, "LONG",  "BLANK", 0, 0, 0)
+        self.bind_btn(2, "SHORT", "BLANK", 0, 0, 0)
+        self.bind_btn(2, "LONG",  "BLANK", 0, 0, 0)
+
+        if self.update_count == 10000:
+            self.update_count = 0
+            self.sub_info = ''
+            self.sub_state = "HOME"
+            self.refresh[0] = True
+            self.async_hal.camera.timeout()
 
     def menu_root(self):
         self.bind_btn(0, "SHORT", "SUBMENU", 0, 0, "erase_blackbox")
@@ -252,68 +304,73 @@ class Logic:
         self.bind_btn(2, "SHORT", "SUBMENU", 0, 0, "camera_protocol")
         self.bind_btn(2, "LONG",  "MENU", 0, 0, "home")
 
-    def bind_btn(self, button, event, dest, setting, setting_range, next_state):
+    def bind_btn(self, button, event, dest, setting, setting_range, new_state):
         if self.async_hal.buttons.state[button] == event:
             self.async_hal.buttons.state[button] = "RLS"
             if dest == 'MENU':
-                vram.shutter_state = next_state
+                self.shutter_state = new_state
             elif dest == 'SUBMENU':
-                vram.shutter_state = 'menu'
-                vram.sub_menu = next_state
+                self.shutter_state = 'menu'
+                self.submenu_index = new_state
             elif dest == 'INFO':
-                if vram.shutter_state == "recording":
-                    if vram.info == "recording":
-                        vram.info = "battery_info"
-                    elif vram.info == "battery_info":
-                        vram.info = "recording"
-                elif vram.shutter_state == 'home':
-                    if vram.info == "home":
-                        vram.info = "battery_info"
-                    elif vram.info == "battery_info":
-                        vram.info = "home"
+                if self.shutter_state == 'home':
+                    if self.sub_state == "RECORDING" or self.sub_state == 'HOME':
+                        if self.sub_info == "":
+                            self.sub_info = "BATTERY"
+                        elif self.sub_info == "BATTERY":
+                            self.sub_info = ""
+                elif self.shutter_state == "menu":
+                    print('called from btn cb: INFO.menu')
+                    self.sub_info = ""
             elif dest == 'BLANK':
                 pass
             elif dest == "SETTING":
-                setting = vram.next(setting_range,setting)
-                if vram.sub_menu == "device_mode":
-                    vram.device_mode = setting
-                elif vram.sub_menu == "inject_mode":
-                    vram.inject_mode = setting
-                elif vram.sub_menu == "camera_protocol":
-                    vram.camera_protocol = setting
-                    vram.update_camera_preset()
-                    vram.shutter_state = 'hint'
-                    vram.sub_hint = 'REBOOT'
-                elif vram.sub_menu == "ota_source":
-                    vram.ota_source = setting
-                elif vram.sub_menu == "ota_channel":
-                    vram.ota_channel = setting
+                setting = self.settings.cycle('nxt',setting_range,setting)
+                if self.submenu_index == 0:
+                    self.settings.settings['camera_protocol'] = setting
+                    self.settings.update_camera_preset()
+                    self.sub_info = 'REBOOT'
+                elif self.submenu_index == 1:
+                    self.settings.settings['device_mode'] = setting
+                elif self.submenu_index == 2:
+                    self.settings.settings['inject_mode'] = setting
+                elif self.submenu_index == 5:
+                    self.settings.settings['ota_source'] = setting
+                elif self.submenu_index == 6:
+                    self.settings.settings['ota_channel'] = setting
                 else:
                     print("Hey what's this?")
                 self.settings.update()
             elif dest == 'FC':
-                if vram.sub_menu == "erase_blackbox":
-                    if vram.erase_flag == False:
-                        vram.erase_flag = True
+                if self.submenu_index == 3:
+                    if self.sync_hal.fc_link.erase_flag == False:
+                        self.sync_hal.fc_link.erase_flag = True
                     else:
-                        vram.erase_flag = False
+                        self.sync_hal.fc_link.erase_flag = False
+                    self.canvas.erase_flag = self.sync_hal.fc_link.erase_flag
+                    # print('FC link flag: '+ str(self.sync_hal.fc_link.erase_flag))
+                    # print('Canvas flag: '+str(self.canvas.erase_flag))
             elif dest == 'SHUTTER':
-                if vram.sub_state == "internet":
-                    import internet.wlan as wlan
-                    if vram.wlan_state == "DISCONNECTED":
+                if self.sub_state == "internet":
+                    if wlan is None:
+                        import internet.wlan as wlan
+                    if mwlan.wlan_state == "DISCONNECTED":
                         wlan.up()
                     else:
                         wlan.down()
-                elif vram.sub_state == "ota_check":
+                elif self.sub_state == "ota_check":
                     import internet.ota as ota
                     self.ota = ota.OTA()
                     self.ota.check()
-                elif vram.sub_state == "HOME":
-                    if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
-                        vram.sub_state = "STARTING"
-                    elif vram.device_mode == "TEST":
+                elif self.sub_state == "HOME":
+                    if self.settings.settings['device_mode'] == "MASTER" or self.settings.settings['device_mode'] == "MASTER/SLAVE":
+                        self.sub_state = "STARTING"
+                    elif self.settings.settings['device_mode'] == "TEST":
                         self.async_hal.camera.set_mode()
-                elif vram.sub_state == "RECORDING":
-                    if vram.device_mode == "MASTER" or vram.device_mode == "MASTER/SLAVE":
-                        vram.sub_state = "STOPPING"
-            vram.oled_need_update = "yes"
+                elif self.sub_state == "RECORDING":
+                    if self.settings.settings['device_mode'] == "MASTER" or self.settings.settings['device_mode'] == "MASTER/SLAVE":
+                        self.sub_state = "STOPPING"
+            # print('sub_info: '+str(self.sub_info))
+            # print('sub_state: '+str(self.sub_state))
+            # print('shutter_state: '+str(self.shutter_state))
+            self.refresh[0] = True

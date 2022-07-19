@@ -15,7 +15,6 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from micropython import const
 import framebuf
-import vram
 import time
 
 SET_CONTRAST        = const(0x81)
@@ -52,6 +51,7 @@ class SSD1306_I2C(framebuf.FrameBuffer):
         self.temp = bytearray(2)
         self.gtemp = bytearray(12)
         self.write_list = [b"\x40", None]  # Co=0, D/C#=1
+        self.oled_tasklist = []
         self.poweron()
         self.init_display()
         print(str(time.ticks_us()) + " [  OK  ] SSD1306_I2C object")
@@ -90,7 +90,7 @@ class SSD1306_I2C(framebuf.FrameBuffer):
 
     def show(self):
         for i in range(int(self.pages/2)):
-            vram.oled_tasklist.append(i)
+            self.oled_tasklist.append(i)
 
     def show_sub(self,i):
         x0 = 0

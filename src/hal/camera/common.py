@@ -13,11 +13,13 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram
 class Camera:
     def __init__(self,task_mode):
         self.transation_time = 0
         self.task_mode = task_mode
+        self.notification = ''
+        self.oled_update_flag = False
+        self.state = False # stop, True = recording
 
     def timeout(self):
         self.transation_time = 0
@@ -26,7 +28,7 @@ class Camera:
         self.transation_time += 5
         if self.transation_time == 500:
             event1(argv1)
-        elif self.transation_time == 600:
+        elif self.transation_time == 800:
             event2(argv2)
-            vram.oled_need_update = 'yes'
+            self.oled_update_flag = True
             self.transation_time = 0

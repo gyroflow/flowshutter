@@ -13,7 +13,6 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram
 import time
 from hal.camera.common import Camera
 
@@ -22,17 +21,15 @@ class No_Cam(Camera):
         print(str(time.ticks_us()) + " [Create] No camera object")
         super().__init__("NO")
         print(str(time.ticks_us()) + " [  OK  ] No camera object")
-    
+
     def no_cam(self, argv):
         if argv == "pass":
             pass
         else:
-            if vram.sub_state == "STARTING":
-                vram.sub_state = "RECORDING"
-                vram.arm_state = "arm"
-            elif vram.sub_state == "STOPPING":
-                vram.sub_state = "HOME"
-                vram.arm_state = "disarm"
-    
+            if self.state == True:
+                self.state = False
+            elif self.state == False:
+                self.state = True
+
     def rec(self):
         self.rec_event(self.no_cam, 'pass', self.no_cam, 'react')

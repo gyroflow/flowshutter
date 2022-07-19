@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram, target
+import target
 import time
 from hal.camera.common import Camera
 
@@ -29,12 +29,10 @@ class Momentary_ground(Camera):
         # 0 Low voltage (tied to ground)
         self.pin.value(value)
         if value == 1:
-            if vram.sub_state == "STOPPING":
-                vram.sub_state = "HOME"
-                vram.arm_state = "disarm"
-            elif vram.sub_state == "STARTING":
-                vram.sub_state = "RECORDING"
-                vram.arm_state = "arm"
+            if self.state == True:
+                self.state = False
+            elif self.state == False:
+                self.state = True
 
     def rec(self):
         self.rec_event(self.momentary_ground, 0, self.momentary_ground, 1)
