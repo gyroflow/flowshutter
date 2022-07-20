@@ -62,7 +62,7 @@ class WIFIManager:
         # return a working WLAN(STA_IF) instance or None
 
         import entry
-        wlan_canvas = entry.task.ui.canvas# wlan_canvas = entry.task
+        wlan_canvas = entry.task.gui.canvas# wlan_canvas = entry.task
 
         # First check if there already is any connection:
         if wlan_sta.isconnected():
@@ -130,7 +130,7 @@ class WIFIManager:
         self.server_socket.bind(addr)
         self.server_socket.listen(1)
         import entry
-        wlan_canvas = entry.task.ui.canvas# wlan_canvas = entry.task
+        wlan_canvas = entry.task.gui.canvas# wlan_canvas = entry.task
 
         self.sub_info = 'AP_HINT'
         self.oled_update_flag = True

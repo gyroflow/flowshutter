@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
-import settings, time
+import time
 import gui.core.canvas as canvas
 import gui.settings as settings
 import hal.ahal as ahal

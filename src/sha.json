@@ -17,6 +17,10 @@
             "sha1": "d2029049f9beb4234ccea948d14015a88695d983"
         },
         {
+            "name": "gui/core/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
             "name": "gui/core/animation.py",
             "sha1": "3b6115a6441de9ddf72c1e21fc06d2cf156dee06"
         },
@@ -27,6 +31,10 @@
         {
             "name": "gui/core/writer.py",
             "sha1": "0f2c18c81181021d931dec2ce398df338e11cfec"
+        },
+        {
+            "name": "gui/fonts/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
         },
         {
             "name": "gui/fonts/arial10.py",
@@ -45,6 +53,10 @@
             "sha1": "9bd7a96cfca27313c9dc9954b3299d754b58bdb0"
         },
         {
+            "name": "gui/lib/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
             "name": "gui/lib/canvas_128x32.py",
             "sha1": "8b69a5eb085bfd40fce8d27afadcfa3a65b96ff6"
         },
@@ -54,7 +66,7 @@
         },
         {
             "name": "gui/logic.py",
-            "sha1": "000ad0c130e6842b63d68b83055097c8109d3e52"
+            "sha1": "039b7246ec65b85a134f7bb47530e0097a54b7c4"
         },
         {
             "name": "gui/settings.py",
@@ -63,6 +75,10 @@
         {
             "name": "hal/ahal.py",
             "sha1": "837493e5010f421e5842749e987e2dc1b84d4393"
+        },
+        {
+            "name": "hal/camera/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
         },
         {
             "name": "hal/camera/common.py",
@@ -93,12 +109,20 @@
             "sha1": "8687bc43f8287fb9002c1f90e97e446cd1ab6ed5"
         },
         {
+            "name": "hal/driver/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
             "name": "hal/driver/ssd1306.py",
             "sha1": "9c13bf7c1784e1e4fa233f7c305040f55448b60f"
         },
         {
             "name": "hal/peripherals.py",
             "sha1": "555ac0add6f95994b51d6e75c008dadc3dcc912d"
+        },
+        {
+            "name": "hal/protocols/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
         },
         {
             "name": "hal/protocols/common.py",
@@ -126,7 +150,7 @@
         },
         {
             "name": "internet/wlan.py",
-            "sha1": "09caf445b3a4bcda52a7082cbff02159992f08e8"
+            "sha1": "242f607cdef1df92297185a7825fe581448b5751"
         },
         {
             "name": "main.py",

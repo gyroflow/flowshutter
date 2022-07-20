@@ -25,10 +25,17 @@ def move(argv):
         for file in files:
             filepath = subdir + '/' + file
             modules.append(filepath)
-    temp = {x.replace('src/','').replace('src\\','')
-            .replace('gui\\','gui/').replace('protocols\\','protocols/')
-            for x in modules}
-    modules = temp
+    temp1 = {x.replace('src\\','').replace('src/','')
+                for x in modules}
+    temp2 = {x.replace('gui\\','gui/').replace('protocols\\','protocols/')
+                for x in temp1}
+    temp3 = {x.replace('hal\\','hal/')
+                for x in temp2}
+
+    # temp2 = {x.replace('hal\\','hal/')
+    #         for x in temp1}
+    modules = temp3
+    print(modules)
 
     modules.remove('__init__.py')
 
@@ -64,9 +71,18 @@ def move(argv):
                 shutil.copyfile('src/'+f, 'obj/'+f)
                 print('CP '+f+' ..')
             except FileExistsError:
-                os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1])
-                shutil.copyfile('src/'+f, 'obj/'+f)
-                print('CP '+f+' ..')
+                try:
+                    os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1])
+                    shutil.copyfile('src/'+f, 'obj/'+f)
+                    print('CP '+f+' ..')
+                except FileExistsError:
+                    os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1]+"/"+f.split('/')[2])
+                    shutil.copyfile('src/'+f, 'obj/'+f)
+                    print('CP '+f+' ..')
+                except FileNotFoundError:
+                    os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1]+"/"+f.split('/')[2])
+                    shutil.copyfile('src/'+f, 'obj/'+f)
+                    print('CP '+f+' ..')
             except FileNotFoundError:
                 os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1])
                 shutil.copyfile('src/'+f, 'obj/'+f)
