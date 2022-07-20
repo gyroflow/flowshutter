@@ -25,14 +25,21 @@ def move(argv):
         for file in files:
             filepath = subdir + '/' + file
             modules.append(filepath)
-    temp = {x.replace('src/','').replace('src\\','')
-            .replace('gui\\','gui/').replace('protocols\\','protocols/')
-            for x in modules}
-    modules = temp
+    temp1 = {x.replace('src\\','').replace('src/','')
+                for x in modules}
+    temp2 = {x.replace('gui\\','gui/').replace('protocols\\','protocols/')
+                for x in temp1}
+    temp3 = {x.replace('hal\\','hal/')
+                for x in temp2}
+
+    # temp2 = {x.replace('hal\\','hal/')
+    #         for x in temp1}
+    modules = temp3
+    print(modules)
 
     modules.remove('__init__.py')
 
-    if argv == 'COMPLIE':
+    if argv == 'COMPILE':
         try:
             # these files should/can not be compiled as frozen modules
             modules.remove('boot.py')
@@ -64,9 +71,18 @@ def move(argv):
                 shutil.copyfile('src/'+f, 'obj/'+f)
                 print('CP '+f+' ..')
             except FileExistsError:
-                os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1])
-                shutil.copyfile('src/'+f, 'obj/'+f)
-                print('CP '+f+' ..')
+                try:
+                    os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1])
+                    shutil.copyfile('src/'+f, 'obj/'+f)
+                    print('CP '+f+' ..')
+                except FileExistsError:
+                    os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1]+"/"+f.split('/')[2])
+                    shutil.copyfile('src/'+f, 'obj/'+f)
+                    print('CP '+f+' ..')
+                except FileNotFoundError:
+                    os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1]+"/"+f.split('/')[2])
+                    shutil.copyfile('src/'+f, 'obj/'+f)
+                    print('CP '+f+' ..')
             except FileNotFoundError:
                 os.mkdir(path='obj/'+f.split('/')[0]+"/"+f.split('/')[1])
                 shutil.copyfile('src/'+f, 'obj/'+f)
@@ -75,8 +91,8 @@ def move(argv):
     try:
         shutil.rmtree(path='obj/__pycache__')
         print('RM '+'obj/__pycache__')
-        shutil.rmtree(path='obj/protocols/__pycache__')
-        print('RM '+'obj/protocols/__pycache__')
+        shutil.rmtree(path='obj/hal/protocols/__pycache__')
+        print('RM '+'obj/hal/protocols/__pycache__')
     except FileNotFoundError:
         pass
 
@@ -90,7 +106,7 @@ def build(argv1, argv2):
         print('obj/ already exists')
         pass
 
-    if argv1 == 'COMPLIE':
+    if argv1 == 'COMPILE':
         # copy necessary modules
         prefix_modules = os.listdir('build/')
         print('..\nCOPY prefix')
@@ -113,6 +129,8 @@ def build(argv1, argv2):
         source_address = 'obj/targets/diy_fc.py'
     elif argv2 == 'NEUTRONRC_SDB':
         source_address = 'obj/targets/neutronrc_sdb.py'
+    elif argv2 == 'G12864':
+        source_address = 'obj/targets/g12864.py'
     else:
         print('ERROR: target not found')
         sys.exit()
@@ -153,29 +171,19 @@ def gen_sha(jdir):
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         # `build.py`
-        build('COMPLIE','GENERIC')
+        build('COMPILE','GENERIC')
     else:
         if sys.argv[1] == 'build':
             # `build.py build`
             if len(sys.argv) == 2:
                 print('Build started!')
-                build('COMPLIE','GENERIC')
+                build('COMPILE','GENERIC')
                 print('Build complete!')
             elif sys.argv[2] == 'TARGET':
                 # `build.py build TARGET XXXX`
                 target = sys.argv[3]
                 print('Build started!')
-                if target == 'GENERIC':
-                    build('COMPLIE','GENERIC')
-                elif target == 'DIY_CARD':
-                    build('COMPLIE','DIY_CARD')
-                elif target == 'DIY_FC':
-                    build('COMPLIE','DIY_FC')
-                elif target == 'NEUTRONRC_SDB':
-                    build('COMPLIE','NEUTRONRC_SDB')
-                else:
-                    print('ERROR: target not found')
-                    sys.exit()
+                build('COMPILE', target)
                 print('Build complete!')
 
         elif sys.argv[1] == 'debug':
@@ -188,17 +196,7 @@ if __name__ == '__main__':
                 # `build.py debug TARGET XXXX`
                 target = sys.argv[3]
                 print('Preparing for debug mode...')
-                if target == 'GENERIC':
-                    build('DEBUG','GENERIC')
-                elif target == 'DIY_FC':
-                    build('DEBUG','DIY_FC')
-                elif target == 'DIY_CARD':
-                    build('DEBUG','DIY_CARD')
-                elif target == 'NEUTRONRC_SDB':
-                    build('DEBUG','NEUTRONRC_SDB')
-                else:
-                    print('ERROR: target not found')
-                    sys.exit()
+                build('DEBUG', target)
                 print('Debug ready!')
             elif sys.argv[2] == 'clean':
                 print('Performing clean')

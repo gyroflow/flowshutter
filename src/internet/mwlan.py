@@ -1,0 +1,1 @@
+wlan_state = "DISCONNECTED"

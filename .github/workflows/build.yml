@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix: 
-        targets: [GENERIC, DIY_CARD, DIY_FC, NEUTRONRC_SDB]
+        targets: [GENERIC, G12864, DIY_CARD, DIY_FC, NEUTRONRC_SDB]
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Build modules
         run: |
-          python3 tools/build.py build TARGET ${{ matrix.targets }}
+          python3 build.py build TARGET ${{ matrix.targets }}
 
       - name: Prepare esp-idf and micropython
         run: |
@@ -55,5 +55,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: flowshutter-${{ matrix.targets }}-${{ github.run_number }}
+          name: flowshutter_${{ matrix.targets }}_${{ github.run_number }}
           path: micropython/ports/esp32/build-GENERIC/firmware.bin

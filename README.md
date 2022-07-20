@@ -121,16 +121,16 @@ TBD
 ### Start debugging
 
 1. Modify the `pymakr.conf` to match up with your flowshutter's COM port
-2. `python tools/build.py debug` to prepare the debug environment (move modules to `/obj` directory)
+2. `python build.py debug` to prepare the debug environment (move modules to `/obj` directory)
 3. Upload all modules to the hardware and reboot it.
 
 Note:
-- `python tools/build.py debug`: copy modules to `/obj` directory
-- `python tools/build.py debug clean`: clean the `/obj` directory. Useful when you are suffering from memory leak.
+- `python build.py debug`: copy modules to `/obj` directory
+- `python build.py debug clean`: clean the `/obj` directory. Useful when you are suffering from memory leak.
 
 ### Compile flowshutter firmware (single bin)
 
-There's a CI that can help us to this. For compiling it locally, please check `tools/build.py` for more information.
+There's a CI that can help us to this. For compiling it locally, please check `build.py` for more information.
 
 
 ## License

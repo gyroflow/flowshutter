@@ -13,9 +13,9 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram, target
+import target
 import time
-from camera.common import Camera
+from hal.camera.common import Camera
 
 class Schmitt_3v3(Camera):
     def __init__(self):
@@ -27,14 +27,12 @@ class Schmitt_3v3(Camera):
     def toggle_cc_voltage_level(self, argv):
         if argv == "pass":
             pass
-        elif vram.sub_state == "STOPPING":
-            vram.sub_state = "HOME"
+        elif self.state == True:
+            self.state = False
             self.pin.value(0)
-            vram.arm_state = "disarm"
-        elif vram.sub_state == "STARTING":
-            vram.sub_state = "RECORDING"
+        elif self.state == False:
+            self.state = True
             self.pin.value(1)
-            vram.arm_state = "arm"
 
     def rec(self):
         self.rec_event(self.toggle_cc_voltage_level, 'pass', self.toggle_cc_voltage_level,'react')

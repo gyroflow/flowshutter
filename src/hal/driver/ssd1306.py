@@ -15,7 +15,6 @@
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 from micropython import const
 import framebuf
-import vram
 import time
 
 SET_CONTRAST        = const(0x81)
@@ -50,7 +49,9 @@ class SSD1306_I2C(framebuf.FrameBuffer):
         self.buffer = bytearray(self.pages * self.width)
         super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
         self.temp = bytearray(2)
+        self.gtemp = bytearray(12)
         self.write_list = [b"\x40", None]  # Co=0, D/C#=1
+        self.oled_tasklist = []
         self.poweron()
         self.init_display()
         print(str(time.ticks_us()) + " [  OK  ] SSD1306_I2C object")
@@ -88,8 +89,8 @@ class SSD1306_I2C(framebuf.FrameBuffer):
             pass
 
     def show(self):
-        for i in range(int(self.pages)):
-            vram.oled_tasklist.append(i)
+        for i in range(int(self.pages/2)):
+            self.oled_tasklist.append(i)
 
     def show_sub(self,i):
         x0 = 0
@@ -98,13 +99,8 @@ class SSD1306_I2C(framebuf.FrameBuffer):
             # displays with width of 64 pixels are shifted by 32
             x0 += 32
             x1 += 32
-        self.write_cmd(SET_COL_ADDR)
-        self.write_cmd(x0)
-        self.write_cmd(x1)
-        self.write_cmd(SET_PAGE_ADDR)
-        self.write_cmd(i)
-        self.write_cmd(i)
-        self.write_data(self.buffer[int(i*self.width):int((i+1)*(self.width))])
+        self.write_g_cmd(SET_COL_ADDR, x0, x1, SET_PAGE_ADDR, i*2, i*2+1)
+        self.write_data(self.buffer[int((i*2)*self.width):int((i*2+2)*(self.width))])
    
     def show_all(self):
         x0 = 0
@@ -128,6 +124,21 @@ class SSD1306_I2C(framebuf.FrameBuffer):
     def write_data(self, buf):
         self.write_list[1] = buf
         self.i2c.writevto(self.addr, self.write_list)
+
+    def write_g_cmd(self, cmd1, cmd2, cmd3, cmd4, cmd5, cmd6):
+        self.gtemp[0] = 0x80 # Co=1, D/C#=0
+        self.gtemp[1] = cmd1
+        self.gtemp[2] = 0x80
+        self.gtemp[3] = cmd2
+        self.gtemp[4] = 0x80
+        self.gtemp[5] = cmd3
+        self.gtemp[6] = 0x80
+        self.gtemp[7] = cmd4
+        self.gtemp[8] = 0x80
+        self.gtemp[9] = cmd5
+        self.gtemp[10] = 0x80
+        self.gtemp[11] = cmd6
+        self.i2c.writeto(self.addr, self.gtemp)
 
     def poweroff(self):
         self.write_cmd(SET_DISP)

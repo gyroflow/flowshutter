@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
 import uasyncio as asyncio
-import vram, target
+import target
 import time
-from camera.common import Camera
+from hal.camera.common import Camera
 
 class ZCAM_UART(Camera):
     def __init__(self):
@@ -47,15 +47,15 @@ class ZCAM_UART(Camera):
 
             if data == self.START_REC_ACK:
                 print("START_REC_ACK")
-                vram.shutter_state,vram.sub_state = 'home',"RECORDING"
-                vram.arm_state = "arm"
-                vram.oled_need_update = 'yes'
+                self.state = True
+                self.arm_flag = True
+                self.oled_update_flag = True
                 self.transation_time = 0
             elif data == self.STOP_REC_ACK:
                 print("STOP_REC_ACK")
-                vram.shutter_state, vram.sub_state = 'home',"HOME"
-                vram.arm_state = "disarm"
-                vram.oled_need_update = 'yes'
+                self.state = False
+                self.arm_flag = False
+                self.oled_update_flag = True
                 self.transation_time = 0
             elif data == (0xEA02112900000001000000090000000900000000).to_bytes(20, 'big'):
                 print("REC MSG")
@@ -84,9 +84,9 @@ class ZCAM_UART(Camera):
     def toggle_rec(self, argv):
         if argv == "pass":
             pass
-        elif vram.sub_state == "STARTING":
+        elif self.state == False:
             self.uart.write(self.START_REC)
-        elif vram.sub_state == "STOPPING":
+        elif self.state == True:
             self.uart.write(self.STOP_REC)
 
     def rec(self):

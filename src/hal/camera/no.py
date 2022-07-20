@@ -13,20 +13,23 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import vram
-class Camera:
-    def __init__(self,task_mode):
-        self.transation_time = 0
-        self.task_mode = task_mode
+import time
+from hal.camera.common import Camera
 
-    def timeout(self):
-        self.transation_time = 0
+class No_Cam(Camera):
+    def __init__(self):
+        print(str(time.ticks_us()) + " [Create] No camera object")
+        super().__init__("NO")
+        print(str(time.ticks_us()) + " [  OK  ] No camera object")
 
-    def rec_event(self, event1, argv1, event2, argv2):
-        self.transation_time += 5
-        if self.transation_time == 500:
-            event1(argv1)
-        elif self.transation_time == 600:
-            event2(argv2)
-            vram.oled_need_update = 'yes'
-            self.transation_time = 0
+    def no_cam(self, argv):
+        if argv == "pass":
+            pass
+        else:
+            if self.state == True:
+                self.state = False
+            elif self.state == False:
+                self.state = True
+
+    def rec(self):
+        self.rec_event(self.no_cam, 'pass', self.no_cam, 'react')

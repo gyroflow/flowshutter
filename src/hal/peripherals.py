@@ -13,7 +13,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import target, vram
+import target
 import time
 import uasyncio as asyncio
 
@@ -21,6 +21,7 @@ class Battery:
     def __init__(self):
         print(str(time.ticks_us()) + " [Create] Battery object")
         print(str(time.ticks_us()) + " [Create] ADC")
+        self.vol = 4.0
         self.adc, self.scale, self.offset = target.init_adc()
         print(str(time.ticks_us()) + " [  OK  ] ADC")
         print(str(time.ticks_us()) + " [  OK  ] Battery object")
@@ -30,7 +31,7 @@ class Battery:
         while True:
             voltage_uint = (self.adc.read()+self.offset)
             voltage_raw = voltage_uint * 3.3 / (4096*self.scale)
-            vram.vol = 0.5* (vram.vol + voltage_raw)
+            self.vol = 0.5* (self.vol + voltage_raw)
             await asyncio.sleep_ms(50)
 
 class Buttons:

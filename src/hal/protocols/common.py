@@ -13,8 +13,8 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-from protocols.crsf import CRSF_RC_Generator
-import target, vram
+from hal.protocols.crsf import CRSF_RC_Generator
+import target
 import time
 import uasyncio as asyncio
 
@@ -24,6 +24,9 @@ class CRSF:
         self.arm_time       = 0
         self.packets_count  = 0     # number of packets sent 
         self.marker         = 'L'   # marker
+        self.arm_state      = False # disarm, True = arm
+        self.inject_mode = "OFF"    # OFF, ON
+        self.erase_flag     = False # do nothing, True = erase
         print(str(time.ticks_us()) + " [Create] UART1")
         self.uart           = target.init_fc_uart()
         print(str(time.ticks_us()) + " [  OK  ] UART1")
@@ -67,10 +70,10 @@ class CRSF:
             self.audio.value(1)          # high voltage on audio
 
     def send_packet(self, t):
-        if (vram.arm_state == "arm") & (vram.inject_mode == "OFF"):
+        if (self.arm_state == True) & (self.inject_mode == "OFF"):
             self.uart.write(self.arm_packet)  # just ARM the FC 
 
-        elif (vram.arm_state == "arm") & (vram.inject_mode == "ON"):
+        elif (self.arm_state == True) & (self.inject_mode == "ON"):
             self.arm_time = self.arm_time + 5   # 5ms per call
 
             if self.arm_time < 1000:            # in first second we don't inject
@@ -82,11 +85,11 @@ class CRSF:
                     self._toggle_marker_()
                     self.packets_count = 0
 
-        elif vram.arm_state == "disarm":
+        elif self.arm_state == False:
             self.arm_time = 0
-            if vram.erase_flag == False:
+            if self.erase_flag == False:
                 self.uart.write(self.disarm_packet)
-            elif vram.erase_flag == True:
+            elif self.erase_flag == True:
                 self.uart.write(self.erase_packet)
             self.packets_count = 0
             self.marker = "L"

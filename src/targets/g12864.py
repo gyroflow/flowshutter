@@ -19,25 +19,25 @@ from machine import Pin
 from machine import UART
 import time
 
-name = "DIY_FC"
-oled_height = 32
+name="g12864"
+oled_height = 64
 
 def init_adc():
     print(str(time.ticks_us()) + " [ Init ] ADC")
-    adc = ADC(Pin(34))
+    adc = ADC(Pin(36))
     adc.atten(ADC.ATTN_11DB)
-    scale = 1
-    offset = 0
+    scale = 0.5
+    offset = 200
     return adc, scale, offset
 
 def init_fc_uart():
     print(str(time.ticks_us()) + " [ Init ] UART1")
-    uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 33, rx = 32)
+    uart1 = UART(1, baudrate=420000, bits = 8, parity = None, stop = 1, tx = 4, rx = 2)
     return uart1
 
 def init_audio():
     print(str(time.ticks_us()) + " [ Init ] AJ pin")
-    audio_pin = Pin(18, Pin.OUT)
+    audio_pin = Pin(26, Pin.OUT)
     return audio_pin
 
 def init_i2c():
@@ -47,36 +47,36 @@ def init_i2c():
 
 def init_buttons():
     print(str(time.ticks_us()) + " [ Init ] buttons")
-    button_page_up  = Pin(2, Pin.IN, Pin.PULL_UP)
-    button_enter    = Pin(27, Pin.IN, Pin.PULL_UP)
-    button_page_down= Pin(15, Pin.IN, Pin.PULL_UP)
+    button_page_up  = Pin(35, Pin.IN)
+    button_enter    = Pin(32, Pin.IN, Pin.PULL_UP)
+    button_page_down= Pin(34, Pin.IN)
     return button_page_up, button_enter, button_page_down
 
 def init_mtp_uart():
     print(str(time.ticks_us()) + " [ Init ] UART2 sony mtp")
-    uart2 = UART(2, baudrate = 9600,    bits = 8,   parity = 0,     stop = 1,   tx = 25,rx = 26)
+    uart2 = UART(2, baudrate = 9600,    bits = 8,   parity = 0,     stop = 1,   tx = 25,rx = 33)
     return uart2
 
 def init_zcam_uart():
     print(str(time.ticks_us()) + " [ Init ] UART2 zcam uart")
-    uart2 = UART(2, baudrate = 115200,  bits = 8,   parity = None,  stop = 1,   tx = 25,rx = 26)
+    uart2 = UART(2, baudrate = 115200,  bits = 8,   parity = None,  stop = 1,   tx = 25,rx = 33)
     return uart2
 
-def init_uart2_tx():
-    print(str(time.ticks_us()) + " [ Init ] UART2 TX")
-    # uart2_tx = UART(2,baudrate = 9600, bits = 8, parity = None, stop =1, tx = 25)
-    uart2_tx = Pin(25, Pin.OUT, value = 1)
-    return uart2_tx
+# def init_uart2_tx():
+#     print(str(time.ticks_us()) + " [ Init ] UART2 TX")
+#     # uart2_tx = UART(2,baudrate = 9600, bits = 8, parity = None, stop =1, tx = 25)
+#     uart2_tx = Pin(25, Pin.OUT, value = 1)
+#     return uart2_tx
 
-def init_lanc_detect_pin():
-    print(str(time.ticks_us()) + " [ Init ] LANC detect pin")
-    detect = Pin(26, Pin.IN, Pin.PULL_UP)
-    return detect
+# def init_lanc_detect_pin():
+#     print(str(time.ticks_us()) + " [ Init ] LANC detect pin")
+#     detect = Pin(33, Pin.IN, Pin.PULL_UP)
+#     return detect
 
-def init_lanc_test_pin():
-    print(str(time.ticks_us()) + " [ Init ] LANC text pin")
-    test = Pin(2, Pin.OUT, value = 1)
-    return test
+# def init_lanc_test_pin():
+#     print(str(time.ticks_us()) + " [ Init ] LANC text pin")
+#     test = Pin(2, Pin.OUT, value = 1)
+#     return test
 
 def init_momentary_ground_pin():
     print(str(time.ticks_us()) + " [ Init ] MMTRY GND pin")
@@ -85,5 +85,5 @@ def init_momentary_ground_pin():
 
 def init_schmitt_3v3_trigger_pin():
     print(str(time.ticks_us()) + " [ Init ] schmitt")
-    schmitt_3v3 = Pin(26, Pin.OUT, value = 0)
+    schmitt_3v3 = Pin(33, Pin.OUT, value = 0)
     return schmitt_3v3

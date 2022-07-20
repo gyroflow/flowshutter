@@ -13,5 +13,22 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with flowshutter.  If not, see <https://www.gnu.org/licenses/>.
-import gui.logic as logic
-gui = logic.Logic()
+class Camera:
+    def __init__(self,task_mode):
+        self.transation_time = 0
+        self.task_mode = task_mode
+        self.notification = ''
+        self.oled_update_flag = False
+        self.state = False # stop, True = recording
+
+    def timeout(self):
+        self.transation_time = 0
+
+    def rec_event(self, event1, argv1, event2, argv2):
+        self.transation_time += 5
+        if self.transation_time == 500:
+            event1(argv1)
+        elif self.transation_time == 800:
+            event2(argv2)
+            self.oled_update_flag = True
+            self.transation_time = 0

@@ -10,127 +10,171 @@
         },
         {
             "name": "boot.py",
-            "sha1": "93a65da52ba7dbd97787531c7695d4a85807c392"
+            "sha1": "c85b047013eb35114e4690c79e9355ba1ab22001"
         },
         {
-            "name": "camera/common.py",
-            "sha1": "aaf1e2b3b53aea65e3db19b4e16be67e2edb701e"
+            "name": "bootc.py",
+            "sha1": "d2029049f9beb4234ccea948d14015a88695d983"
         },
         {
-            "name": "camera/lanc.py",
-            "sha1": "963911ce048526f959b75c3e1550747528d2e4ae"
+            "name": "gui/core/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
         },
         {
-            "name": "camera/momentary_ground.py",
-            "sha1": "512368ae6607f842156b3d5d6e6f4c1dfcff67d7"
-        },
-        {
-            "name": "camera/no.py",
-            "sha1": "32cf39f44e6860634330df6d36eb949df7db6079"
-        },
-        {
-            "name": "camera/schmitt_3v3.py",
-            "sha1": "f696d2613d9c21c2d42941837460874cfc820321"
-        },
-        {
-            "name": "camera/sony.py",
-            "sha1": "e597c74da07ffd452b0e2f81baaddf90aea2581d"
-        },
-        {
-            "name": "camera/zcam.py",
-            "sha1": "6ceb86304b9834e8d68c4df0a896aef3a5aed9c0"
-        },
-        {
-            "name": "entry.py",
-            "sha1": "130bc91df595a64c894e3141867c2d29ff308138"
+            "name": "gui/core/animation.py",
+            "sha1": "3b6115a6441de9ddf72c1e21fc06d2cf156dee06"
         },
         {
             "name": "gui/core/canvas.py",
-            "sha1": "0ce302661d57dfe1d37484c76d83b32310b6f8ec"
+            "sha1": "cc78e7d8c1bceae41d4dc8af66aeedb0c6f391f4"
         },
         {
-            "name": "gui/core/ui.py",
-            "sha1": "1580903f425dce22b489042f46279d601da226e8"
-        },
-        {
-            "name": "gui/driver/ssd1306.py",
-            "sha1": "f67840f845b02d1f53866d7d7033719ca9fd9688"
-        },
-        {
-            "name": "gui/lib/arial10.py",
-            "sha1": "ab54e3cc6107264243c94a015baf3145c1197452"
-        },
-        {
-            "name": "gui/lib/font10.py",
-            "sha1": "eba3531d7767f7e6c72cacc73d9096fccf737048"
-        },
-        {
-            "name": "gui/lib/font6.py",
-            "sha1": "b7db1a6a2ed9164f03a039b43d21e1b06d546001"
-        },
-        {
-            "name": "gui/lib/writer.py",
+            "name": "gui/core/writer.py",
             "sha1": "0f2c18c81181021d931dec2ce398df338e11cfec"
         },
         {
-            "name": "gui/peripherals.py",
-            "sha1": "abb3f6c8d7ccab179229da5f57a61659b914f5fe"
+            "name": "gui/fonts/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
         },
         {
-            "name": "internet/ota.py",
-            "sha1": "8611e69ca51efb00bc35f4740785bbc795357e7f"
+            "name": "gui/fonts/arial10.py",
+            "sha1": "ab54e3cc6107264243c94a015baf3145c1197452"
         },
         {
-            "name": "internet/wlan.py",
-            "sha1": "d933b8bf3f69c7e76c08d041e28ea98daf04f30c"
+            "name": "gui/fonts/font10.py",
+            "sha1": "eba3531d7767f7e6c72cacc73d9096fccf737048"
         },
         {
-            "name": "main.py",
-            "sha1": "027357cac8a688dc2833b3cd666c01b9b8831693"
+            "name": "gui/fonts/font6.py",
+            "sha1": "b7db1a6a2ed9164f03a039b43d21e1b06d546001"
         },
         {
-            "name": "protocols/common.py",
-            "sha1": "0fb338cdc695eaaef3d98610916a80afee59620c"
+            "name": "gui/fonts/icons.py",
+            "sha1": "9bd7a96cfca27313c9dc9954b3299d754b58bdb0"
         },
         {
-            "name": "protocols/crsf.py",
+            "name": "gui/lib/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
+            "name": "gui/lib/canvas_128x32.py",
+            "sha1": "8b69a5eb085bfd40fce8d27afadcfa3a65b96ff6"
+        },
+        {
+            "name": "gui/lib/canvas_128x64.py",
+            "sha1": "8e99e6e4bdb0f67b57dd3d1651dd287dd8e1a6c9"
+        },
+        {
+            "name": "gui/logic.py",
+            "sha1": "039b7246ec65b85a134f7bb47530e0097a54b7c4"
+        },
+        {
+            "name": "gui/settings.py",
+            "sha1": "56181e7f1296155e438969c4c0accd89a3216a6f"
+        },
+        {
+            "name": "hal/ahal.py",
+            "sha1": "837493e5010f421e5842749e987e2dc1b84d4393"
+        },
+        {
+            "name": "hal/camera/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
+            "name": "hal/camera/common.py",
+            "sha1": "3ea74eacb628f80fd7568780e3324c0d2ae26c8e"
+        },
+        {
+            "name": "hal/camera/lanc.py",
+            "sha1": "e50aff8d64c338b3a183694aba2a3b49e74f04c1"
+        },
+        {
+            "name": "hal/camera/momentary_ground.py",
+            "sha1": "8b8031d924cfd31c7def83ccf87559646e206aa7"
+        },
+        {
+            "name": "hal/camera/no.py",
+            "sha1": "84972b513464508dcfbaa7a1088525258d30670c"
+        },
+        {
+            "name": "hal/camera/schmitt_3v3.py",
+            "sha1": "049f6b52c5c06e21c6ae24133a9fdb0209a58031"
+        },
+        {
+            "name": "hal/camera/sony.py",
+            "sha1": "934ad36194769e282b6ea2009e8247ff9926ca62"
+        },
+        {
+            "name": "hal/camera/zcam.py",
+            "sha1": "8687bc43f8287fb9002c1f90e97e446cd1ab6ed5"
+        },
+        {
+            "name": "hal/driver/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
+            "name": "hal/driver/ssd1306.py",
+            "sha1": "9c13bf7c1784e1e4fa233f7c305040f55448b60f"
+        },
+        {
+            "name": "hal/peripherals.py",
+            "sha1": "555ac0add6f95994b51d6e75c008dadc3dcc912d"
+        },
+        {
+            "name": "hal/protocols/__init__.py",
+            "sha1": "adc83b19e793491b1c6ea0fd8b46cd9f32e592fc"
+        },
+        {
+            "name": "hal/protocols/common.py",
+            "sha1": "781de39f59c8f1a3feb0cbfa4c23c642b5672630"
+        },
+        {
+            "name": "hal/protocols/crsf.py",
             "sha1": "33e54f9b0e791906da72be5188d9d97816565e88"
         },
         {
-            "name": "protocols/msp.py",
+            "name": "hal/protocols/msp.py",
             "sha1": "27ca81d3fba8353a083b7fba74fb9697b1835f95"
         },
         {
-            "name": "settings.py",
-            "sha1": "62c73b9493fc637b7a43deb36a9a9961e4603b9b"
+            "name": "hal/shal.py",
+            "sha1": "f63d3b0ca83a88c794e8b5bb4166fa93fec4dd2f"
         },
         {
-            "name": "startup.py",
-            "sha1": "3ab8bd7b36a793d475d8e469c01ecbee769fc9d4"
+            "name": "internet/mwlan.py",
+            "sha1": "e06f580c4c68fc71fa887af19623c2a915f69bb6"
+        },
+        {
+            "name": "internet/ota.py",
+            "sha1": "2aba644225427c05caee048e779a996fef258b77"
+        },
+        {
+            "name": "internet/wlan.py",
+            "sha1": "242f607cdef1df92297185a7825fe581448b5751"
+        },
+        {
+            "name": "main.py",
+            "sha1": "99ceeffdbd827929ef1c2ae796c30345daddd0b9"
         },
         {
             "name": "targets/diy_card.py",
-            "sha1": "7b5736d70ee43aa0263370b1fe7ee33e937e307a"
+            "sha1": "14da6f85c6dd9f985cb13ded2dc5f02a29f78a53"
         },
         {
             "name": "targets/diy_fc.py",
-            "sha1": "393fcf64a9fb1bbd6aa09f1171b82abfaa6cecc9"
+            "sha1": "a253f37e348952bbf7953a4a067cfa913137c24e"
+        },
+        {
+            "name": "targets/g12864.py",
+            "sha1": "1dc6a394b3e792ef64677a5fa94dad9fb4133221"
         },
         {
             "name": "targets/generic.py",
-            "sha1": "570d036ae9b89810c6743b3d30f1de978b3f6446"
+            "sha1": "d46f03e237a62bc9a56aed52d3d5c5f284726aa5"
         },
         {
             "name": "targets/neutronrc_sdb.py",
-            "sha1": "8341055828ff2122044492544806fa9b667e42bc"
-        },
-        {
-            "name": "task.py",
-            "sha1": "c9cd2a93019ccbaa6d3418acf2d27d44ad65a2c7"
-        },
-        {
-            "name": "vram.py",
-            "sha1": "59d2819002d20d7f0ee20ae4ba3943a72cfbcce9"
+            "sha1": "77896022ec89312228a1a37d4b590d201e2790e6"
         }
     ]
 }
