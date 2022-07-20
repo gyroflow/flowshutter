@@ -18,7 +18,7 @@
         },
         {
             "name": "gui/core/animation.py",
-            "sha1": "326b71ef1e348e87b2a9484b3364d147bdd0b662"
+            "sha1": "3b6115a6441de9ddf72c1e21fc06d2cf156dee06"
         },
         {
             "name": "gui/core/canvas.py",
@@ -46,19 +46,19 @@
         },
         {
             "name": "gui/lib/canvas_128x32.py",
-            "sha1": "9d14584083e8581fa2477d16b3f7351451d90c88"
+            "sha1": "8b69a5eb085bfd40fce8d27afadcfa3a65b96ff6"
         },
         {
             "name": "gui/lib/canvas_128x64.py",
-            "sha1": "a189330d7c2e32d5d211944476c0f8a40519e377"
+            "sha1": "8e99e6e4bdb0f67b57dd3d1651dd287dd8e1a6c9"
         },
         {
             "name": "gui/logic.py",
-            "sha1": "57eb77117bb2d6922c3483f539586586db405905"
+            "sha1": "000ad0c130e6842b63d68b83055097c8109d3e52"
         },
         {
             "name": "gui/settings.py",
-            "sha1": "c7ec8ac0c1595aaebca98d8dd7281cda4f45dd2d"
+            "sha1": "56181e7f1296155e438969c4c0accd89a3216a6f"
         },
         {
             "name": "hal/ahal.py",
@@ -66,47 +66,43 @@
         },
         {
             "name": "hal/camera/common.py",
-            "sha1": "aaf1e2b3b53aea65e3db19b4e16be67e2edb701e"
+            "sha1": "3ea74eacb628f80fd7568780e3324c0d2ae26c8e"
         },
         {
             "name": "hal/camera/lanc.py",
-            "sha1": "963911ce048526f959b75c3e1550747528d2e4ae"
+            "sha1": "e50aff8d64c338b3a183694aba2a3b49e74f04c1"
         },
         {
             "name": "hal/camera/momentary_ground.py",
-            "sha1": "92b8e49e00c9b82b5ce7c68a5befa3091a0590c0"
+            "sha1": "8b8031d924cfd31c7def83ccf87559646e206aa7"
         },
         {
             "name": "hal/camera/no.py",
-            "sha1": "d440751baf77b9dc090f6ea6ea0cf5ecb4100b74"
+            "sha1": "84972b513464508dcfbaa7a1088525258d30670c"
         },
         {
             "name": "hal/camera/schmitt_3v3.py",
-            "sha1": "8d0a4b6b1afc24b9b9c6062ee477ec0c79a9b593"
+            "sha1": "049f6b52c5c06e21c6ae24133a9fdb0209a58031"
         },
         {
             "name": "hal/camera/sony.py",
-            "sha1": "a0f97090159bf7b10627cdc09ac0f5f653674fa4"
+            "sha1": "934ad36194769e282b6ea2009e8247ff9926ca62"
         },
         {
             "name": "hal/camera/zcam.py",
-            "sha1": "5773516096af07165a42a3ab77a02a45aed69b91"
-        },
-        {
-            "name": "hal/driver/painter.py",
-            "sha1": "0ee4e7b1cd72eb0e710798232f010e048ddd1a9c"
+            "sha1": "8687bc43f8287fb9002c1f90e97e446cd1ab6ed5"
         },
         {
             "name": "hal/driver/ssd1306.py",
-            "sha1": "7ea8f3365f3165267df139bd3bd2041a8163562a"
+            "sha1": "9c13bf7c1784e1e4fa233f7c305040f55448b60f"
         },
         {
             "name": "hal/peripherals.py",
-            "sha1": "abb3f6c8d7ccab179229da5f57a61659b914f5fe"
+            "sha1": "555ac0add6f95994b51d6e75c008dadc3dcc912d"
         },
         {
             "name": "hal/protocols/common.py",
-            "sha1": "3b4ca0d0a71cf92891b4392a2a31482fbd27b14e"
+            "sha1": "781de39f59c8f1a3feb0cbfa4c23c642b5672630"
         },
         {
             "name": "hal/protocols/crsf.py",
@@ -118,47 +114,43 @@
         },
         {
             "name": "hal/shal.py",
-            "sha1": "98d02d1e44256a35525cf0b804ba3df7ccc05c8b"
+            "sha1": "f63d3b0ca83a88c794e8b5bb4166fa93fec4dd2f"
+        },
+        {
+            "name": "internet/mwlan.py",
+            "sha1": "e06f580c4c68fc71fa887af19623c2a915f69bb6"
         },
         {
             "name": "internet/ota.py",
-            "sha1": "8611e69ca51efb00bc35f4740785bbc795357e7f"
+            "sha1": "2aba644225427c05caee048e779a996fef258b77"
         },
         {
             "name": "internet/wlan.py",
-            "sha1": "d933b8bf3f69c7e76c08d041e28ea98daf04f30c"
+            "sha1": "09caf445b3a4bcda52a7082cbff02159992f08e8"
         },
         {
             "name": "main.py",
-            "sha1": "7b93a1f1a6e687db67435c548076993727ff19fc"
-        },
-        {
-            "name": "mainc.py",
-            "sha1": "84c83ac5f1b5f6e13ad264cc986d2e7a45d72143"
+            "sha1": "99ceeffdbd827929ef1c2ae796c30345daddd0b9"
         },
         {
             "name": "targets/diy_card.py",
-            "sha1": "a5fd1d49da8ef21cf1552200264d172b542dea5f"
+            "sha1": "14da6f85c6dd9f985cb13ded2dc5f02a29f78a53"
         },
         {
             "name": "targets/diy_fc.py",
-            "sha1": "ad7c1d1fc2944cf04faa0b54e76e6a63e787df27"
+            "sha1": "a253f37e348952bbf7953a4a067cfa913137c24e"
         },
         {
             "name": "targets/g12864.py",
-            "sha1": "817cdfdfeb0297b6d24791cf585123f9a97bf264"
+            "sha1": "1dc6a394b3e792ef64677a5fa94dad9fb4133221"
         },
         {
             "name": "targets/generic.py",
-            "sha1": "9683795a8d62ddc0199470652dd93add2c28fe8d"
+            "sha1": "d46f03e237a62bc9a56aed52d3d5c5f284726aa5"
         },
         {
             "name": "targets/neutronrc_sdb.py",
-            "sha1": "ea5a506fba8e079eeb56962ee6c77d447b3dd429"
-        },
-        {
-            "name": "vram.py",
-            "sha1": "5260b24d5dc6c547d460d657556dce23c00dd7aa"
+            "sha1": "77896022ec89312228a1a37d4b590d201e2790e6"
         }
     ]
 }

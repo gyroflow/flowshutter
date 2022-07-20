@@ -41,7 +41,11 @@ def setup():
     f0.close()
 
     with open("main.py", "w") as f1:
-        f1.write("import mainc")
+        f1.write(
+            """\
+import gui.logic as logic
+gui = logic.Logic()
+""")
     f1.close()
 
     return vfs

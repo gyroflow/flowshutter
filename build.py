@@ -32,7 +32,7 @@ def move(argv):
 
     modules.remove('__init__.py')
 
-    if argv == 'COMPLIE':
+    if argv == 'COMPILE':
         try:
             # these files should/can not be compiled as frozen modules
             modules.remove('boot.py')
@@ -90,7 +90,7 @@ def build(argv1, argv2):
         print('obj/ already exists')
         pass
 
-    if argv1 == 'COMPLIE':
+    if argv1 == 'COMPILE':
         # copy necessary modules
         prefix_modules = os.listdir('build/')
         print('..\nCOPY prefix')
@@ -155,13 +155,13 @@ def gen_sha(jdir):
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         # `build.py`
-        build('COMPLIE','GENERIC')
+        build('COMPILE','GENERIC')
     else:
         if sys.argv[1] == 'build':
             # `build.py build`
             if len(sys.argv) == 2:
                 print('Build started!')
-                build('COMPLIE','GENERIC')
+                build('COMPILE','GENERIC')
                 print('Build complete!')
             elif sys.argv[2] == 'TARGET':
                 # `build.py build TARGET XXXX`
