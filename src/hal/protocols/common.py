@@ -71,6 +71,7 @@ class CRSF:
 
     def send_packet(self, t):
         if (self.arm_state == True) & (self.inject_mode == "OFF"):
+            self.erase_flag = False
             self.uart.write(self.arm_packet)  # just ARM the FC 
 
         elif (self.arm_state == True) & (self.inject_mode == "ON"):

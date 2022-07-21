@@ -50,7 +50,7 @@ class UserSettings:
             self.load_json('force')
         print(str(time.ticks_us()) + " [  OK  ] User Settings Loaded")
 
-    def update(self):
+    def write(self):
         with open("settings.json", "w") as f:
             json.dump(self.settings, f)
             f.close()
@@ -63,7 +63,7 @@ class UserSettings:
                 if self.settings['version'] != local_settings["version"]:
                     print(str(time.ticks_us()) + " [ ERROR] User Settings: Version changed. Overwriting default settings")
                     f.close()
-                    self.update()        # here we should write the default settings
+                    self.write()        # here we should write the default settings
                     print(str(time.ticks_us()) + " [ ERROR] User Settings: Default settings overwritten")
                 else:
                     self.settings['version'] = local_settings["version"]
@@ -84,7 +84,7 @@ class UserSettings:
                 except ValueError: # one of the current settings is not in the valid range
                     print("settings.json is invalid")
                     f.close()
-                    self.update()
+                    self.write()
                     print("updated settings.json")
                     f = open("settings.json", "r")  # then read again, cuz update() closed the file
                     local_settings = json.load(f)
@@ -98,7 +98,7 @@ class UserSettings:
 
     def load_json(self,argv):
         if argv == 'force':
-            self.update()
+            self.write()
         elif argv == 'read':
             pass
         else:
