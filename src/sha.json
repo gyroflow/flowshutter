@@ -25,10 +25,6 @@
             "sha1": "3b6115a6441de9ddf72c1e21fc06d2cf156dee06"
         },
         {
-            "name": "gui/core/canvas.py",
-            "sha1": "cc78e7d8c1bceae41d4dc8af66aeedb0c6f391f4"
-        },
-        {
             "name": "gui/core/writer.py",
             "sha1": "0f2c18c81181021d931dec2ce398df338e11cfec"
         },
@@ -58,19 +54,23 @@
         },
         {
             "name": "gui/lib/canvas_128x32.py",
-            "sha1": "8b69a5eb085bfd40fce8d27afadcfa3a65b96ff6"
+            "sha1": "86cb93591a98e62700774fa636b7288b9e45138d"
         },
         {
             "name": "gui/lib/canvas_128x64.py",
-            "sha1": "8e99e6e4bdb0f67b57dd3d1651dd287dd8e1a6c9"
+            "sha1": "46137d1263def6b7928b6e782d97a8e365d8a8e9"
+        },
+        {
+            "name": "gui/lib/common.py",
+            "sha1": "ad8f5d3112307c9d8eed895d733050cc52e08617"
         },
         {
             "name": "gui/logic.py",
-            "sha1": "039b7246ec65b85a134f7bb47530e0097a54b7c4"
+            "sha1": "2499bebaaf9dcbc4c1888fef1effcce3122b827a"
         },
         {
             "name": "gui/settings.py",
-            "sha1": "56181e7f1296155e438969c4c0accd89a3216a6f"
+            "sha1": "2f5cad11d86653f09703d2c66ed46dd3a21fb108"
         },
         {
             "name": "hal/ahal.py",
@@ -126,7 +126,7 @@
         },
         {
             "name": "hal/protocols/common.py",
-            "sha1": "781de39f59c8f1a3feb0cbfa4c23c642b5672630"
+            "sha1": "4f8359f0dfd59fb89200f5e1248c1ccaeccf65de"
         },
         {
             "name": "hal/protocols/crsf.py",
